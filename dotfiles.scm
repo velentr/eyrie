@@ -87,6 +87,7 @@
                 "fontconfig"
                 "glibc-locales"
                 "nss-certs"
+                "rofi"
                 "vim"
                 "zsh"))
      (documents . ("ghostscript"
@@ -156,11 +157,10 @@
                        "${AIRCAM_ROOT}/build/host_third_party/bin"))))))
     (string-append "typeset -U path\npath=(" (string-join paths " ") ")")))
 
-(define (dotfile-service service-name file-name contents)
+(define (dotfile-service service-name file-name file-like)
   (simple-service service-name
                   home-files-service-type
-                  (list (list file-name
-                              (plain-file file-name contents)))))
+                  (list (list file-name file-like))))
 
 (define (sh-compound statements)
   (string-join statements " && "))
@@ -195,4 +195,9 @@
      (home-zsh-configuration
       (environment-variables (use-env))
       (zshrc (zshrc-files))))
-    (dotfile-service 'git-dot-config "gitconfig" (git-config)))))
+    (dotfile-service 'git-dot-config
+                     "gitconfig"
+                     (plain-file "gitconfig" (git-config)))
+    (dotfile-service 'rofi-dot-config
+                     "config/rofi/config.rasi"
+                     (local-file "rofi-config.rasi")))))
