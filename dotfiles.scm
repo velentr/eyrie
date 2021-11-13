@@ -83,9 +83,14 @@
 
 (define (use-packages)
   (flatfilter-by-using
-   '((always . ("font-adobe-source-code-pro"
+   '((always . ("bc"
+                "erlang"
+                "font-adobe-source-code-pro"
                 "fontconfig"
                 "glibc-locales"
+                "guile"
+                "julia"
+                "lua"
                 "nss-certs"
                 "rofi"
                 "rxvt-unicode"
