@@ -88,6 +88,7 @@
                 "glibc-locales"
                 "nss-certs"
                 "rofi"
+                "rxvt-unicode"
                 "vim"
                 "zsh"))
      (documents . ("ghostscript"
@@ -185,6 +186,68 @@
                 (plain-file "nix-profile.zsh"
                             ". ~/.nix-profile/etc/profile.d/nix.sh"))))))
 
+(define (xresources)
+  (let ((defines
+          ;; solarized colors from http://ethanschoonover.com/solarized
+          '(("S_yellow"       "#b58900")
+            ("S_orange"       "#cb4b16")
+            ("S_red"          "#dc322f")
+            ("S_magenta"      "#d33682")
+            ("S_violet"       "#6c71c4")
+            ("S_blue"         "#268bd2")
+            ("S_cyan"         "#2aa198")
+            ("S_green"        "#859900")
+            ("S_base03"       "#002b36")
+            ("S_base02"       "#073642")
+            ("S_base01"       "#586e75")
+            ("S_base00"       "#657b83")
+            ("S_base0"        "#839496")
+            ("S_base1"        "#93a1a1")
+            ("S_base2"        "#eee8d5")
+            ("S_base3"        "#fdf6e3")))
+        (settings
+         '(("URxvt*background"             "S_base03")
+           ("URxvt*foreground"             "S_base0")
+           ("URxvt*.depth"                 "32")
+           ("URxvt*fading"                 "40")
+           ("URxvt*fadeColor"              "S_base03")
+           ("URxvt*cursorColor"            "S_base1")
+           ("URxvt*pointerColorBackground" "S_base01")
+           ("URxvt*pointerColorForeground" "S_base1")
+           ("URxvt*color0"                 "S_base02")
+           ("URxvt*color1"                 "S_red")
+           ("URxvt*color2"                 "S_green")
+           ("URxvt*color3"                 "S_yellow")
+           ("URxvt*color4"                 "S_blue")
+           ("URxvt*color5"                 "S_magenta")
+           ("URxvt*color6"                 "S_cyan")
+           ("URxvt*color7"                 "S_base2")
+           ("URxvt*color8"                 "S_base03")
+           ("URxvt*color9"                 "S_orange")
+           ("URxvt*color10"                "S_base01")
+           ("URxvt*color11"                "S_base00")
+           ("URxvt*color12"                "S_base0")
+           ("URxvt*color13"                "S_violet")
+           ("URxvt*color14"                "S_base1")
+           ("URxvt*color15"                "S_base3")
+           ("URxvt*.scrollBar"             "false")
+           ("URxvt*.font"                  "xft:Source Code Pro:pixelsize=14"))))
+    (string-append
+     ;; definitions
+     (string-join
+      (map (lambda (definition)
+             (string-append "#define " (car definition) " " (cadr definition)))
+           defines)
+      "\n")
+     "\n"
+     ;; config
+     (string-join
+      (map (lambda (setting)
+             (string-append (car setting) ": " (cadr setting)))
+           settings)
+      "\n")
+     "\n")))
+
 (home-environment
   (packages
     (map specification->package (use-packages)))
@@ -200,4 +263,7 @@
                      (plain-file "gitconfig" (git-config)))
     (dotfile-service 'rofi-dot-config
                      "config/rofi/config.rasi"
-                     (local-file "rofi-config.rasi")))))
+                     (local-file "rofi-config.rasi"))
+    (dotfile-service 'xresources-dot-config
+                     "Xresources"
+                     (plain-file "Xresources" (xresources))))))
