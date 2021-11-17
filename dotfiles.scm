@@ -4,7 +4,30 @@
   (gnu packages)
   (gnu services)
   (guix gexp)
-  (gnu home services shells))
+  (gnu home services shells)
+  (ice-9 popen)
+  (ice-9 rdelim)
+  (ice-9 regex))
+
+(define (display-dpi)
+  (let ((re (make-regexp "resolution: +([0-9]+)x[0-9]+ dots per inch"))
+        (port (open-input-pipe "xdpyinfo")))
+    (define (find-dpi)
+      (let ((line (read-line port)))
+        (if (eof-object? line)
+            #f
+            (let ((match (regexp-exec re line)))
+              (if match
+                  (string->number (match:substring match 1))
+                  (find-dpi))))))
+    (let ((dpi (find-dpi)))
+      (close-pipe port)
+      (if dpi
+          dpi
+          (error "can't find dpi with xdpyinfo!")))))
+
+(define font-size
+  (quotient (* 2 (display-dpi)) 13))
 
 (define (stat-is-type? path type)
   (let ((st (stat path #f)))
@@ -211,7 +234,7 @@
             ("S_base2"        "#eee8d5")
             ("S_base3"        "#fdf6e3")))
         (settings
-         '(("URxvt*background"             "S_base03")
+         `(("URxvt*background"             "S_base03")
            ("URxvt*foreground"             "S_base0")
            ("URxvt*.depth"                 "32")
            ("URxvt*fading"                 "40")
@@ -236,7 +259,9 @@
            ("URxvt*color14"                "S_base1")
            ("URxvt*color15"                "S_base3")
            ("URxvt*.scrollBar"             "false")
-           ("URxvt*.font"                  "xft:Source Code Pro:pixelsize=14"))))
+           ("URxvt*.font"                  ,(string-append
+                                             "xft:Source Code Pro:pixelsize="
+                                             (number->string font-size))))))
     (string-append
      ;; definitions
      (string-join
