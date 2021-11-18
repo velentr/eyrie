@@ -1,0 +1,96 @@
+{
+   "checksum": "a01bb320fd689cb1343c5063e461775c",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "date_added": "13276792292515165",
+            "guid": "7010c806-aa4e-48af-8d6a-f340d7658309",
+            "id": "5",
+            "name": "gmail",
+            "type": "url",
+            "url": "https://mail.google.com/mail/u/0/#inbox"
+         }, {
+            "date_added": "13276792687569565",
+            "guid": "f0c6a5e7-a748-4a72-89f4-999a729d3d27",
+            "id": "8",
+            "name": "guix",
+            "type": "url",
+            "url": "https://guix.gnu.org/manual/en/guix.html"
+         }, {
+            "date_added": "13276796650758655",
+            "guid": "7397c6b1-c5e6-413c-bb16-15e1a0b7ad78",
+            "id": "9",
+            "name": "github",
+            "type": "url",
+            "url": "https://github.com/Skydio/aircam/pulls?q=is%3Apr+is%3Aopen+involves%3A%40me+sort%3Aupdated-desc"
+         }, {
+            "date_added": "13276800573709881",
+            "guid": "cc8207ad-3da3-4876-b716-b9f7cb0258d0",
+            "id": "11",
+            "name": "notion",
+            "type": "url",
+            "url": "https://www.notion.so/skydio/Embedded-865c895fe11e4190a00c44ff0a8bac4f"
+         }, {
+            "date_added": "13276806654519394",
+            "guid": "ca0e298e-1ca5-43ef-8916-9c51372e7d59",
+            "id": "13",
+            "name": "jira",
+            "type": "url",
+            "url": "https://skydio.atlassian.net/secure/RapidBoard.jspa?rapidView=12&projectKey=SW&view=planning.nodetail&issueLimit=100"
+         }, {
+            "date_added": "13276873718853728",
+            "guid": "3e4957f4-bab3-443f-b884-5ef2fd678b32",
+            "id": "14",
+            "name": "vehicle",
+            "type": "url",
+            "url": "http://192.168.11.1/#status"
+         }, {
+            "date_added": "13277337763160530",
+            "guid": "1be8c1f3-08a4-46d7-aede-3cbe8a66d0d8",
+            "id": "16",
+            "name": "jenkins",
+            "type": "url",
+            "url": "https://jenkins.skyd.io/"
+         }, {
+            "date_added": "13277394423262764",
+            "guid": "5ab66128-d41e-4924-9d68-59a9176a2071",
+            "id": "17",
+            "name": "orcad",
+            "type": "url",
+            "url": "https://orcad.skyd.io/!/#"
+         }, {
+            "date_added": "13277405819855285",
+            "guid": "b9de7435-95c8-4e9a-a7f9-e972ea5ab0f2",
+            "id": "18",
+            "name": "gerrit",
+            "type": "url",
+            "url": "https://gerrit.skyd.io/dashboard/self"
+         } ],
+         "date_added": "13276787736615429",
+         "date_modified": "13280514486597026",
+         "guid": "0bc5d13f-2cba-5d74-951f-3f233fe6c908",
+         "id": "1",
+         "name": "Bookmarks bar",
+         "type": "folder"
+      },
+      "other": {
+         "children": [  ],
+         "date_added": "13276787736615432",
+         "date_modified": "0",
+         "guid": "82b081ec-3dd3-529c-8475-ab6c344590dd",
+         "id": "2",
+         "name": "Other bookmarks",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13276787736615433",
+         "date_modified": "0",
+         "guid": "4cf2e351-0e85-532b-bb37-df045d8f8d0f",
+         "id": "3",
+         "name": "Mobile bookmarks",
+         "type": "folder"
+      }
+   },
+   "version": 1
+}
