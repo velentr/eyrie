@@ -114,8 +114,10 @@
                 "emacs-evil"
                 "emacs-flycheck"
                 "emacs-go-mode"
+                "emacs-haskell-mode"
                 "emacs-julia-mode"
                 "emacs-lua-mode"
+                "emacs-nix-mode"
                 "emacs-no-x"
                 "emacs-org"
                 "emacs-systemd-mode"
@@ -123,6 +125,7 @@
                 "erlang"
                 "font-adobe-source-code-pro"
                 "fontconfig"
+                "ghc"
                 "glibc-locales"
                 "guile"
                 "julia"
@@ -134,8 +137,8 @@
                 "zsh"))
      (documents . ("ghostscript"
                    "texlive"))
-     ;; revup needs a custom git implementation
-     (not-skydio . ("git")))))
+     (not-skydio . ("git"       ;; revup uses a custom git
+                    "nix")))))  ;; nix is managed in aircam
 
 (define (git-config)
   (define (config-option option)
