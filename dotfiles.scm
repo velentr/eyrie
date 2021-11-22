@@ -135,8 +135,6 @@
                 "nss-certs"
                 "rofi"
                 "rxvt-unicode"
-                "ublock-origin-chromium"
-                "ungoogled-chromium"
                 "vim"
                 "zsh"))
      (documents . ("ghostscript"
@@ -298,11 +296,6 @@
       "\n")
      "\n")))
 
-(define (chromium-bookmarks)
-  (if (using? 'skydio)
-      (local-file "chromium-bookmarks.json")
-      (plain-file "empty-bookmarks" "")))
-
 (home-environment
   (packages
     (map specification->package (use-packages)))
@@ -313,9 +306,6 @@
      (home-zsh-configuration
       (environment-variables (use-env))
       (zshrc (zshrc-files))))
-    (dotfile-service 'chromium-dot-config
-                     "config/chromium/Default/Bookmarks"
-                     (chromium-bookmarks))
     (dotfile-service 'git-dot-config
                      "gitconfig"
                      (plain-file "gitconfig" (git-config)))
