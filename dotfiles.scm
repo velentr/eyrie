@@ -107,6 +107,7 @@
 (define (use-packages)
   (flatfilter-by-using
    '((always . ("bc"
+                "emacs-bazel"
                 "emacs-cmake-mode"
                 "emacs-company"
                 "emacs-dts-mode"
