@@ -131,6 +131,7 @@
                 "glibc-locales"
                 "guile"
                 "htop"
+                "i3status"
                 "julia"
                 "lsof"
                 "lua"
@@ -319,6 +320,12 @@
     (dotfile-service 'git-dot-config
                      "gitconfig"
                      (plain-file "gitconfig" (git-config)))
+    (dotfile-service 'i3status-dot-script
+                     "i3/status.scm"
+                     (local-file "i3-status.scm"))
+    (dotfile-service 'i3status-dot-config
+                     "i3/status"
+                     (local-file "i3-status"))
     (dotfile-service 'rofi-dot-config
                      "config/rofi/config.rasi"
                      (local-file "rofi-config.rasi"))
