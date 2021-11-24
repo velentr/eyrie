@@ -150,8 +150,7 @@
                 "zsh"))
      (documents . ("ghostscript"
                    "texlive"))
-     (not-skydio . ("git"       ;; revup uses a custom git
-                    "nix")))))  ;; nix is managed in aircam
+     (not-skydio . ("git")))))  ;; revup uses a custom git
 
 (define (git-config)
   (define (config-option option)

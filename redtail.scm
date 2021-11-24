@@ -1,6 +1,6 @@
 (use-modules (gnu))
-(use-service-modules networking ssh)
-(use-package-modules certs shells ssh)
+(use-service-modules networking nix ssh)
+(use-package-modules certs package-management shells ssh)
 
 (define %encrypted-root
   (mapped-device
@@ -40,7 +40,7 @@
                                        "audio" "video")))
               %base-user-accounts))
 
- (packages (cons nss-certs %base-packages))
+ (packages (append (list nix nss-certs) %base-packages))
 
  (services (append (list (static-networking-service
                           "enp2s0" "10.10.0.4"
@@ -50,6 +50,7 @@
                                            "208.67.220.222"
                                            "208.67.222.220"
                                            "208.67.222.222"))
+                         (service nix-service-type)
                          (service openssh-service-type
                                   (openssh-configuration
                                    (openssh openssh-sans-x)
