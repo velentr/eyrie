@@ -53,5 +53,6 @@
                          (service openssh-service-type
                                   (openssh-configuration
                                    (openssh openssh-sans-x)
+                                   (password-authentication? #f)
                                    (port-number 2222))))
                    %base-services)))
