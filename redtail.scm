@@ -51,6 +51,7 @@
                                            "208.67.222.220"
                                            "208.67.222.222"))
                          (service nix-service-type)
+                         (service ntp-service-type)
                          (service openssh-service-type
                                   (openssh-configuration
                                    (openssh openssh-sans-x)
