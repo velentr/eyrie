@@ -1,5 +1,5 @@
 (use-modules (gnu))
-(use-service-modules networking nix ssh)
+(use-service-modules desktop networking nix ssh)
 (use-package-modules certs package-management shells ssh)
 
 (define %encrypted-root
@@ -53,7 +53,8 @@
 
  (packages (append (list nix nss-certs) %base-packages))
 
- (services (append (list (static-networking-service
+ (services (append (list (elogind-service)  ;; to create /run/user/${UID} on login
+                         (static-networking-service
                           "enp2s0" "10.10.0.4"
                           #:netmask "255.255.0.0"
                           #:gateway "10.10.0.1"
