@@ -9,6 +9,12 @@
    (target "root")
    (type luks-device-mapping)))
 
+(define %encrypted-share
+  (mapped-device
+   (source (uuid "97a4f05b-4e50-4cd4-9a90-3505f2b4201c"))
+   (target "share")
+   (type luks-device-mapping)))
+
 (operating-system
  (host-name "redtail")
  (timezone "US/Pacific")
@@ -19,7 +25,7 @@
               (target "/boot/efi")))
  ;; hid_microsoft for using my ms ergo keyboard to enter the encryption key
  (initrd-modules (cons "hid_microsoft" %base-initrd-modules))
- (mapped-devices (list %encrypted-root))
+ (mapped-devices (list %encrypted-root %encrypted-share))
  (file-systems (append
                 (list (file-system
                        (device "/dev/mapper/root")
@@ -29,7 +35,12 @@
                       (file-system
                        (device (file-system-label "BOOTEFI"))
                        (mount-point "/boot/efi")
-                       (type "vfat")))
+                       (type "vfat"))
+                      (file-system
+                       (device "/dev/mapper/share")
+                       (mount-point "/share")
+                       (type "ext4")
+                       (dependencies (list %encrypted-share))))
                 %base-file-systems))
 
  (users (cons (user-account
