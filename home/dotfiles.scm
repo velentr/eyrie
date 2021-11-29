@@ -83,7 +83,7 @@
                  (cdr components))))
   (flatten '() (filter-by-using modules)))
 
-(define (display-dpi)
+(define %display-dpi
   (if (using? 'x)
       (let ((re (make-regexp "resolution: +([0-9]+)x[0-9]+ dots per inch"))
             (port (open-input-pipe "xdpyinfo")))
@@ -102,10 +102,10 @@
               (error "can't find dpi with xdpyinfo!"))))
       0))
 
-(define font-size
-  (quotient (* 2 (display-dpi)) 13))
+(define %font-size
+  (quotient (* 2 %display-dpi) 13))
 
-(define (use-env)
+(define %use-env
   (cons
    ;; add the use flags to the env, for double-checking when we are running
    (cons "GUIX_USING" (string-append
@@ -122,7 +122,7 @@
                  ("AIRCAM_ROOT" . "/home/skydio/aircam")  ;; default to aircam1
                  ("SKYCC_LOCAL_JOBS" . "10")))))))        ;; more parallelism
 
-(define (use-packages)
+(define %use-packages
   (flatfilter-by-using
    '((always . ("bc"
                 "emacs-bazel"
@@ -307,7 +307,7 @@
            ("URxvt*.scrollBar"             "false")
            ("URxvt*.font"                  ,(string-append
                                              "xft:Source Code Pro:pixelsize="
-                                             (number->string font-size))))))
+                                             (number->string %font-size))))))
     (string-append
      ;; definitions
      (string-join
@@ -341,13 +341,13 @@
 
 (home-environment
   (packages
-    (map specification->package (use-packages)))
+    (map specification->package %use-packages))
   (services
    (append (list
             (service
              home-zsh-service-type
              (home-zsh-configuration
-              (environment-variables (use-env))
+              (environment-variables %use-env)
               (zshrc (zshrc-files))))
             (dotfile-service 'git-dot-config
                              "gitconfig"
