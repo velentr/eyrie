@@ -51,7 +51,8 @@
                                  "/.nix-profile/etc/profile.d/nix.sh"))))
           (make-use 'not-skydio
                     (lambda () (not (is-directory? "/home/skydio"))))
-          (make-use 'personal #f)  ;; FIXME
+          (make-use 'personal
+                    (lambda () (memq 'personal home-use-flags)))
           (make-use 'toolchain
                     (lambda () (memq 'toolchain home-use-flags)))
           (make-use 'skydio
