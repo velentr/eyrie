@@ -9,26 +9,6 @@
   (ice-9 rdelim)
   (ice-9 regex))
 
-(define (display-dpi)
-  (let ((re (make-regexp "resolution: +([0-9]+)x[0-9]+ dots per inch"))
-        (port (open-input-pipe "xdpyinfo")))
-    (define (find-dpi)
-      (let ((line (read-line port)))
-        (if (eof-object? line)
-            #f
-            (let ((match (regexp-exec re line)))
-              (if match
-                  (string->number (match:substring match 1))
-                  (find-dpi))))))
-    (let ((dpi (find-dpi)))
-      (close-pipe port)
-      (if dpi
-          dpi
-          (error "can't find dpi with xdpyinfo!")))))
-
-(define font-size
-  (quotient (* 2 (display-dpi)) 13))
-
 (define (stat-is-type? path type)
   (let ((st (stat path #f)))
     (and st (eq? (stat:type st) type))))
@@ -44,11 +24,25 @@
 (define (use-test use)
   (cdr use))
 
+(define (read-next-flag port so-far)
+  (let ((line (read-line port)))
+    (if (eof-object? line)
+        so-far
+        (read-next-flag port (cons
+                              (string->symbol line)
+                              so-far)))))
+(define home-use-flags
+  (let ((home-use-filename (string-append (getenv "HOME") "/.guix-using")))
+    (if (is-file? home-use-filename)
+        (read-next-flag (open-input-file home-use-filename) '())
+        '())))
+
 (define use-flags
   (let ((available-use-flags
          (list
           (make-use 'always #t)
-          (make-use 'documents #f)
+          (make-use 'documents
+                    (lambda () (memq 'documents home-use-flags)))
           (make-use 'gentoo #f)    ;; FIXME
           (make-use 'nix
                     (lambda () (is-file?
@@ -59,7 +53,9 @@
                     (lambda () (not (is-directory? "/home/skydio"))))
           (make-use 'personal #f)  ;; FIXME
           (make-use 'skydio
-                    (lambda () (is-directory? "/home/skydio"))))))
+                    (lambda () (is-directory? "/home/skydio")))
+          (make-use 'x
+                    (lambda () (memq 'x home-use-flags))))))
     (let ((use-exprs
            (filter (lambda (use)
                      (let ((tst (use-test use)))
@@ -86,6 +82,28 @@
         (flatten (append so-far (car components))
                  (cdr components))))
   (flatten '() (filter-by-using modules)))
+
+(define (display-dpi)
+  (if (using? 'x)
+      (let ((re (make-regexp "resolution: +([0-9]+)x[0-9]+ dots per inch"))
+            (port (open-input-pipe "xdpyinfo")))
+        (define (find-dpi)
+          (let ((line (read-line port)))
+            (if (eof-object? line)
+                #f
+                (let ((match (regexp-exec re line)))
+                  (if match
+                      (string->number (match:substring match 1))
+                      (find-dpi))))))
+        (let ((dpi (find-dpi)))
+          (close-pipe port)
+          (if dpi
+              dpi
+              (error "can't find dpi with xdpyinfo!"))))
+      0))
+
+(define font-size
+  (quotient (* 2 (display-dpi)) 13))
 
 (define (use-env)
   (cons
@@ -124,25 +142,18 @@
                 "emacs-systemd-mode"
                 "emacs-yaml-mode"
                 "erlang"
-                "feh"
-                "font-adobe-source-code-pro"
-                "fontconfig"
                 "ghc"
                 "glibc-locales"
                 "guile"
                 "htop"
-                "i3status"
                 "julia"
                 "lsof"
                 "lua"
-                "mpv"
                 "ncdu"
                 "nmap"
                 "nss-certs"
                 "password-store"
                 "psmisc"
-                "rofi"
-                "rxvt-unicode"
                 "strace"
                 "usbutils"
                 "valgrind"
@@ -150,7 +161,14 @@
                 "zsh"))
      (documents . ("ghostscript"
                    "texlive"))
-     (not-skydio . ("git")))))  ;; revup uses a custom git
+     (not-skydio . ("git"))     ;; revup uses a custom git
+     (x . ("feh"
+           "font-adobe-source-code-pro"
+           "fontconfig"
+           "i3status"
+           "mpv"
+           "rofi"
+           "rxvt-unicode")))))
 
 (define (git-config)
   (define (config-option option)
@@ -306,28 +324,32 @@
       "\n")
      "\n")))
 
+(define %use-services
+  (filter-by-using
+   `((x . ,(dotfile-service 'i3status-dot-script
+                            "i3/status.scm"
+                            (local-file "i3-status.scm")))
+     (x . ,(dotfile-service 'i3status-dot-config
+                            "i3/status"
+                            (local-file "i3-status")))
+     (x . ,(dotfile-service 'rofi-dot-config
+                            "config/rofi/config.rasi"
+                            (local-file "rofi-config.rasi")))
+     (x . ,(dotfile-service 'xresources-dot-config
+                            "Xresources"
+                            (plain-file "Xresources" (xresources)))))))
+
 (home-environment
   (packages
     (map specification->package (use-packages)))
   (services
-   (list
-    (service
-     home-zsh-service-type
-     (home-zsh-configuration
-      (environment-variables (use-env))
-      (zshrc (zshrc-files))))
-    (dotfile-service 'git-dot-config
-                     "gitconfig"
-                     (plain-file "gitconfig" (git-config)))
-    (dotfile-service 'i3status-dot-script
-                     "i3/status.scm"
-                     (local-file "i3-status.scm"))
-    (dotfile-service 'i3status-dot-config
-                     "i3/status"
-                     (local-file "i3-status"))
-    (dotfile-service 'rofi-dot-config
-                     "config/rofi/config.rasi"
-                     (local-file "rofi-config.rasi"))
-    (dotfile-service 'xresources-dot-config
-                     "Xresources"
-                     (plain-file "Xresources" (xresources))))))
+   (append (list
+            (service
+             home-zsh-service-type
+             (home-zsh-configuration
+              (environment-variables (use-env))
+              (zshrc (zshrc-files))))
+            (dotfile-service 'git-dot-config
+                             "gitconfig"
+                             (plain-file "gitconfig" (git-config))))
+           %use-services)))
