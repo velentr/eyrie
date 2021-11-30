@@ -247,7 +247,12 @@
 
 (define (zshrc-files)
   (flatfilter-by-using
-   (list (cons 'always
+   (list (cons 'skydio
+               (list
+                ;; note: this must happen before autocomplete.zsh
+                (plain-file "aircam-completions.zsh"
+                            "fpath[1,0]=~/aircam/build/completions/bazel/latest")))
+         (cons 'always
                (list
                 (plain-file "aliases.zsh" (zsh-aliases))
                 (local-file "autocomplete.zsh")
