@@ -171,6 +171,7 @@
      (x . ("feh"
            "font-adobe-source-code-pro"
            "fontconfig"
+           "i3-wm"
            "i3status"
            "mpv"
            "rofi"
