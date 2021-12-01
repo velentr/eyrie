@@ -128,6 +128,7 @@
 (define %use-packages
   (flatfilter-by-using
    '((always . ("bc"
+                "clang"  ;; for emacs-company autocompletion
                 "emacs-bazel"
                 "emacs-cmake-mode"
                 "emacs-company"
