@@ -147,6 +147,7 @@
                 "emacs-yaml-mode"
                 "erlang"
                 "ghc"
+                "ghc-hunit"
                 "glibc-locales"
                 "guile"
                 "htop"
