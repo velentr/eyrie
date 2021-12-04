@@ -146,6 +146,7 @@
                 "emacs-systemd-mode"
                 "emacs-yaml-mode"
                 "erlang"
+                "file"
                 "ghc"
                 "ghc-hunit"
                 "glibc-locales"
