@@ -161,6 +161,7 @@
                 "password-store"
                 "psmisc"
                 "strace"
+                "tree"
                 "usbutils"
                 "valgrind"
                 "vim"
