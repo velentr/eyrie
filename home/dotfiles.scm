@@ -116,7 +116,7 @@
                        (string-join (map symbol->string use-flags) " ")
                        "'"))
    (flatfilter-by-using
-    '((always . (("EDITOR" . "vim")
+    '((always . (("EDITOR" . "emacs")
                  ("HISTFILE" . "~/.histfile")
                  ("HISTSIZE" . "10000")
                  ("REPORTTIME" . "5")
