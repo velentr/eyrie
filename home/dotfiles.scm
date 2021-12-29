@@ -143,6 +143,7 @@
                 "emacs-nix-mode"
                 "emacs-no-x"
                 "emacs-org"
+                "emacs-rust-mode"
                 "emacs-systemd-mode"
                 "emacs-yaml-mode"
                 "erlang"
