@@ -161,6 +161,7 @@
                 "nss-certs"
                 "password-store"
                 "psmisc"
+                "reuse"
                 "strace"
                 "tree"
                 "usbutils"
