@@ -160,6 +160,7 @@
                 "nmap"
                 "nss-certs"
                 "password-store"
+                "picocom"
                 "psmisc"
                 "reuse"
                 "strace"
