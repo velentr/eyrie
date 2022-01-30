@@ -43,7 +43,6 @@
           (make-use 'always #t)
           (make-use 'documents
                     (lambda () (memq 'documents home-use-flags)))
-          (make-use 'gentoo #f)    ;; FIXME
           (make-use 'nix
                     (lambda () (is-file?
                                 (string-append
