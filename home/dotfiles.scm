@@ -370,5 +370,8 @@
               (zshrc (zshrc-files))))
             (dotfile-service 'git-dot-config
                              "gitconfig"
-                             (plain-file "gitconfig" (git-config))))
+                             (plain-file "gitconfig" (git-config)))
+            (dotfile-service 'guix-channels
+                            "config/guix/channels.scm"
+                            (local-file "guix-channels.scm")))
            %use-services)))
