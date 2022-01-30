@@ -22,7 +22,7 @@
 
  (bootloader (bootloader-configuration
               (bootloader grub-efi-bootloader)
-              (target "/boot/efi")))
+              (targets '("/boot/efi"))))
  ;; hid_microsoft for using my ms ergo keyboard to enter the encryption key
  (initrd-modules (cons "hid_microsoft" %base-initrd-modules))
  (mapped-devices (list %encrypted-root %encrypted-share))
