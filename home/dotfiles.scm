@@ -180,7 +180,9 @@
            "i3status"
            "mpv"
            "rofi"
-           "rxvt-unicode")))))
+           "rxvt-unicode"
+           "xdpyinfo"
+           "xrdb")))))
 
 (define (git-config)
   (define (config-option option)
