@@ -170,7 +170,8 @@
                 "zsh"))
      (documents . ("ghostscript"
                    "texlive"))
-     (personal . ("ledger"))
+     (personal . ("ledger"
+                  "yt-dlp"))
      (not-skydio . ("git"))     ;; revup uses a custom git
      (toolchain . ("gcc-toolchain"  ;; required by ghc
                    "gdb"))
