@@ -181,6 +181,7 @@
            "i3-wm"
            "i3status"
            "mpv"
+           "nyxt"
            "rofi"
            "rxvt-unicode"
            "xdpyinfo"
