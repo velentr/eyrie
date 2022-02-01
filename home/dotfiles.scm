@@ -183,6 +183,7 @@
            "rofi"
            "rxvt-unicode"
            "xdpyinfo"
+           "xrandr"
            "xrdb")))))
 
 (define (git-config)
