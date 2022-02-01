@@ -1,13 +1,13 @@
-(use-modules
-  (gnu home)
-  (gnu home services)
-  (gnu packages)
-  (gnu services)
-  (guix gexp)
-  (gnu home services shells)
-  (ice-9 popen)
-  (ice-9 rdelim)
-  (ice-9 regex))
+(define-module (home dotfiles)
+  #:use-module (gnu home)
+  #:use-module (gnu home services)
+  #:use-module (gnu packages)
+  #:use-module (gnu services)
+  #:use-module (guix gexp)
+  #:use-module (gnu home services shells)
+  #:use-module (ice-9 popen)
+  #:use-module (ice-9 rdelim)
+  #:use-module (ice-9 regex))
 
 (define (stat-is-type? path type)
   (let ((st (stat path #f)))
@@ -188,7 +188,7 @@
            "xrandr"
            "xrdb")))))
 
-(define (git-config)
+(define (git-config email)
   (define (config-option option)
     (string-append "\t" (car option) " = " (cadr option)))
   (define (config-section section)
@@ -196,26 +196,38 @@
           (body (map config-option (cadr section))))
       (string-join (cons header body) "\n")))
   (let ((config-tree
-         (flatfilter-by-using
-          '((always .   (("alias"      (("locate"     "ls-files --")
-                                        ("ref"        "rev-parse HEAD")
-                                        ("st"         "status --short")
-                                        ("today"      "diff --stat '@{00:00:00}'")
-                                        ("undo"       "checkout --")
-                                        ("unstage"    "reset HEAD --")))
-                         ("credential" (("helper"     "cache")))
-                         ("color"      (("ui"         "true")))
-                         ("core"       (("autocrlf"   "input")
-                                        ("pager"      "less -F -X")))
-                         ("grep"       (("lineNumber" "true")))
-                         ("push"       (("default"    "simple")))
-                         ("pull"       (("ff"         "only")))
-                         ("rebase"     (("autosquash" "1")))
-                         ("user"       (("name"       "Brian Kubisiak")))))
-            (personal . (("user"       (("email"      "brian@kubisiak.com")))))
-            (skydio .   (("alias"      (("ac"         "log --first-parent")))
-                         ("user"       (("email"      "brian.kubisiak@skydio.com")))))))))
+         `(("alias"      (("ac"          "log --first-parent")
+                          ("locate"     "ls-files --")
+                          ("ref"        "rev-parse HEAD")
+                          ("st"         "status --short")
+                          ("today"      "diff --stat '@{00:00:00}'")
+                          ("undo"       "checkout --")
+                          ("unstage"    "reset HEAD --")))
+           ("color"      (("ui"         "true")))
+           ("core"       (("autocrlf"   "input")
+                          ("pager"      "less -F -X")))
+           ("credential" (("helper"     "cache")))
+           ("grep"       (("lineNumber" "true")))
+           ("pull"       (("ff"         "only")))
+           ("push"       (("default"    "simple")))
+           ("rebase"     (("autosquash" "1")))
+           ("user"       (("name"       "Brian Kubisiak")
+                          ("email"      ,email))))))
     (string-join (map config-section config-tree) "\n")))
+
+(define (git-dotfiles-service email)
+  (list (list "gitconfig"
+              (plain-file
+               "gitconfig" (git-config email)))))
+
+(define-public git-dotfiles-service-type
+  (service-type
+   (name 'git-dotfiles)
+   (extensions
+    (list (service-extension home-files-service-type git-dotfiles-service)))
+   (description
+    "Create a global @file{~/.gitconfig} for the user, given the user's email
+address")))
 
 (define (zsh-aliases)
   (define (make-alias alias)
@@ -373,9 +385,9 @@
              (home-zsh-configuration
               (environment-variables %use-env)
               (zshrc (zshrc-files))))
-            (dotfile-service 'git-dot-config
-                             "gitconfig"
-                             (plain-file "gitconfig" (git-config)))
+            (service
+             git-dotfiles-service-type
+             "brian@kubisiak.com")
             (dotfile-service 'guix-channels
                             "config/guix/channels.scm"
                             (local-file "guix-channels.scm")))
