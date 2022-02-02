@@ -169,8 +169,7 @@
                 "tree"
                 "usbutils"
                 "valgrind"
-                "vim"
-                "zsh"))
+                "vim"))
      (documents . ("ghostscript"
                    "texlive"))
      (personal . ("ledger"
