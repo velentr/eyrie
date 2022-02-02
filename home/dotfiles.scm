@@ -3,6 +3,7 @@
   #:use-module (gnu home services)
   #:use-module (gnu home services shells)
   #:use-module (gnu packages)
+  #:use-module (gnu packages guile)
   #:use-module (gnu packages web-browsers)
   #:use-module (gnu packages wm)
   #:use-module (gnu services)
@@ -154,7 +155,6 @@
                 "ghc"
                 "ghc-hunit"
                 "glibc-locales"
-                "guile"
                 "htop"
                 "julia"
                 "lsof"
@@ -181,7 +181,6 @@
      (x . ("feh"
            "font-adobe-source-code-pro"
            "fontconfig"
-           "i3status"
            "mpv"
            "rofi"
            "rxvt-unicode"
@@ -237,11 +236,8 @@ address")))
   (web-browser (package nyxt) "The web browser to use.")
   (font-size (integer 12) "Size of the font to use for chrome."))
 
-(define (i3-dotfiles-service config)
-  (let ((web-browser (i3-dotfiles-configuration-web-browser config))
-        (font-size (i3-dotfiles-configuration-font-size config)))
-    (let ((confile
-           (format #f "font pango:Source Code Pro ~d
+(define (i3-config web-browser font-size)
+  (format #f "font pango:Source Code Pro ~d
 bindsym Mod4+Shift+Return exec urxvt
 bindsym Mod4+Shift+w exec ~a
 
@@ -287,7 +283,7 @@ client.urgent           #002b36 #002b36 #839496 #dc322f
 
 bar {
     position bottom
-    status_command i3status -c ~/.i3/status
+    status_command guile -s ~~/.i3/status.scm
     colors {
         background #002b36
         statusline #839496
@@ -298,14 +294,25 @@ bar {
         urgent_workspace   #002b36 #002b36 #586e75
     }
 }
-" font-size (package-name web-browser))))
+" font-size (package-name web-browser)))
 
+(define (i3-dotfiles-service config)
+  (let ((web-browser (i3-dotfiles-configuration-web-browser config))
+        (font-size (i3-dotfiles-configuration-font-size config)))
+    (let ((confile (i3-config web-browser font-size)))
       (list (list "i3/config"
                   (plain-file
-                   "i3-config" confile))))))
+                   "i3-config" confile))
+            (list "i3/status.scm"
+                  (local-file "i3-status.scm"))
+            (list "i3/status"
+                  (local-file "i3-status"))))))
 
 (define (i3-dotfiles-packages config)
-  (list i3-wm (i3-dotfiles-configuration-web-browser config)))
+  (list i3-wm
+        i3status
+        guile-3.0-latest
+        (i3-dotfiles-configuration-web-browser config)))
 
 (define-public i3-dotfiles-service-type
   (service-type
@@ -448,13 +455,7 @@ bar {
 
 (define %use-services
   (filter-by-using
-   `((x . ,(dotfile-service 'i3status-dot-script
-                            "i3/status.scm"
-                            (local-file "i3-status.scm")))
-     (x . ,(dotfile-service 'i3status-dot-config
-                            "i3/status"
-                            (local-file "i3-status")))
-     (x . ,(dotfile-service 'rofi-dot-config
+   `((x . ,(dotfile-service 'rofi-dot-config
                             "config/rofi/config.rasi"
                             (local-file "rofi-config.rasi")))
      (x . ,(dotfile-service 'xresources-dot-config
