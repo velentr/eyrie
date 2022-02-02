@@ -52,8 +52,6 @@
                                  "/.nix-profile/etc/profile.d/nix.sh"))))
           (make-use 'not-skydio
                     (lambda () (not (is-directory? "/home/skydio"))))
-          (make-use 'personal
-                    (lambda () (memq 'personal home-use-flags)))
           (make-use 'toolchain
                     (lambda () (memq 'toolchain home-use-flags)))
           (make-use 'skydio
@@ -133,6 +131,7 @@
                 "glibc-locales"
                 "htop"
                 "julia"
+                "ledger"
                 "lsof"
                 "lua"
                 "ncdu"
@@ -146,9 +145,8 @@
                 "tree"
                 "usbutils"
                 "valgrind"
-                "vim"))
-     (personal . ("ledger"
-                  "yt-dlp"))
+                "vim"
+                "yt-dlp"))
      (not-skydio . ("git"))     ;; revup uses a custom git
      (toolchain . ("gcc-toolchain"  ;; required by ghc
                    "gdb"))
