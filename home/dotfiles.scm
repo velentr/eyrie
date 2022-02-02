@@ -6,13 +6,12 @@
   #:use-module (gnu packages guile)
   #:use-module (gnu packages web-browsers)
   #:use-module (gnu packages wm)
+  #:use-module (gnu packages xdisorg)
   #:use-module (gnu services)
   #:use-module (gnu services configuration)
   #:use-module (guix gexp)
   #:use-module (guix packages)
-  #:use-module (ice-9 popen)
-  #:use-module (ice-9 rdelim)
-  #:use-module (ice-9 regex))
+  #:use-module (ice-9 rdelim))
 
 (define (stat-is-type? path type)
   (let ((st (stat path #f)))
@@ -90,28 +89,6 @@
                  (cdr components))))
   (flatten '() (filter-by-using modules)))
 
-(define %display-dpi
-  (if (using? 'x)
-      (let ((re (make-regexp "resolution: +([0-9]+)x[0-9]+ dots per inch"))
-            (port (open-input-pipe "xdpyinfo")))
-        (define (find-dpi)
-          (let ((line (read-line port)))
-            (if (eof-object? line)
-                #f
-                (let ((match (regexp-exec re line)))
-                  (if match
-                      (string->number (match:substring match 1))
-                      (find-dpi))))))
-        (let ((dpi (find-dpi)))
-          (close-pipe port)
-          (if dpi
-              dpi
-              (error "can't find dpi with xdpyinfo!"))))
-      0))
-
-(define %font-size
-  (quotient (* 2 %display-dpi) 13))
-
 (define %use-env
   (cons
    ;; add the use flags to the env, for double-checking when we are running
@@ -183,8 +160,6 @@
            "fontconfig"
            "mpv"
            "rofi"
-           "rxvt-unicode"
-           "xdpyinfo"
            "xrandr"
            "xrdb")))))
 
@@ -326,6 +301,32 @@ bar {
    (description
     "Configure the user's i3 installation.")))
 
+(define-configuration urxvt-dotfiles-configuration
+  (package (package rxvt-unicode) "Terminal package to install.")
+  (font-size (integer 14) "Size of the font to use for the terminal."))
+
+(define (urxvt-dotfiles-packages config)
+  (let ((package (urxvt-dotfiles-configuration-package config)))
+    (list package)))
+
+(define (urxvt-dotfiles-services config)
+  (let ((font-size (urxvt-dotfiles-configuration-font-size config)))
+    (list (list "Xresources"
+                (plain-file
+                 "Xresources" (xresources font-size))))))
+
+(define urxvt-dotfiles-service-type
+  (service-type
+   (name 'urxvt-dotfiles)
+   (extensions
+    (list (service-extension home-files-service-type
+                             urxvt-dotfiles-services)
+          (service-extension home-profile-service-type
+                             urxvt-dotfiles-packages)))
+   (default-value (urxvt-dotfiles-configuration))
+   (description
+    "Configure rxvt-unicode via Xresources.")))
+
 (define (zsh-aliases)
   (define (make-alias alias)
     (let ((name (car alias))
@@ -389,7 +390,7 @@ bar {
                 (plain-file "nix-profile.zsh"
                             ". ~/.nix-profile/etc/profile.d/nix.sh"))))))
 
-(define (xresources)
+(define (xresources font-size)
   (let ((defines
           ;; solarized colors from http://ethanschoonover.com/solarized
           '(("S_yellow"       "#b58900")
@@ -436,7 +437,7 @@ bar {
            ("URxvt*.scrollBar"             "false")
            ("URxvt*.font"                  ,(string-append
                                              "xft:Source Code Pro:pixelsize="
-                                             (number->string %font-size))))))
+                                             (number->string font-size))))))
     (string-append
      ;; definitions
      (string-join
@@ -457,10 +458,7 @@ bar {
   (filter-by-using
    `((x . ,(dotfile-service 'rofi-dot-config
                             "config/rofi/config.rasi"
-                            (local-file "rofi-config.rasi")))
-     (x . ,(dotfile-service 'xresources-dot-config
-                            "Xresources"
-                            (plain-file "Xresources" (xresources)))))))
+                            (local-file "rofi-config.rasi"))))))
 
 (home-environment
   (packages
@@ -480,6 +478,10 @@ bar {
              (i3-dotfiles-configuration
               (web-browser nyxt)
               (font-size 10)))
+            (service
+             urxvt-dotfiles-service-type
+             (urxvt-dotfiles-configuration
+              (font-size 14)))
             (dotfile-service 'guix-channels
                             "config/guix/channels.scm"
                             (local-file "guix-channels.scm")))
