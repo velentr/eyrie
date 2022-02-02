@@ -1,10 +1,13 @@
 (define-module (home dotfiles)
   #:use-module (gnu home)
   #:use-module (gnu home services)
-  #:use-module (gnu packages)
-  #:use-module (gnu services)
-  #:use-module (guix gexp)
   #:use-module (gnu home services shells)
+  #:use-module (gnu packages)
+  #:use-module (gnu packages web-browsers)
+  #:use-module (gnu services)
+  #:use-module (gnu services configuration)
+  #:use-module (guix gexp)
+  #:use-module (guix packages)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 rdelim)
   #:use-module (ice-9 regex))
@@ -229,6 +232,90 @@
     "Create a global @file{~/.gitconfig} for the user, given the user's email
 address")))
 
+(define (serialize-integer field-name val)
+  (serialize-field field-name (number->string val)))
+
+(define-configuration i3-dotfiles-configuration
+  (web-browser (package nyxt) "The web browser to use.")
+  (font-size (integer 12) "Size of the font to use for chrome."))
+
+(define (i3-dotfiles-service config)
+  (let ((web-browser (i3-dotfiles-configuration-web-browser config))
+        (font-size (i3-dotfiles-configuration-font-size config)))
+    (let ((confile
+           (format #f "font pango:Source Code Pro ~d
+bindsym Mod4+Shift+Return exec urxvt
+bindsym Mod4+Shift+w exec ~a
+
+bindsym Mod4+f kill
+bindsym Mod4+c reload
+bindsym Mod4+x exit
+bindsym Mod4+e fullscreen
+
+bindsym Mod4+h focus left
+bindsym Mod4+j focus down
+bindsym Mod4+k focus up
+bindsym Mod4+l focus right
+bindsym Mod4+y move left
+bindsym Mod4+u move down
+bindsym Mod4+i move up
+bindsym Mod4+o move right
+
+bindsym Mod4+1 workspace number 1
+bindsym Mod4+2 workspace number 2
+bindsym Mod4+3 workspace number 3
+bindsym Mod4+4 workspace number 4
+bindsym Mod4+5 workspace number 5
+bindsym Mod4+6 workspace number 6
+bindsym Mod4+7 workspace number 7
+bindsym Mod4+8 workspace number 8
+bindsym Mod4+9 workspace number 9
+bindsym Mod4+0 workspace number 10
+bindsym Mod4+Shift+1 move container to workspace number 1
+bindsym Mod4+Shift+2 move container to workspace number 2
+bindsym Mod4+Shift+3 move container to workspace number 3
+bindsym Mod4+Shift+4 move container to workspace number 4
+bindsym Mod4+Shift+5 move container to workspace number 5
+bindsym Mod4+Shift+6 move container to workspace number 6
+bindsym Mod4+Shift+7 move container to workspace number 7
+bindsym Mod4+Shift+8 move container to workspace number 8
+bindsym Mod4+Shift+9 move container to workspace number 9
+bindsym Mod4+Shift+0 move container to workspace number 10
+
+client.focused          #dc322f #002b36 #839496 #dc322f
+client.focused_inactive #dc322f #002b36 #839496 #dc322f
+client.unfocused        #002b36 #002b36 #839496 #dc322f
+client.urgent           #002b36 #002b36 #839496 #dc322f
+
+bar {
+    position bottom
+    status_command i3status -c ~/.i3/status
+    colors {
+        background #002b36
+        statusline #839496
+        separator  #839496
+        focused_workspace  #dc322f #002b36 #839496
+        active_workspace   #839496 #002b36 #839496
+        inactive_workspace #002b36 #002b36 #586e75
+        urgent_workspace   #002b36 #002b36 #586e75
+    }
+}
+" font-size (package-name web-browser))))
+
+      (list (list "i3/config"
+                  (plain-file
+                   "i3-config" confile))))))
+
+(define-public i3-dotfiles-service-type
+  (service-type
+   (name 'i3-dotfiles)
+   (extensions
+    (list (service-extension home-files-service-type
+                             i3-dotfiles-service)))
+   (default-value (i3-dotfiles-configuration))
+   (description
+    "Configure the user's i3 installation.")))
+
 (define (zsh-aliases)
   (define (make-alias alias)
     (let ((name (car alias))
@@ -384,6 +471,11 @@ address")))
             (service
              git-dotfiles-service-type
              "brian@kubisiak.com")
+            (service
+             i3-dotfiles-service-type
+             (i3-dotfiles-configuration
+              (web-browser nyxt)
+              (font-size 10)))
             (dotfile-service 'guix-channels
                             "config/guix/channels.scm"
                             (local-file "guix-channels.scm")))
