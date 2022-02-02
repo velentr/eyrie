@@ -45,8 +45,6 @@
   (let ((available-use-flags
          (list
           (make-use 'always #t)
-          (make-use 'documents
-                    (lambda () (memq 'documents home-use-flags)))
           (make-use 'nix
                     (lambda () (is-file?
                                 (string-append
@@ -131,6 +129,7 @@
                 "file"
                 "ghc"
                 "ghc-hunit"
+                "ghostscript"
                 "glibc-locales"
                 "htop"
                 "julia"
@@ -148,8 +147,6 @@
                 "usbutils"
                 "valgrind"
                 "vim"))
-     (documents . ("ghostscript"
-                   "texlive"))
      (personal . ("ledger"
                   "yt-dlp"))
      (not-skydio . ("git"))     ;; revup uses a custom git
@@ -339,11 +336,11 @@ bar {
                        ("du" "'du -c -h'")
                        ("du1" "'du --max-depth=1'")
                        ("grep" "'grep --color=auto'")
+                       ("gsmerge" "'gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=temp.pdf'")
+                       ("gssplit" "'gs -sDEVICE=pdfwrite -dSAFER -o temp.%d.pdf'")
                        ("ls" "'ls -hF --color=auto'")
                        ("path" "'echo $PATH'")
                        ("ping" "'ping -c 3'")))
-            (documents . (("gsmerge" "'gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=temp.pdf'")
-                          ("gssplit" "'gs -sDEVICE=pdfwrite -dSAFER -o temp.%d.pdf'")))
             (skydio . (("ac" "'cd ~/aircam'")
                        ("gzl" "'bazel run //tools/gazelle'")
                        ("yubact" "'ssh-add -D && ssh-add -e /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so; ssh-add -s /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so'")))))))
@@ -383,8 +380,8 @@ bar {
                 (plain-file "window-title.zsh"
                             (sh-compound
                              '("autoload -Uz add-zsh-hook"
-                               "add-zsh-hook precmd window_title")))))
-         (cons 'documents (list (local-file "ghostscript.zsh")))
+                               "add-zsh-hook precmd window_title")))
+                (local-file "ghostscript.zsh")))
          (cons 'nix
                (list
                 (plain-file "nix-profile.zsh"
