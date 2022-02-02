@@ -4,6 +4,7 @@
   #:use-module (gnu home services shells)
   #:use-module (gnu packages)
   #:use-module (gnu packages web-browsers)
+  #:use-module (gnu packages wm)
   #:use-module (gnu services)
   #:use-module (gnu services configuration)
   #:use-module (guix gexp)
@@ -180,10 +181,8 @@
      (x . ("feh"
            "font-adobe-source-code-pro"
            "fontconfig"
-           "i3-wm"
            "i3status"
            "mpv"
-           "nyxt"
            "rofi"
            "rxvt-unicode"
            "xdpyinfo"
@@ -305,12 +304,17 @@ bar {
                   (plain-file
                    "i3-config" confile))))))
 
+(define (i3-dotfiles-packages config)
+  (list i3-wm (i3-dotfiles-configuration-web-browser config)))
+
 (define-public i3-dotfiles-service-type
   (service-type
    (name 'i3-dotfiles)
    (extensions
     (list (service-extension home-files-service-type
-                             i3-dotfiles-service)))
+                             i3-dotfiles-service)
+          (service-extension home-profile-service-type
+                             i3-dotfiles-packages)))
    (default-value (i3-dotfiles-configuration))
    (description
     "Configure the user's i3 installation.")))
