@@ -45,11 +45,6 @@
   (let ((available-use-flags
          (list
           (make-use 'always #t)
-          (make-use 'nix
-                    (lambda () (is-file?
-                                (string-append
-                                 (getenv "HOME")
-                                 "/.nix-profile/etc/profile.d/nix.sh"))))
           (make-use 'not-skydio
                     (lambda () (not (is-directory? "/home/skydio"))))
           (make-use 'toolchain
@@ -373,17 +368,16 @@ bar {
                 (local-file "autocomplete.zsh")
                 (local-file "cdhist.zsh")
                 (local-file "history.zsh")
+                (plain-file
+                 "nix-profile.zsh"
+                 "[ -f ~/.nix-profile/etc/profile.d/nix.sh ] && . ~/.nix-profile/etc/profile.d/nix.sh")
                 (plain-file "path.zsh" (zsh-path))
                 (local-file "prompt.zsh")
                 (plain-file "window-title.zsh"
                             (sh-compound
                              '("autoload -Uz add-zsh-hook"
                                "add-zsh-hook precmd window_title")))
-                (local-file "ghostscript.zsh")))
-         (cons 'nix
-               (list
-                (plain-file "nix-profile.zsh"
-                            ". ~/.nix-profile/etc/profile.d/nix.sh"))))))
+                (local-file "ghostscript.zsh"))))))
 
 (define (xresources font-size)
   (let ((defines
