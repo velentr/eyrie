@@ -7,6 +7,8 @@
   #:use-module (gnu home services)
   #:use-module (gnu home services shells)
   #:use-module (gnu packages)
+  #:use-module (gnu packages fonts)
+  #:use-module (gnu packages fontutils)
   #:use-module (gnu packages guile)
   #:use-module (gnu packages web-browsers)
   #:use-module (gnu packages wm)
@@ -145,8 +147,6 @@
                     "gcc-toolchain"  ;; required by ghc
                     "gdb"))
      (x . ("feh"
-           "font-adobe-source-code-pro"
-           "fontconfig"
            "mpv"
            "xrandr"
            "xrdb")))))
@@ -305,6 +305,8 @@ tztime local {
 (define (i3-dotfiles-packages config)
   (list i3-wm
         i3status
+        font-adobe-source-code-pro
+        fontconfig
         guile-3.0-latest
         (i3-dotfiles-configuration-web-browser config)))
 
@@ -326,7 +328,9 @@ tztime local {
 
 (define (urxvt-dotfiles-packages config)
   (let ((package (urxvt-dotfiles-configuration-package config)))
-    (list package)))
+    (list package
+          font-adobe-source-code-pro
+          fontconfig)))
 
 (define (urxvt-dotfiles-services config)
   (let ((font-size (urxvt-dotfiles-configuration-font-size config)))
@@ -355,7 +359,9 @@ tztime local {
 
 (define (rofi-dotfiles-packages config)
   (let ((package (rofi-dotfiles-configuration-package config)))
-    (list package)))
+    (list package
+          font-adobe-source-code-pro
+          fontconfig)))
 
 (define rofi-dotfiles-service-type
   (service-type
