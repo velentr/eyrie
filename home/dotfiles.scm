@@ -82,22 +82,19 @@
                  (cdr components))))
   (flatten '() (filter-by-using modules)))
 
-(define %use-env
-  (cons
-   ;; add the use flags to the env, for double-checking when we are running
-   (cons "GUIX_USING" (string-append
-                       "'"
-                       (string-join (map symbol->string use-flags) " ")
-                       "'"))
-   (flatfilter-by-using
-    '((always . (("EDITOR" . "emacs")
-                 ("HISTFILE" . "~/.histfile")
-                 ("HISTSIZE" . "10000")
-                 ("REPORTTIME" . "5")
-                 ("SAVEHIST" . "10000")))
-      (skydio . (("PYTHONDONTWRITEBYTECODE" . "1")        ;; don't clutter up aircam with .pyc
-                 ("AIRCAM_ROOT" . "/home/skydio/aircam")  ;; default to aircam1
-                 ("SKYCC_LOCAL_JOBS" . "10")))))))        ;; more parallelism
+(define %core-env
+    '(("EDITOR" . "emacs")
+      ("HISTFILE" . "~/.histfile")
+      ("HISTSIZE" . "10000")
+      ("REPORTTIME" . "5")
+      ("SAVEHIST" . "10000")))
+
+(define %skydio-env
+  (append
+   %core-env
+   '(("PYTHONDONTWRITEBYTECODE" . "1")       ;; don't clutter aircam with .pyc
+     ("AIRCAM_ROOT" . "/home/skydio/aircam") ;; default to aircam1
+     ("SKYCC_LOCAL_JOBS" . "10"))))          ;; more parallelism
 
 (define %use-packages
   (flatfilter-by-using
@@ -506,7 +503,7 @@ tztime local {
             (service
              home-zsh-service-type
              (home-zsh-configuration
-              (environment-variables %use-env)
+              (environment-variables %core-env)
               (zshrc (zshrc-files))))
             (service
              git-dotfiles-service-type
