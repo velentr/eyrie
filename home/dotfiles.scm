@@ -194,9 +194,13 @@ address")))
 (define (serialize-integer field-name val)
   (serialize-field field-name (number->string val)))
 
+(define (serialize-string field-name val)
+  (serialize-field field-name val))
+
 (define-configuration i3-dotfiles-configuration
   (web-browser (package nyxt) "The web browser to use.")
-  (font-size (integer 12) "Size of the font to use for chrome."))
+  (font-size (integer 12) "Size of the font to use for chrome.")
+  (eth-iface (string "eth1") "Ethernet interface to display the IP address."))
 
 (define (i3-config web-browser font-size)
   (format #f "font pango:Source Code Pro ~d
@@ -259,17 +263,43 @@ bar {
 }
 " font-size (package-name web-browser)))
 
+(define (i3-status-config eth-iface)
+  (format #f "general {
+    output_format = \"none\"
+    interval = 1
+}
+order += \"disk /\"
+order += \"ethernet ~a\"
+order += \"load\"
+order += \"tztime local\"
+disk \"/\" {
+    format = \"%free/%total\"
+}
+ethernet \"~a\" {
+    format_up = \"E: %ip\"
+    format_down = \"E: down\"
+}
+load {
+    format = \"%1min\"
+}
+tztime local {
+    format = \"%d %b, %Y %H:%M\"
+}
+" eth-iface eth-iface))
+
 (define (i3-dotfiles-service config)
   (let ((web-browser (i3-dotfiles-configuration-web-browser config))
-        (font-size (i3-dotfiles-configuration-font-size config)))
+        (font-size (i3-dotfiles-configuration-font-size config))
+        (eth-iface (i3-dotfiles-configuration-eth-iface config)))
     (let ((confile (i3-config web-browser font-size)))
       (list (list "i3/config"
                   (plain-file
                    "i3-config" confile))
-            (list "i3/status.scm"
-                  (local-file "i3-status.scm"))
             (list "i3/status"
-                  (local-file "i3-status"))))))
+                  (plain-file
+                   "i3-status-config" (i3-status-config eth-iface)))
+            (list "i3/status.scm"
+                  (local-file "i3-status.scm"))))))
 
 (define (i3-dotfiles-packages config)
   (list i3-wm
@@ -481,7 +511,8 @@ bar {
              i3-dotfiles-service-type
              (i3-dotfiles-configuration
               (web-browser nyxt)
-              (font-size 10)))
+              (font-size 10)
+              (eth-iface "enp4s0")))
             (service rofi-dotfiles-service-type)
             (service
              urxvt-dotfiles-service-type
