@@ -47,8 +47,6 @@
           (make-use 'always #t)
           (make-use 'not-skydio
                     (lambda () (not (is-directory? "/home/skydio"))))
-          (make-use 'toolchain
-                    (lambda () (memq 'toolchain home-use-flags)))
           (make-use 'skydio
                     (lambda () (is-directory? "/home/skydio")))
           (make-use 'x
@@ -142,9 +140,9 @@
                 "valgrind"
                 "vim"
                 "yt-dlp"))
-     (not-skydio . ("git"))     ;; revup uses a custom git
-     (toolchain . ("gcc-toolchain"  ;; required by ghc
-                   "gdb"))
+     (not-skydio . ("git"            ;; revup uses a custom git
+                    "gcc-toolchain"  ;; required by ghc
+                    "gdb"))
      (x . ("feh"
            "font-adobe-source-code-pro"
            "fontconfig"
