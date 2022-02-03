@@ -54,9 +54,7 @@
           (make-use 'not-skydio
                     (lambda () (not (is-directory? "/home/skydio"))))
           (make-use 'skydio
-                    (lambda () (is-directory? "/home/skydio")))
-          (make-use 'x
-                    (lambda () (memq 'x home-use-flags))))))
+                    (lambda () (is-directory? "/home/skydio"))))))
     (let ((use-exprs
            (filter (lambda (use)
                      (let ((tst (use-test use)))
@@ -120,6 +118,7 @@
                 "emacs-systemd-mode"
                 "emacs-yaml-mode"
                 "erlang"
+                "feh"
                 "file"
                 "ghc"
                 "ghc-hunit"
@@ -130,6 +129,7 @@
                 "ledger"
                 "lsof"
                 "lua"
+                "mpv"
                 "ncdu"
                 "nmap"
                 "nss-certs"
@@ -142,14 +142,12 @@
                 "usbutils"
                 "valgrind"
                 "vim"
+                "xrandr"
+                "xrdb"
                 "yt-dlp"))
      (not-skydio . ("git"            ;; revup uses a custom git
                     "gcc-toolchain"  ;; required by ghc
-                    "gdb"))
-     (x . ("feh"
-           "mpv"
-           "xrandr"
-           "xrdb")))))
+                    "gdb")))))
 
 (define (git-config email)
   (define (config-option option)
