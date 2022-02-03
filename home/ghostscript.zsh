@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2022 Brian Kubisiak <brian@kubisiak.com>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
 gsgetpages()
 {
     # @arg1 : first page of the range to extract

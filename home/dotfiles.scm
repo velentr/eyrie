@@ -1,3 +1,7 @@
+;; SPDX-FileCopyrightText: 2022 Brian Kubisiak <brian@kubisiak.com>
+;;
+;; SPDX-License-Identifier: GPL-3.0-only
+
 (define-module (home dotfiles)
   #:use-module (gnu home)
   #:use-module (gnu home services)
