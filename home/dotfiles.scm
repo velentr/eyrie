@@ -149,7 +149,6 @@
            "font-adobe-source-code-pro"
            "fontconfig"
            "mpv"
-           "rofi"
            "xrandr"
            "xrdb")))))
 
@@ -205,6 +204,7 @@ address")))
   (format #f "font pango:Source Code Pro ~d
 bindsym Mod4+Shift+Return exec urxvt
 bindsym Mod4+Shift+w exec ~a
+bindsym Mod4+Shift+p exec rofi -show run
 
 bindsym Mod4+f kill
 bindsym Mod4+c reload
@@ -316,6 +316,29 @@ bar {
    (default-value (urxvt-dotfiles-configuration))
    (description
     "Configure rxvt-unicode via Xresources.")))
+
+(define-configuration rofi-dotfiles-configuration
+  (package (package rofi) "Rofi package to install."))
+
+(define (rofi-dotfiles-services config)
+  (list (list "config/rofi/config.rasi"
+              (local-file "rofi-config.rasi"))))
+
+(define (rofi-dotfiles-packages config)
+  (let ((package (rofi-dotfiles-configuration-package config)))
+    (list package)))
+
+(define rofi-dotfiles-service-type
+  (service-type
+   (name 'rofi-dotfiles)
+   (extensions
+    (list (service-extension home-files-service-type
+                             rofi-dotfiles-services)
+          (service-extension home-profile-service-type
+                             rofi-dotfiles-packages)))
+   (default-value (rofi-dotfiles-configuration))
+   (description
+    "Configure rofi dotfiles.")))
 
 (define (zsh-aliases)
   (define (make-alias alias)
@@ -443,12 +466,6 @@ bar {
       "\n")
      "\n")))
 
-(define %use-services
-  (filter-by-using
-   `((x . ,(dotfile-service 'rofi-dot-config
-                            "config/rofi/config.rasi"
-                            (local-file "rofi-config.rasi"))))))
-
 (home-environment
   (packages
     (map specification->package %use-packages))
@@ -467,11 +484,11 @@ bar {
              (i3-dotfiles-configuration
               (web-browser nyxt)
               (font-size 10)))
+            (service rofi-dotfiles-service-type)
             (service
              urxvt-dotfiles-service-type
              (urxvt-dotfiles-configuration
               (font-size 14)))
             (dotfile-service 'guix-channels
                             "config/guix/channels.scm"
-                            (local-file "guix-channels.scm")))
-           %use-services)))
+                            (local-file "guix-channels.scm"))))))
