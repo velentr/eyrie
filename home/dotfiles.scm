@@ -7,9 +7,18 @@
   #:use-module (gnu home services)
   #:use-module (gnu home services shells)
   #:use-module (gnu packages)
+  #:use-module (gnu packages erlang)
   #:use-module (gnu packages fonts)
   #:use-module (gnu packages fontutils)
+  #:use-module (gnu packages gcc)
+  #:use-module (gnu packages gdb)
   #:use-module (gnu packages guile)
+  #:use-module (gnu packages haskell)
+  #:use-module (gnu packages haskell-check)
+  #:use-module (gnu packages julia)
+  #:use-module (gnu packages lua)
+  #:use-module (gnu packages rust)
+  #:use-module (gnu packages version-control)
   #:use-module (gnu packages web-browsers)
   #:use-module (gnu packages wm)
   #:use-module (gnu packages xdisorg)
@@ -51,8 +60,6 @@
   (let ((available-use-flags
          (list
           (make-use 'always #t)
-          (make-use 'not-skydio
-                    (lambda () (not (is-directory? "/home/skydio"))))
           (make-use 'skydio
                     (lambda () (is-directory? "/home/skydio"))))))
     (let ((use-exprs
@@ -96,58 +103,68 @@
      ("AIRCAM_ROOT" . "/home/skydio/aircam") ;; default to aircam1
      ("SKYCC_LOCAL_JOBS" . "10"))))          ;; more parallelism
 
-(define %use-packages
-  (flatfilter-by-using
-   '((always . ("bc"
-                "clang"  ;; for emacs-company autocompletion
-                "emacs-bazel"
-                "emacs-cmake-mode"
-                "emacs-company"
-                "emacs-dts-mode"
-                "emacs-erlang"
-                "emacs-evil"
-                "emacs-flycheck"
-                "emacs-go-mode"
-                "emacs-haskell-mode"
-                "emacs-julia-mode"
-                "emacs-lua-mode"
-                "emacs-nix-mode"
-                "emacs-no-x"
-                "emacs-org"
-                "emacs-rust-mode"
-                "emacs-systemd-mode"
-                "emacs-yaml-mode"
-                "erlang"
-                "feh"
-                "file"
-                "ghc"
-                "ghc-hunit"
-                "ghostscript"
-                "glibc-locales"
-                "htop"
-                "julia"
-                "ledger"
-                "lsof"
-                "lua"
-                "mpv"
-                "ncdu"
-                "nmap"
-                "nss-certs"
-                "password-store"
-                "picocom"
-                "psmisc"
-                "reuse"
-                "strace"
-                "tree"
-                "usbutils"
-                "valgrind"
-                "vim"
-                "xrandr"
-                "xrdb"
-                "yt-dlp"))
-     (not-skydio . ("git"            ;; revup uses a custom git
-                    "gcc-toolchain"  ;; required by ghc
-                    "gdb")))))
+(define %core-packages
+  (map specification->package
+       '("bc"
+         "clang"  ;; for emacs-company autocompletion
+         "emacs-bazel"
+         "emacs-cmake-mode"
+         "emacs-company"
+         "emacs-dts-mode"
+         "emacs-erlang"
+         "emacs-evil"
+         "emacs-flycheck"
+         "emacs-go-mode"
+         "emacs-haskell-mode"
+         "emacs-julia-mode"
+         "emacs-lua-mode"
+         "emacs-nix-mode"
+         "emacs-no-x"
+         "emacs-org"
+         "emacs-rust-mode"
+         "emacs-systemd-mode"
+         "emacs-yaml-mode"
+         "feh"
+         "file"
+         "ghostscript"
+         "glibc-locales"
+         "htop"
+         "ledger"
+         "lsof"
+         "mpv"
+         "ncdu"
+         "nmap"
+         "nss-certs"
+         "password-store"
+         "picocom"
+         "psmisc"
+         "reuse"
+         "strace"
+         "tree"
+         "usbutils"
+         "valgrind"
+         "vim"
+         "xrandr"
+         "xrdb"
+         "yt-dlp")))
+
+(define %skydio-packages
+  %core-packages)
+
+(define %devel-packages
+  (append (list
+           erlang
+           ghc
+           ghc-hunit
+           git  ;; revup uses a custom git
+           gcc  ;; required by ghc
+           gdb
+           julia
+           lua
+           rust
+           (list rust "cargo")
+           (list rust "rustfmt"))
+          %core-packages))
 
 (define (git-config email)
   (define (config-option option)
@@ -500,8 +517,7 @@ tztime local {
      "\n")))
 
 (home-environment
-  (packages
-    (map specification->package %use-packages))
+  (packages %devel-packages)
   (services
    (append (list
             (service
