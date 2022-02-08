@@ -17,6 +17,7 @@
   #:use-module (gnu packages haskell-check)
   #:use-module (gnu packages julia)
   #:use-module (gnu packages lua)
+  #:use-module (gnu packages pdf)
   #:use-module (gnu packages rust)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages web-browsers)
@@ -213,6 +214,12 @@ address")))
 (define (serialize-string field-name val)
   (serialize-field field-name val))
 
+(define (package-list? val)
+  (and (list? val) (and-map package? val)))
+
+(define (serialize-package-list field-name val)
+  #f)
+
 (define-configuration i3-dotfiles-configuration
   (web-browser (package nyxt) "The web browser to use.")
   (font-size (integer 12) "Size of the font to use for chrome.")
@@ -390,6 +397,30 @@ tztime local {
    (description
     "Configure rofi dotfiles.")))
 
+(define-configuration zathura-dotfiles-configuration
+  (package (package zathura) "Zathura package to install")
+  (plugins (package-list (list zathura-pdf-poppler)) "File plugins to install"))
+
+(define (zathura-dotfiles-services config)
+  (list (list "config/zathura/zathurarc"
+              (local-file "zathurarc"))))
+
+(define (zathura-dotfiles-packages config)
+  (let ((package (zathura-dotfiles-configuration-package config))
+        (plugins (zathura-dotfiles-configuration-plugins config)))
+    (cons package plugins)))
+
+(define zathura-dotfiles-service-type
+  (service-type
+   (name 'zathura-dotfiles)
+   (extensions
+    (list (service-extension home-files-service-type
+                             zathura-dotfiles-services)
+          (service-extension home-profile-service-type
+                             zathura-dotfiles-packages)))
+   (default-value (zathura-dotfiles-configuration))
+   (description "Configure zathura and install plugins.")))
+
 (define (zsh-aliases)
   (define (make-alias alias)
     (let ((name (car alias))
@@ -539,6 +570,7 @@ tztime local {
              urxvt-dotfiles-service-type
              (urxvt-dotfiles-configuration
               (font-size 14)))
+            (service zathura-dotfiles-service-type)
             (dotfile-service 'guix-channels
                             "config/guix/channels.scm"
                             (local-file "guix-channels.scm"))))))
