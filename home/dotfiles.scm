@@ -26,69 +26,7 @@
   #:use-module (gnu services)
   #:use-module (gnu services configuration)
   #:use-module (guix gexp)
-  #:use-module (guix packages)
-  #:use-module (ice-9 rdelim))
-
-(define (stat-is-type? path type)
-  (let ((st (stat path #f)))
-    (and st (eq? (stat:type st) type))))
-(define (is-directory? path)
-  (stat-is-type? path 'directory))
-(define (is-file? path)
-  (stat-is-type? path 'regular))
-
-(define (make-use flag tst)
-  (cons flag tst))
-(define (use-flag use)
-  (car use))
-(define (use-test use)
-  (cdr use))
-
-(define (read-next-flag port so-far)
-  (let ((line (read-line port)))
-    (if (eof-object? line)
-        so-far
-        (read-next-flag port (cons
-                              (string->symbol line)
-                              so-far)))))
-(define home-use-flags
-  (let ((home-use-filename (string-append (getenv "HOME") "/.guix-using")))
-    (if (is-file? home-use-filename)
-        (read-next-flag (open-input-file home-use-filename) '())
-        '())))
-
-(define use-flags
-  (let ((available-use-flags
-         (list
-          (make-use 'always #t)
-          (make-use 'skydio
-                    (lambda () (is-directory? "/home/skydio"))))))
-    (let ((use-exprs
-           (filter (lambda (use)
-                     (let ((tst (use-test use)))
-                       (if (procedure? tst)
-                           (tst)
-                           tst)))
-                   available-use-flags)))
-      (map car use-exprs))))
-
-(define (using? flag)
-  (memq flag use-flags))
-
-(define (filter-by-using modules)
-  (map cdr
-       (filter
-        (lambda (module)
-          (using? (car module)))
-        modules)))
-
-(define (flatfilter-by-using modules)
-  (define (flatten so-far components)
-    (if (null? components)
-        so-far
-        (flatten (append so-far (car components))
-                 (cdr components))))
-  (flatten '() (filter-by-using modules)))
+  #:use-module (guix packages))
 
 (define %core-env
     '(("EDITOR" . "emacs")
@@ -421,35 +359,46 @@ tztime local {
    (default-value (zathura-dotfiles-configuration))
    (description "Configure zathura and install plugins.")))
 
-(define (zsh-aliases)
+(define (zsh-aliases skydio?)
   (define (make-alias alias)
     (let ((name (car alias))
           (value (cadr alias)))
       (string-append "alias " name "=" value)))
   (let ((aliases
-         (flatfilter-by-using
-          '((always . (("bc" "'bc -lq'")
-                       ("df" "'df -h'")
-                       ("du" "'du -c -h'")
-                       ("du1" "'du --max-depth=1'")
-                       ("grep" "'grep --color=auto'")
-                       ("gsmerge" "'gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=temp.pdf'")
-                       ("gssplit" "'gs -sDEVICE=pdfwrite -dSAFER -o temp.%d.pdf'")
-                       ("ls" "'ls -hF --color=auto'")
-                       ("path" "'echo $PATH'")
-                       ("ping" "'ping -c 3'")))
-            (skydio . (("ac" "'cd ~/aircam'")
-                       ("gzl" "'bazel run //tools/gazelle'")
-                       ("yubact" "'ssh-add -D && ssh-add -e /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so; ssh-add -s /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so'")))))))
-    (string-join (map make-alias aliases) "\n")))
+         '(("bc" "'bc -lq'")
+           ("df" "'df -h'")
+           ("du" "'du -c -h'")
+           ("du1" "'du --max-depth=1'")
+           ("grep" "'grep --color=auto'")
+           ("gsmerge" "'gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=temp.pdf'")
+           ("gssplit" "'gs -sDEVICE=pdfwrite -dSAFER -o temp.%d.pdf'")
+           ("ls" "'ls -hF --color=auto'")
+           ("path" "'echo $PATH'")
+           ("ping" "'ping -c 3'")))
+        (skydio-aliases
+         '(("ac" "'cd ~/aircam'")
+           ("gzl" "'bazel run //tools/gazelle'")
+           ("yubact" "'ssh-add -D && ssh-add -e /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so; ssh-add -s /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so'"))))
+    (string-join (map make-alias
+                      (if skydio?
+                          (append aliases skydio-aliases)
+                          aliases))
+                 "\n")))
 
-(define (zsh-path)
-  (let ((paths
-         (flatfilter-by-using
-          '((always . ("~/bin" "$path"))
-            (skydio . ("${AIRCAM_ROOT}/build/host_aircam/bin"
-                       "${AIRCAM_ROOT}/build/host_third_party/bin"))))))
-    (string-append "typeset -U path\npath=(" (string-join paths " ") ")")))
+(define (zsh-path skydio?)
+  (let ((core-paths
+         '("~/bin" "$path"))
+        (skydio-paths
+         '("${AIRCAM_ROOT}/build/host_aircam/bin"
+           "${AIRCAM_ROOT}/build/host_third_party/bin")))
+    (string-append
+     "typeset -U path\npath=("
+     (string-join
+      (if skydio?
+          (append core-paths skydio-paths)
+          core-paths)
+      " ")
+     ")")))
 
 (define (dotfile-service service-name file-name file-like)
   (simple-service service-name
@@ -459,29 +408,30 @@ tztime local {
 (define (sh-compound statements)
   (string-join statements " && "))
 
-(define (zshrc-files)
-  (flatfilter-by-using
-   (list (cons 'skydio
-               (list
-                ;; note: this must happen before autocomplete.zsh
-                (plain-file "aircam-completions.zsh"
-                            "fpath[1,0]=~/aircam/build/completions/bazel/latest")))
-         (cons 'always
-               (list
-                (plain-file "aliases.zsh" (zsh-aliases))
-                (local-file "autocomplete.zsh")
-                (local-file "cdhist.zsh")
-                (local-file "history.zsh")
-                (plain-file
-                 "nix-profile.zsh"
-                 "[ -f ~/.nix-profile/etc/profile.d/nix.sh ] && . ~/.nix-profile/etc/profile.d/nix.sh")
-                (plain-file "path.zsh" (zsh-path))
-                (local-file "prompt.zsh")
-                (plain-file "window-title.zsh"
-                            (sh-compound
-                             '("autoload -Uz add-zsh-hook"
-                               "add-zsh-hook precmd window_title")))
-                (local-file "ghostscript.zsh"))))))
+(define (zshrc-files skydio?)
+  (let ((core-files
+         (list
+          (plain-file "aliases.zsh" (zsh-aliases skydio?))
+          (local-file "autocomplete.zsh")
+          (local-file "cdhist.zsh")
+          (local-file "history.zsh")
+          (plain-file
+           "nix-profile.zsh"
+           "[ -f ~/.nix-profile/etc/profile.d/nix.sh ] && . ~/.nix-profile/etc/profile.d/nix.sh")
+          (plain-file "path.zsh" (zsh-path skydio?))
+          (local-file "prompt.zsh")
+          (plain-file "window-title.zsh"
+                      (sh-compound
+                       '("autoload -Uz add-zsh-hook"
+                         "add-zsh-hook precmd window_title")))
+          (local-file "ghostscript.zsh"))))
+    (if skydio?
+        (cons
+         ;; note: this must happen before autocomplete.zsh
+         (plain-file "aircam-completions.zsh"
+                     "fpath[1,0]=~/aircam/build/completions/bazel/latest")
+         core-files)
+        core-files)))
 
 (define (xresources font-size)
   (let ((defines
@@ -555,7 +505,7 @@ tztime local {
              home-zsh-service-type
              (home-zsh-configuration
               (environment-variables %core-env)
-              (zshrc (zshrc-files))))
+              (zshrc (zshrc-files #f))))
             (service
              git-dotfiles-service-type
              "brian@kubisiak.com")
