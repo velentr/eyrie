@@ -161,7 +161,9 @@ address")))
 (define-configuration i3-dotfiles-configuration
   (web-browser (package nyxt) "The web browser to use.")
   (font-size (integer 12) "Size of the font to use for chrome.")
-  (eth-iface (string "eth1") "Ethernet interface to display the IP address."))
+  (eth-iface (string "eth1") "Ethernet interface to display the IP address.")
+  (status-script (file-like (plain-file "empty" ""))
+                 "Scheme script to use for the status."))
 
 (define (i3-config web-browser font-size)
   (format #f "font pango:Source Code Pro ~d
@@ -251,7 +253,8 @@ tztime local {
 (define (i3-dotfiles-service config)
   (let ((web-browser (i3-dotfiles-configuration-web-browser config))
         (font-size (i3-dotfiles-configuration-font-size config))
-        (eth-iface (i3-dotfiles-configuration-eth-iface config)))
+        (eth-iface (i3-dotfiles-configuration-eth-iface config))
+        (status-script (i3-dotfiles-configuration-status-script config)))
     (let ((confile (i3-config web-browser font-size)))
       (list (list "i3/config"
                   (plain-file
@@ -259,8 +262,7 @@ tztime local {
             (list "i3/status"
                   (plain-file
                    "i3-status-config" (i3-status-config eth-iface)))
-            (list "i3/status.scm"
-                  (local-file "i3-status.scm"))))))
+            (list "i3/status.scm" status-script)))))
 
 (define (i3-dotfiles-packages config)
   (list i3-wm
@@ -514,7 +516,8 @@ tztime local {
              (i3-dotfiles-configuration
               (web-browser nyxt)
               (font-size 10)
-              (eth-iface "enp4s0")))
+              (eth-iface "enp4s0")
+              (status-script (local-file "i3-status.scm"))))
             (service rofi-dotfiles-service-type)
             (service
              urxvt-dotfiles-service-type
