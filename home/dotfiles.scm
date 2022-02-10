@@ -27,6 +27,8 @@
   #:use-module (ice-9 pretty-print)
   #:export (%core-env
             %devel-packages
+            %skydio-env
+            %skydio-packages
             git-dotfiles-service-type
             guix-channels-service-type
             i3-dotfiles-configuration
