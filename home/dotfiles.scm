@@ -26,7 +26,8 @@
   #:use-module (gnu services)
   #:use-module (gnu services configuration)
   #:use-module (guix gexp)
-  #:use-module (guix packages))
+  #:use-module (guix packages)
+  #:use-module (ice-9 pretty-print))
 
 (define %core-env
     '(("EDITOR" . "emacs")
@@ -288,6 +289,26 @@ tztime local {
   (package (package rxvt-unicode) "Terminal package to install.")
   (font-size (integer 14) "Size of the font to use for the terminal."))
 
+(define (guix-channels-services channel-list)
+  (define (print-contents)
+    (pretty-print `(append ,channel-list %default-channels)))
+  (let ((contents
+         (with-output-to-string print-contents)))
+    (list (list "config/guix/channels.scm"
+                  (plain-file
+                   "guix-channels" contents)))))
+
+
+(define guix-channels-service-type
+  (service-type
+   (name 'guix-channels)
+   (extensions
+    (list (service-extension home-files-service-type
+                             guix-channels-services)))
+   (default-value '())
+   (description
+    "Add additional guix channels via ~/.config/guix-channels.scm.")))
+
 (define (urxvt-dotfiles-packages config)
   (let ((package (urxvt-dotfiles-configuration-package config)))
     (list package
@@ -402,11 +423,6 @@ tztime local {
       " ")
      ")")))
 
-(define (dotfile-service service-name file-name file-like)
-  (simple-service service-name
-                  home-files-service-type
-                  (list (list file-name file-like))))
-
 (define (sh-compound statements)
   (string-join statements " && "))
 
@@ -512,6 +528,16 @@ tztime local {
              git-dotfiles-service-type
              "brian@kubisiak.com")
             (service
+             guix-channels-service-type
+             '(list
+               (channel (name 'nonguix)
+                        (url "https://gitlab.com/nonguix/nonguix")
+                        (introduction
+                         (make-channel-introduction
+                          "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
+                          (openpgp-fingerprint
+                           "2A39 3FFF 68F4 EF7A 3D29 12AF 6F51 20A0 22FB B2D5"))))))
+            (service
              i3-dotfiles-service-type
              (i3-dotfiles-configuration
               (web-browser nyxt)
@@ -523,7 +549,4 @@ tztime local {
              urxvt-dotfiles-service-type
              (urxvt-dotfiles-configuration
               (font-size 14)))
-            (service zathura-dotfiles-service-type)
-            (dotfile-service 'guix-channels
-                            "config/guix/channels.scm"
-                            (local-file "guix-channels.scm"))))))
+            (service zathura-dotfiles-service-type)))))
