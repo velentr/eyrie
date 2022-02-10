@@ -2,10 +2,8 @@
 ;;
 ;; SPDX-License-Identifier: GPL-3.0-only
 
-(define-module (home dotfiles)
-  #:use-module (gnu home)
+(define-module (dotfiles)
   #:use-module (gnu home services)
-  #:use-module (gnu home services shells)
   #:use-module (gnu packages)
   #:use-module (gnu packages erlang)
   #:use-module (gnu packages fonts)
@@ -23,11 +21,22 @@
   #:use-module (gnu packages web-browsers)
   #:use-module (gnu packages wm)
   #:use-module (gnu packages xdisorg)
-  #:use-module (gnu services)
   #:use-module (gnu services configuration)
   #:use-module (guix gexp)
   #:use-module (guix packages)
-  #:use-module (ice-9 pretty-print))
+  #:use-module (ice-9 pretty-print)
+  #:export (%core-env
+            %devel-packages
+            git-dotfiles-service-type
+            guix-channels-service-type
+            i3-dotfiles-configuration
+            i3-dotfiles-service-type
+            rofi-dotfiles-service-type
+            urxvt-dotfiles-configuration
+            urxvt-dotfiles-service-type
+            zathura-dotfiles-service-type
+            ;; TODO: don't export this
+            zshrc-files))
 
 (define %core-env
     '(("EDITOR" . "emacs")
@@ -138,7 +147,7 @@
               (plain-file
                "gitconfig" (git-config email)))))
 
-(define-public git-dotfiles-service-type
+(define git-dotfiles-service-type
   (service-type
    (name 'git-dotfiles)
    (extensions
@@ -273,7 +282,7 @@ tztime local {
         guile-3.0-latest
         (i3-dotfiles-configuration-web-browser config)))
 
-(define-public i3-dotfiles-service-type
+(define i3-dotfiles-service-type
   (service-type
    (name 'i3-dotfiles)
    (extensions
@@ -514,39 +523,3 @@ tztime local {
            settings)
       "\n")
      "\n")))
-
-(home-environment
-  (packages %devel-packages)
-  (services
-   (append (list
-            (service
-             home-zsh-service-type
-             (home-zsh-configuration
-              (environment-variables %core-env)
-              (zshrc (zshrc-files #f))))
-            (service
-             git-dotfiles-service-type
-             "brian@kubisiak.com")
-            (service
-             guix-channels-service-type
-             '(list
-               (channel (name 'nonguix)
-                        (url "https://gitlab.com/nonguix/nonguix")
-                        (introduction
-                         (make-channel-introduction
-                          "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
-                          (openpgp-fingerprint
-                           "2A39 3FFF 68F4 EF7A 3D29 12AF 6F51 20A0 22FB B2D5"))))))
-            (service
-             i3-dotfiles-service-type
-             (i3-dotfiles-configuration
-              (web-browser nyxt)
-              (font-size 10)
-              (eth-iface "enp4s0")
-              (status-script (local-file "i3-status.scm"))))
-            (service rofi-dotfiles-service-type)
-            (service
-             urxvt-dotfiles-service-type
-             (urxvt-dotfiles-configuration
-              (font-size 14)))
-            (service zathura-dotfiles-service-type)))))
