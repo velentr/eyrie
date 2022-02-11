@@ -5,7 +5,7 @@
 (use-modules (gnu)
              (nongnu packages linux)
              (nongnu system linux-initrd))
-(use-service-modules desktop networking nix ssh xorg)
+(use-service-modules desktop networking security-token ssh xorg)
 (use-package-modules certs package-management shells ssh)
 
 (define %encrypted-root
@@ -70,6 +70,7 @@
                                    (openssh openssh-sans-x)
                                    (password-authentication? #f)
                                    (port-number 2222)))
+                         (service pcscd-service-type)
                          (service slim-service-type
                                   (slim-configuration
                                    (display ":0"))))
