@@ -10,6 +10,7 @@
   #:use-module (gnu packages fontutils)
   #:use-module (gnu packages gcc)
   #:use-module (gnu packages gdb)
+  #:use-module (gnu packages gnupg)
   #:use-module (gnu packages guile)
   #:use-module (gnu packages haskell)
   #:use-module (gnu packages haskell-check)
@@ -112,6 +113,7 @@
            gdb
            julia
            lua
+           pinentry-tty
            rust
            (list rust "cargo")
            (list rust "rustfmt"))
