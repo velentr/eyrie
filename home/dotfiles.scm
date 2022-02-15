@@ -184,6 +184,7 @@ address")))
 bindsym Mod4+Shift+Return exec urxvt
 bindsym Mod4+Shift+w exec ~a
 bindsym Mod4+Shift+p exec rofi -show run
+bindsym Mod4+Shift+s exec i3lock -c 002b36
 
 bindsym Mod4+f kill
 bindsym Mod4+c reload
