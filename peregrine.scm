@@ -6,7 +6,7 @@
              (nongnu packages linux)
              (nongnu system linux-initrd))
 (use-service-modules desktop networking security-token ssh xorg)
-(use-package-modules certs package-management shells ssh)
+(use-package-modules certs package-management shells ssh wm)
 
 (define %encrypted-root
   (mapped-device
@@ -50,6 +50,7 @@
  (packages (append (list nss-certs) %base-packages))
 
  (services (append (list (elogind-service)
+                         (screen-locker-service i3lock)
                          (service static-networking-service-type
                                   (list (static-networking
                                          (addresses
