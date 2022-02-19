@@ -10,7 +10,7 @@
              (guix gexp))
 
 (home-environment
-  (packages %devel-packages)
+  (packages (append %devel-packages %cad-packages))
   (services
    (append (list
             (service

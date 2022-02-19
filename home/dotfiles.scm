@@ -5,6 +5,7 @@
 (define-module (dotfiles)
   #:use-module (gnu home services)
   #:use-module (gnu packages)
+  #:use-module (gnu packages engineering)
   #:use-module (gnu packages erlang)
   #:use-module (gnu packages fonts)
   #:use-module (gnu packages fontutils)
@@ -26,7 +27,8 @@
   #:use-module (guix gexp)
   #:use-module (guix packages)
   #:use-module (ice-9 pretty-print)
-  #:export (%core-env
+  #:export (%cad-packages
+            %core-env
             %devel-packages
             %skydio-env
             %skydio-packages
@@ -118,6 +120,12 @@
            (list rust "cargo")
            (list rust "rustfmt"))
           %core-packages))
+
+(define %cad-packages
+  (list
+   emacs-scad-mode
+   openscad
+   prusa-slicer))
 
 (define (git-config email)
   (define (config-option option)
