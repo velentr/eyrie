@@ -4,9 +4,10 @@
 
 (use-modules (gnu)
              (nongnu packages linux)
+             (nongnu packages printers)
              (nongnu system linux-initrd))
-(use-service-modules desktop networking security-token ssh xorg)
-(use-package-modules certs package-management shells ssh wm)
+(use-service-modules cups desktop networking security-token ssh xorg)
+(use-package-modules certs cups package-management shells ssh wm)
 
 (define %encrypted-root
   (mapped-device
@@ -43,8 +44,7 @@
                (name "bkubisiak")
                (group "users")
                (shell (file-append zsh "/bin/zsh"))
-               (supplementary-groups '("wheel"
-                                       "audio" "video")))
+               (supplementary-groups '("wheel" "audio" "video" "lp" "lpadmin")))
               %base-user-accounts))
 
  (packages (append (list nss-certs) %base-packages))
@@ -74,5 +74,10 @@
                          (service pcscd-service-type)
                          (service slim-service-type
                                   (slim-configuration
-                                   (display ":0"))))
+                                   (display ":0")))
+                         (service cups-service-type
+                                  (cups-configuration
+                                   (web-interface? #t)
+                                   (extensions
+                                    (list cups-filters hplip)))))
                    %base-services)))
