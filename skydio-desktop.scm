@@ -26,7 +26,7 @@
              (i3-dotfiles-configuration
               (web-browser ungoogled-chromium)
               (font-size 10)
-              (eth-iface "eth1")
+              (eth-iface "eth0")
               (status-script (local-file "i3-status.scm"))))
             (service rofi-dotfiles-service-type)
             (service

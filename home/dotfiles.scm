@@ -55,6 +55,7 @@
    %core-env
    '(("PYTHONDONTWRITEBYTECODE" . "1")       ;; don't clutter aircam with .pyc
      ("AIRCAM_ROOT" . "/home/skydio/aircam") ;; default to aircam1
+     ("AWS_PROFILE" . "default")
      ("SKYCC_LOCAL_JOBS" . "10"))))          ;; more parallelism
 
 (define %core-packages
