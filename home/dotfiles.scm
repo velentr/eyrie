@@ -426,7 +426,7 @@ tztime local {
            ("ping" "'ping -c 3'")))
         (skydio-aliases
          '(("ac" "'cd ~/aircam'")
-           ("gzl" "'bazel run //tools/gazelle'")
+           ("gzl" "'bazel -S run //tools/gazelle'")
            ("yubact" "'ssh-add -D && ssh-add -e /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so; ssh-add -s /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so'"))))
     (string-join (map make-alias
                       (if skydio?
