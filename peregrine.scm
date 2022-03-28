@@ -47,7 +47,7 @@
                (supplementary-groups '("wheel" "audio" "video" "lp" "lpadmin")))
               %base-user-accounts))
 
- (packages (append (list nss-certs) %base-packages))
+ (packages (append (list le-certs nss-certs) %base-packages))
 
  (services (append (list (elogind-service)
                          (screen-locker-service i3lock)

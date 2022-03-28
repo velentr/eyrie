@@ -84,6 +84,7 @@
          "ghostscript"
          "glibc-locales"
          "htop"
+         "le-certs"
          "ledger"
          "lsof"
          "mpv"
