@@ -96,6 +96,7 @@
          "picocom"
          "psmisc"
          "reuse"
+         "sshfs"
          "strace"
          "tree"
          "usbutils"
