@@ -186,6 +186,7 @@ address")))
 
 (define-configuration i3-dotfiles-configuration
   (web-browser (package nyxt) "The web browser to use.")
+  (web-browser-name (string "") "Name of the web browser executable.")
   (font-size (integer 12) "Size of the font to use for chrome.")
   (eth-iface (string "eth1") "Ethernet interface to display the IP address.")
   (status-script (file-like (plain-file "empty" ""))
@@ -251,7 +252,7 @@ bar {
         urgent_workspace   #002b36 #002b36 #586e75
     }
 }
-" font-size (package-name web-browser)))
+" font-size web-browser))
 
 (define (i3-status-config eth-iface)
   (format #f "general {
@@ -278,7 +279,10 @@ tztime local {
 " eth-iface eth-iface))
 
 (define (i3-dotfiles-service config)
-  (let ((web-browser (i3-dotfiles-configuration-web-browser config))
+  (let ((web-browser
+         (if (equal? (i3-dotfiles-configuration-web-browser-name config) "")
+             (package-name (i3-dotfiles-configuration-web-browser config))
+             (i3-dotfiles-configuration-web-browser-name config)))
         (font-size (i3-dotfiles-configuration-font-size config))
         (eth-iface (i3-dotfiles-configuration-eth-iface config))
         (status-script (i3-dotfiles-configuration-status-script config)))
