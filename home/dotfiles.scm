@@ -96,6 +96,7 @@
          "picocom"
          "psmisc"
          "reuse"
+         "shellcheck"  ;; for emacs-flycheck on shell code
          "sshfs"
          "strace"
          "tree"
