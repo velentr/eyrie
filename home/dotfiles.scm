@@ -89,6 +89,7 @@
          "lsof"
          "mpv"
          "ncdu"
+         "neomutt"
          "nmap"
          "nss-certs"
          "password-store"
