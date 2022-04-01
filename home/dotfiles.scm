@@ -73,6 +73,7 @@
          "emacs-haskell-mode"
          "emacs-julia-mode"
          "emacs-lua-mode"
+         "emacs-markdown-mode"
          "emacs-nix-mode"
          "emacs-no-x"
          "emacs-org"
