@@ -39,7 +39,7 @@
               (web-browser-name "chromium")
               (font-size 10)
               (eth-iface "eth0")
-              (status-script (local-file "i3-status.scm"))))
+              (status-script (local-file "run-status"))))
             (service rofi-dotfiles-service-type)
             (service
              urxvt-dotfiles-service-type

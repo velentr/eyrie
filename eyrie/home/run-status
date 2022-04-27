@@ -83,7 +83,7 @@
                    (number->string (ddiff:months diff)) "m "
                    (number->string (ddiff:days diff)) "d")))
 
-(define* (main)
+(define* (main #:optional (args (command-line)))
   (let ((i3status (open-pipe* OPEN_READ "i3status" "-c" config-file)))
     (define (do-loop)
       (let ((status-line (read-line i3status))

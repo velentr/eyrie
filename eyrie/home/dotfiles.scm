@@ -244,7 +244,7 @@ client.urgent           #002b36 #002b36 #839496 #dc322f
 
 bar {
     position bottom
-    status_command guile -e main -s ~~/.i3/status.scm
+    status_command guile -e main -s ~~/.i3/run-status
     colors {
         background #002b36
         statusline #839496
@@ -296,7 +296,7 @@ tztime local {
             (list ".i3/status"
                   (plain-file
                    "i3-status-config" (i3-status-config eth-iface)))
-            (list ".i3/status.scm" status-script)))))
+            (list ".i3/run-status" status-script)))))
 
 (define (i3-dotfiles-packages config)
   (list i3-wm
