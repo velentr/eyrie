@@ -2,12 +2,23 @@
 ;;
 ;; SPDX-License-Identifier: GPL-3.0-only
 
-(use-modules (gnu)
-             (nongnu packages linux)
-             (nongnu packages printers)
-             (nongnu system linux-initrd))
-(use-service-modules cups desktop networking security-token ssh xorg)
-(use-package-modules certs cups package-management shells ssh wm)
+(define-module (eyrie system peregrine)
+  #:use-module (gnu)
+  #:use-module (gnu packages certs)
+  #:use-module (gnu packages cups)
+  #:use-module (gnu packages package-management)
+  #:use-module (gnu packages shells)
+  #:use-module (gnu packages ssh)
+  #:use-module (gnu packages wm)
+  #:use-module (gnu services cups)
+  #:use-module (gnu services desktop)
+  #:use-module (gnu services networking)
+  #:use-module (gnu services security-token)
+  #:use-module (gnu services ssh)
+  #:use-module (gnu services xorg)
+  #:use-module (nongnu packages linux)
+  #:use-module (nongnu packages printers)
+  #:use-module (nongnu system linux-initrd))
 
 (define %encrypted-root
   (mapped-device

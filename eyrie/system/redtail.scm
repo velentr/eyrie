@@ -2,9 +2,16 @@
 ;;
 ;; SPDX-License-Identifier: GPL-3.0-only
 
-(use-modules (gnu))
-(use-service-modules desktop networking nix ssh)
-(use-package-modules certs package-management shells ssh)
+(define-module (eyrie system redtail)
+  #:use-module (gnu)
+  #:use-module (gnu packages certs)
+  #:use-module (gnu packages package-management)
+  #:use-module (gnu packages shells)
+  #:use-module (gnu packages ssh)
+  #:use-module (gnu services desktop)
+  #:use-module (gnu services networking)
+  #:use-module (gnu services nix)
+  #:use-module (gnu services ssh))
 
 (define %encrypted-root
   (mapped-device

@@ -2,12 +2,13 @@
 ;;
 ;; SPDX-License-Identifier: GPL-3.0-only
 
-(use-modules (dotfiles)
-             (gnu home)
-             (gnu home services shells)
-             (gnu packages chromium)
-             (gnu services)
-             (guix gexp))
+(define-module (eyrie home skydio-laptop)
+  #:use-module (eyrie home dotfiles)
+  #:use-module (gnu home)
+  #:use-module (gnu home services shells)
+  #:use-module (gnu packages chromium)
+  #:use-module (gnu services)
+  #:use-module (guix gexp))
 
 (home-environment
   (packages %skydio-packages)
@@ -27,11 +28,11 @@
               (web-browser ungoogled-chromium)
               (web-browser-name "chromium")
               (font-size 10)
-              (eth-iface "eth0")
+              (eth-iface "wlan0")
               (status-script (local-file "i3-status.scm"))))
             (service rofi-dotfiles-service-type)
             (service
              urxvt-dotfiles-service-type
              (urxvt-dotfiles-configuration
-              (font-size 12)))
+              (font-size 15)))
             (service zathura-dotfiles-service-type)))))

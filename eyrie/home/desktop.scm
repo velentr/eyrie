@@ -2,12 +2,13 @@
 ;;
 ;; SPDX-License-Identifier: GPL-3.0-only
 
-(use-modules (dotfiles)
-             (gnu home)
-             (gnu home services shells)
-             (gnu packages web-browsers)
-             (gnu services)
-             (guix gexp))
+(define-module (eyrie home desktop)
+  #:use-module (eyrie home dotfiles)
+  #:use-module (gnu home)
+  #:use-module (gnu home services shells)
+  #:use-module (gnu packages web-browsers)
+  #:use-module (gnu services)
+  #:use-module (guix gexp))
 
 (home-environment
   (packages (append %devel-packages %cad-packages))

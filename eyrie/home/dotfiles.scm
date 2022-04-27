@@ -2,7 +2,7 @@
 ;;
 ;; SPDX-License-Identifier: GPL-3.0-only
 
-(define-module (dotfiles)
+(define-module (eyrie home dotfiles)
   #:use-module (gnu home services)
   #:use-module (gnu packages)
   #:use-module (gnu packages engineering)
