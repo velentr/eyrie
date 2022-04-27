@@ -161,7 +161,7 @@
     (string-join (map config-section config-tree) "\n")))
 
 (define (git-dotfiles-service email)
-  (list (list "gitconfig"
+  (list (list ".gitconfig"
               (plain-file
                "gitconfig" (git-config email)))))
 
@@ -289,13 +289,13 @@ tztime local {
         (eth-iface (i3-dotfiles-configuration-eth-iface config))
         (status-script (i3-dotfiles-configuration-status-script config)))
     (let ((confile (i3-config web-browser font-size)))
-      (list (list "i3/config"
+      (list (list ".i3/config"
                   (plain-file
                    "i3-config" confile))
-            (list "i3/status"
+            (list ".i3/status"
                   (plain-file
                    "i3-status-config" (i3-status-config eth-iface)))
-            (list "i3/status.scm" status-script)))))
+            (list ".i3/status.scm" status-script)))))
 
 (define (i3-dotfiles-packages config)
   (list i3-wm
@@ -326,7 +326,7 @@ tztime local {
     (pretty-print `(append ,channel-list %default-channels)))
   (let ((contents
          (with-output-to-string print-contents)))
-    (list (list "config/guix/channels.scm"
+    (list (list ".config/guix/channels.scm"
                   (plain-file
                    "guix-channels" contents)))))
 
@@ -349,7 +349,7 @@ tztime local {
 
 (define (urxvt-dotfiles-services config)
   (let ((font-size (urxvt-dotfiles-configuration-font-size config)))
-    (list (list "Xresources"
+    (list (list ".Xresources"
                 (plain-file
                  "Xresources" (xresources font-size))))))
 
@@ -369,7 +369,7 @@ tztime local {
   (package (package rofi) "Rofi package to install."))
 
 (define (rofi-dotfiles-services config)
-  (list (list "config/rofi/config.rasi"
+  (list (list ".config/rofi/config.rasi"
               (local-file "rofi-config.rasi"))))
 
 (define (rofi-dotfiles-packages config)
@@ -395,7 +395,7 @@ tztime local {
   (plugins (package-list (list zathura-pdf-poppler)) "File plugins to install"))
 
 (define (zathura-dotfiles-services config)
-  (list (list "config/zathura/zathurarc"
+  (list (list ".config/zathura/zathurarc"
               (local-file "zathurarc"))))
 
 (define (zathura-dotfiles-packages config)
