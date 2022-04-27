@@ -83,15 +83,16 @@
                    (number->string (ddiff:months diff)) "m "
                    (number->string (ddiff:days diff)) "d")))
 
-(let ((i3status (open-pipe* OPEN_READ "i3status" "-c" config-file)))
-  (define (do-loop)
-    (let ((status-line (read-line i3status))
-          (uptime (format-uptime)))
-      (display
-       (string-append status-line " (" uptime ")"))
-      (newline)
-      ;; guile uses block buffering for non-tty ports; force it to
-      ;; flush here so i3 can read the new status line
-      (force-output)
-      (do-loop)))
-  (do-loop))
+(define* (main)
+  (let ((i3status (open-pipe* OPEN_READ "i3status" "-c" config-file)))
+    (define (do-loop)
+      (let ((status-line (read-line i3status))
+            (uptime (format-uptime)))
+        (display
+         (string-append status-line " (" uptime ")"))
+        (newline)
+        ;; guile uses block buffering for non-tty ports; force it to
+        ;; flush here so i3 can read the new status line
+        (force-output)
+        (do-loop)))
+    (do-loop)))

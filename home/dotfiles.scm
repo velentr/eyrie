@@ -243,7 +243,7 @@ client.urgent           #002b36 #002b36 #839496 #dc322f
 
 bar {
     position bottom
-    status_command guile -s ~~/.i3/status.scm
+    status_command guile -e main -s ~~/.i3/status.scm
     colors {
         background #002b36
         statusline #839496
