@@ -6,10 +6,13 @@
   #:use-module (gnu packages crates-io)
   #:use-module (gnu packages version-control)
   #:use-module (guix build-system cargo)
+  #:use-module (guix build-system emacs)
+  #:use-module (guix gexp)
   #:use-module (guix git-download)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
-  #:export (git-third-party-ey))
+  #:export (emacs-worklog-ey
+            git-third-party-ey))
 
 (define git-third-party-ey
   (package
@@ -35,3 +38,19 @@
    (description
     "Manage third-party code that is vendored into a git monorepo.")
    (license license:gpl3)))
+
+(define emacs-worklog-ey
+  (package
+   (name "emacs-worklog-ey")
+   (version "0")
+   (source (local-file "./packages/worklog" #:recursive? #t))
+   (build-system emacs-build-system)
+   (home-page
+    "https://github.com/velentr/eyrie/tree/master/eyrie/packages/worklog")
+   (synopsis "Track work across projects in emacs")
+   (description
+    "Worklogs are a way of tracking which projects are active and what work
+you’ve already completed or have left to do.  This project contains emacs code
+for creating and managing worklogs to manage your projects and keep you focused
+on driving projects to completion.")
+   (license license:gpl2)))
