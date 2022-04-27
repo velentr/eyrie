@@ -79,6 +79,7 @@
          "emacs-org"
          "emacs-rust-mode"
          "emacs-systemd-mode"
+         "emacs-worklog-ey"
          "emacs-yaml-mode"
          "feh"
          "file"
