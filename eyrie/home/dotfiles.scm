@@ -3,26 +3,51 @@
 ;; SPDX-License-Identifier: GPL-3.0-only
 
 (define-module (eyrie home dotfiles)
+  #:use-module (eyrie packages)
   #:use-module (gnu home services)
   #:use-module (gnu packages)
+  #:use-module (gnu packages admin)
+  #:use-module (gnu packages algebra)
+  #:use-module (gnu packages base)
+  #:use-module (gnu packages cmake)
+  #:use-module (gnu packages certs)
+  #:use-module (gnu packages emacs)
+  #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu packages engineering)
   #:use-module (gnu packages erlang)
+  #:use-module (gnu packages file)
+  #:use-module (gnu packages finance)
   #:use-module (gnu packages fonts)
   #:use-module (gnu packages fontutils)
   #:use-module (gnu packages gcc)
   #:use-module (gnu packages gdb)
+  #:use-module (gnu packages ghostscript)
   #:use-module (gnu packages gnupg)
   #:use-module (gnu packages guile)
   #:use-module (gnu packages haskell)
+  #:use-module (gnu packages haskell-apps)
   #:use-module (gnu packages haskell-check)
+  #:use-module (gnu packages image-viewers)
   #:use-module (gnu packages julia)
+  #:use-module (gnu packages llvm)
+  #:use-module (gnu packages license)
+  #:use-module (gnu packages linux)
+  #:use-module (gnu packages lsof)
   #:use-module (gnu packages lua)
+  #:use-module (gnu packages mail)
+  #:use-module (gnu packages ncdu)
+  #:use-module (gnu packages password-utils)
   #:use-module (gnu packages pdf)
   #:use-module (gnu packages rust)
+  #:use-module (gnu packages terminals)
+  #:use-module (gnu packages valgrind)
   #:use-module (gnu packages version-control)
+  #:use-module (gnu packages video)
+  #:use-module (gnu packages vim)
   #:use-module (gnu packages web-browsers)
   #:use-module (gnu packages wm)
   #:use-module (gnu packages xdisorg)
+  #:use-module (gnu packages xorg)
   #:use-module (gnu services configuration)
   #:use-module (guix gexp)
   #:use-module (guix packages)
@@ -59,57 +84,57 @@
      ("SKYCC_LOCAL_JOBS" . "10"))))          ;; more parallelism
 
 (define %core-packages
-  (map specification->package
-       '("bc"
-         "clang"  ;; for emacs-company autocompletion
-         "emacs-bazel"
-         "emacs-cmake-mode"
-         "emacs-company"
-         "emacs-dts-mode"
-         "emacs-erlang"
-         "emacs-evil"
-         "emacs-flycheck"
-         "emacs-go-mode"
-         "emacs-haskell-mode"
-         "emacs-julia-mode"
-         "emacs-lua-mode"
-         "emacs-markdown-mode"
-         "emacs-nix-mode"
-         "emacs-no-x"
-         "emacs-org"
-         "emacs-rust-mode"
-         "emacs-systemd-mode"
-         "emacs-worklog-ey"
-         "emacs-yaml-mode"
-         "feh"
-         "file"
-         "ghostscript"
-         "git"
-         "git-third-party-ey"
-         "glibc-locales"
-         "htop"
-         "le-certs"
-         "ledger"
-         "lsof"
-         "mpv"
-         "ncdu"
-         "neomutt"
-         "nmap"
-         "nss-certs"
-         "password-store"
-         "picocom"
-         "psmisc"
-         "reuse"
-         "shellcheck"  ;; for emacs-flycheck on shell code
-         "sshfs"
-         "strace"
-         "tree"
-         "usbutils"
-         "valgrind"
-         "vim"
-         "xrandr"
-         "xrdb"
-         "yt-dlp")))
+  (list
+   bc
+   clang-14  ;; for emacs-company autocompletion
+   emacs-bazel
+   emacs-cmake-mode
+   emacs-company
+   emacs-dts-mode
+   emacs-erlang
+   emacs-evil
+   emacs-flycheck
+   emacs-go-mode
+   emacs-haskell-mode
+   emacs-julia-mode
+   emacs-lua-mode
+   emacs-markdown-mode
+   emacs-nix-mode
+   emacs-no-x
+   emacs-org
+   emacs-rust-mode
+   emacs-systemd-mode
+   emacs-worklog-ey
+   emacs-yaml-mode
+   feh
+   file
+   ghostscript
+   git
+   git-third-party-ey
+   glibc-locales
+   htop
+   le-certs
+   ledger
+   lsof
+   mpv
+   ncdu
+   neomutt
+   nmap
+   nss-certs
+   password-store
+   picocom
+   psmisc
+   reuse
+   shellcheck  ;; for emacs-flycheck on shell code
+   sshfs
+   strace
+   tree
+   usbutils
+   valgrind
+   vim
+   xrandr
+   xrdb
+   yt-dlp))
 
 (define %skydio-packages
   %core-packages)
