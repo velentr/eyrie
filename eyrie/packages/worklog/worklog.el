@@ -1,8 +1,10 @@
 ;;; worklog.el --- Track work across a number of tasks
 
-;; Copyright (C) 2021 Brian Kubisiak <brian@kubisiak.com>
-;;
-;; Author: Brian Kubisiak <brian@kubisiak.com>
+;;; SPDX-FileCopyrightText: 2021 Brian Kubisiak <brian@kubisiak.com>
+;;;
+;;; SPDX-License-Identifier: GPL-2.0-only
+;;;
+;;; Author: Brian Kubisiak <brian@kubisiak.com>
 
 ;;; Commentary:
 
