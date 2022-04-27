@@ -83,6 +83,8 @@
          "feh"
          "file"
          "ghostscript"
+         "git"
+         "git-third-party-ey"
          "glibc-locales"
          "htop"
          "le-certs"
@@ -116,7 +118,6 @@
            erlang
            ghc
            ghc-hunit
-           git  ;; revup uses a custom git
            gcc  ;; required by ghc
            gdb
            julia
