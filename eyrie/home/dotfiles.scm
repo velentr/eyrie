@@ -94,6 +94,7 @@
    emacs-erlang
    emacs-evil
    emacs-flycheck
+   emacs-github-mode-ey
    emacs-go-mode
    emacs-haskell-mode
    emacs-julia-mode
