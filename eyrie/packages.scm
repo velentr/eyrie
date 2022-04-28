@@ -11,7 +11,8 @@
   #:use-module (guix git-download)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
-  #:export (emacs-worklog-ey
+  #:export (emacs-github-mode-ey
+            emacs-worklog-ey
             git-third-party-ey))
 
 (define git-third-party-ey
@@ -53,4 +54,18 @@
 you’ve already completed or have left to do.  This project contains emacs code
 for creating and managing worklogs to manage your projects and keep you focused
 on driving projects to completion.")
+   (license license:gpl2)))
+
+(define emacs-github-mode-ey
+  (package
+   (name "emacs-github-mode-ey")
+   (version "0")
+   (source (local-file "./packages/github-mode" #:recursive? #t))
+   (build-system emacs-build-system)
+   (home-page
+    "https://github.com/velentr/eyrie/tree/master/eyrie/packages/github-mode")
+   (synopsis "Interact with github in emacs")
+   (description
+    "Make up for github's poor review interface by doing some interaction from
+emacs.")
    (license license:gpl2)))
