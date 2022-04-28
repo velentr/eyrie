@@ -1,8 +1,8 @@
 ;;; github --- interact with github pull requests
 
-;; Copyright (C) 2021 Brian Kubisiak <brian@kubisiak.com>
-;;
-;; Author: Brian Kubisiak <brian@kubisiak.com>
+;;; SPDX-FileCopyrightText: 2021 Brian Kubisiak <brian@kubisiak.com>
+;;;
+;;; SPDX-License-Identifier: GPL-2.0-only
 
 ;;; Commentary:
 
