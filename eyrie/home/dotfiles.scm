@@ -88,6 +88,7 @@
    bc
    clang-14  ;; for emacs-company autocompletion
    emacs-bazel
+   ey:emacs-color-theme-solarized
    emacs-cmake-mode
    emacs-company
    emacs-dts-mode

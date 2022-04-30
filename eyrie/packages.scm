@@ -11,7 +11,8 @@
   #:use-module (guix git-download)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
-  #:export (emacs-github-mode
+  #:export (emacs-color-theme-solarized
+            emacs-github-mode
             emacs-worklog
             git-third-party))
 
@@ -69,3 +70,36 @@ on driving projects to completion.")
     "Make up for github's poor review interface by doing some interaction from
 emacs.")
    (license license:gpl2)))
+
+(define emacs-color-theme-solarized
+  ;; From 2017-10-24.
+  ;; No releases available.
+  (let ((commit "f3ca8902ea056fb8e46cb09f09c96294e31cd4ee") (revision "0"))
+    (package
+      (name "emacs-color-theme-solarized")
+      (version (git-version "0" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url
+                       "https://github.com/sellout/emacs-color-theme-solarized")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "16d7adqi07lzzr0qipl1fbag9l8kiyr3xrqxi528pimcisbg85d3"))))
+      (build-system emacs-build-system)
+      (arguments
+       (list #:phases
+             #~(modify-phases %standard-phases
+                 ;; these are intended for old versions of emacs and do not
+                 ;; compile with emacs>=24
+                 (add-before 'install 'remove-color-theme
+                   (lambda _
+                     (delete-file "./color-theme-solarized.el")
+                     (delete-file "./color-theme-solarized-pkg.el"))))))
+      (home-page "https://github.com/sellout/emacs-color-theme-solarized")
+      (synopsis "Solarized Colorscheme for Emacs")
+      (description
+       "Emacs highlighting using Ethan Schoonover’s Solarized color scheme.")
+      (license license:expat))))
