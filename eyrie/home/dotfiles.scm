@@ -3,7 +3,7 @@
 ;; SPDX-License-Identifier: GPL-3.0-only
 
 (define-module (eyrie home dotfiles)
-  #:use-module (eyrie packages)
+  #:use-module ((eyrie packages) #:prefix ey:)
   #:use-module (gnu home services)
   #:use-module (gnu packages)
   #:use-module (gnu packages admin)
@@ -94,7 +94,7 @@
    emacs-erlang
    emacs-evil
    emacs-flycheck
-   emacs-github-mode-ey
+   ey:emacs-github-mode
    emacs-go-mode
    emacs-haskell-mode
    emacs-julia-mode
@@ -105,13 +105,13 @@
    emacs-org
    emacs-rust-mode
    emacs-systemd-mode
-   emacs-worklog-ey
+   ey:emacs-worklog
    emacs-yaml-mode
    feh
    file
    ghostscript
    git
-   git-third-party-ey
+   ey:git-third-party
    glibc-locales
    htop
    le-certs

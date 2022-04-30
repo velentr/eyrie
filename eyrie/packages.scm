@@ -11,13 +11,13 @@
   #:use-module (guix git-download)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
-  #:export (emacs-github-mode-ey
-            emacs-worklog-ey
-            git-third-party-ey))
+  #:export (emacs-github-mode
+            emacs-worklog
+            git-third-party))
 
-(define git-third-party-ey
+(define git-third-party
   (package
-   (name "git-third-party-ey")
+   (name "git-third-party")
    (version "0.0.0")
    (source
     (origin
@@ -40,9 +40,9 @@
     "Manage third-party code that is vendored into a git monorepo.")
    (license license:gpl3)))
 
-(define emacs-worklog-ey
+(define emacs-worklog
   (package
-   (name "emacs-worklog-ey")
+   (name "emacs-worklog")
    (version "0")
    (source (local-file "./packages/worklog" #:recursive? #t))
    (build-system emacs-build-system)
@@ -56,9 +56,9 @@ for creating and managing worklogs to manage your projects and keep you focused
 on driving projects to completion.")
    (license license:gpl2)))
 
-(define emacs-github-mode-ey
+(define emacs-github-mode
   (package
-   (name "emacs-github-mode-ey")
+   (name "emacs-github-mode")
    (version "0")
    (source (local-file "./packages/github-mode" #:recursive? #t))
    (build-system emacs-build-system)
