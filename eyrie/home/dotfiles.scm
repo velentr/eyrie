@@ -38,6 +38,7 @@
   #:use-module (gnu packages ncdu)
   #:use-module (gnu packages password-utils)
   #:use-module (gnu packages pdf)
+  #:use-module (gnu packages python-xyz)
   #:use-module (gnu packages rust)
   #:use-module (gnu packages terminals)
   #:use-module (gnu packages valgrind)
@@ -100,6 +101,7 @@
    emacs-haskell-mode
    emacs-julia-mode
    emacs-lua-mode
+   emacs-lsp-mode
    emacs-markdown-mode
    emacs-nix-mode
    emacs-no-x
@@ -126,6 +128,7 @@
    password-store
    picocom
    psmisc
+   python-lsp-server
    reuse
    shellcheck  ;; for emacs-flycheck on shell code
    sshfs
