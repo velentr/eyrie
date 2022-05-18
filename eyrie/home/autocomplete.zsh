@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
+fpath[1,0]=~/.guix-home/profile/share/zsh/site-functions
+
 autoload -U compinit && compinit
 
 setopt completealiases
