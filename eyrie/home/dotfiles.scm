@@ -40,6 +40,7 @@
   #:use-module (gnu packages pdf)
   #:use-module (gnu packages python-xyz)
   #:use-module (gnu packages rust)
+  #:use-module (gnu packages rust-apps)
   #:use-module (gnu packages terminals)
   #:use-module (gnu packages valgrind)
   #:use-module (gnu packages version-control)
@@ -130,6 +131,7 @@
    psmisc
    python-lsp-server
    reuse
+   rust-analyzer
    shellcheck  ;; for emacs-flycheck on shell code
    sshfs
    strace
