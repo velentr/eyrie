@@ -4,17 +4,24 @@
 
 (define-module (eyrie packages)
   #:use-module (gnu packages crates-io)
+  #:use-module (gnu packages documentation)
+  #:use-module (gnu packages pkg-config)
+  #:use-module (gnu packages ragel)
+  #:use-module (gnu packages sqlite)
   #:use-module (gnu packages version-control)
   #:use-module (guix build-system cargo)
   #:use-module (guix build-system emacs)
+  #:use-module (guix build-system gnu)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
+  #:use-module (guix utils)
   #:export (emacs-color-theme-solarized
             emacs-github-mode
             emacs-worklog
-            git-third-party))
+            git-third-party
+            knowledge-store))
 
 (define git-third-party
   (package
@@ -103,3 +110,46 @@ emacs.")
       (description
        "Emacs highlighting using Ethan Schoonover’s Solarized color scheme.")
       (license license:expat))))
+
+(define knowledge-store
+  (package
+    (name "knowledge-store")
+    (version "0.1.0")
+    (source
+     (origin
+       (method git-fetch)
+       (uri
+        (git-reference
+         (url "https://github.com/velentr/ks")
+         (commit (string-append "v" version))))
+       (sha256
+        (base32 "0dk13nnprm1kpzzn1nnb2d25205p0q55rxhnq5qhm9crqaxxiv7n"))))
+    (build-system gnu-build-system)
+    (arguments
+     `(#:make-flags (list (string-append "CC=" ,(cc-for-target)))
+       #:tests? #f  ;; TODO: this requires splint, which is not upstream
+       #:phases
+       (modify-phases
+           %standard-phases
+         (delete 'configure)
+         (replace 'install
+           (lambda* (#:key outputs #:allow-other-keys)
+             (let* ((out (assoc-ref outputs "out"))
+                    (bin (string-append out "/bin"))
+                    (man (string-append out "/share/man/man1"))
+                    (zsh (string-append out "/share/zsh/site-functions")))
+               (install-file "ks" bin)
+               (install-file "ks.1" man)
+               (install-file "zsh/_ks" zsh)))))))
+    (native-inputs
+     (list asciidoc pkg-config ragel))
+    (inputs
+     `(("sqlite" ,sqlite)))
+    (home-page "https://github.com/velentr/ks")
+    (synopsis "CLI knowledge store")
+    (description
+     "Ks is a simple, CLI-based document library that stores documents together
+with metadata in a single SQLite database. Though intended to store PDFs, ks
+makes no assumption about data format and may be used to store any type of
+document.")
+    (license license:expat)))
