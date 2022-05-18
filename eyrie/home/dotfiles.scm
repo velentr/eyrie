@@ -118,6 +118,7 @@
    ey:git-third-party
    glibc-locales
    htop
+   ey:knowledge-store
    le-certs
    ledger
    lsof
