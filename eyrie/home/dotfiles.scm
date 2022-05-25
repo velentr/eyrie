@@ -99,7 +99,6 @@
    emacs-flycheck
    ey:emacs-github-mode
    emacs-go-mode
-   emacs-haskell-mode
    emacs-julia-mode
    emacs-lua-mode
    emacs-lsp-mode
