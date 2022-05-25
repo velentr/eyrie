@@ -131,6 +131,9 @@
    psmisc
    python-lsp-server
    reuse
+   rust
+   (list rust "cargo")
+   (list rust "rustfmt")
    rust-analyzer
    shellcheck  ;; for emacs-flycheck on shell code
    sshfs
@@ -155,10 +158,7 @@
            gdb
            julia
            lua
-           pinentry-tty
-           rust
-           (list rust "cargo")
-           (list rust "rustfmt"))
+           pinentry-tty)
           %core-packages))
 
 (define %cad-packages
