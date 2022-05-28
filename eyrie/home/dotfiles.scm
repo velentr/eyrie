@@ -114,6 +114,7 @@
    file
    ghostscript
    git
+   git-lfs
    ey:git-third-party
    glibc-locales
    htop
