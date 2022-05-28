@@ -6,9 +6,9 @@
   #:use-module (eyrie home dotfiles)
   #:use-module (gnu home)
   #:use-module (gnu home services shells)
-  #:use-module (gnu packages web-browsers)
   #:use-module (gnu services)
-  #:use-module (guix gexp))
+  #:use-module (guix gexp)
+  #:use-module (nongnu packages mozilla))
 
 (home-environment
   (packages (append %devel-packages %cad-packages))
@@ -35,7 +35,8 @@
             (service
              i3-dotfiles-service-type
              (i3-dotfiles-configuration
-              (web-browser nyxt)
+              (web-browser firefox)
+              (web-browser-name "firefox -private")
               (font-size 10)
               (eth-iface "enp4s0")
               (status-script (local-file "run-status"))))
