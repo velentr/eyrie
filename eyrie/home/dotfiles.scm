@@ -468,6 +468,7 @@ tztime local {
         (skydio-aliases
          '(("ac" "'cd ~/aircam'")
            ("awsauth" "'bazel -S run //auth/aws'")
+           ("cloudstation" "'bazel -S run //cloud/dev_instances --'")
            ("ffp" "'bazel -S run //infrastructure/tools/flashpack:fetch_flashpack_ng -- --email brian.kubisiak@skydio.com'")
            ("gzl" "'bazel -S run //tools/gazelle'")
            ("yubact" "'ssh-add -D && ssh-add -e /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so; ssh-add -s /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so'"))))
