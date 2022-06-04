@@ -145,6 +145,7 @@
    vim
    xrandr
    xrdb
+   ey:ytar
    yt-dlp))
 
 (define %skydio-packages
