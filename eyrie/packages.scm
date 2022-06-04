@@ -9,7 +9,9 @@
   #:use-module (gnu packages ragel)
   #:use-module (gnu packages sqlite)
   #:use-module (gnu packages version-control)
+  #:use-module (gnu packages video)
   #:use-module (guix build-system cargo)
+  #:use-module (guix build-system copy)
   #:use-module (guix build-system emacs)
   #:use-module (guix build-system gnu)
   #:use-module (guix gexp)
@@ -21,7 +23,8 @@
             emacs-github-mode
             emacs-worklog
             git-third-party
-            knowledge-store))
+            knowledge-store
+            ytar))
 
 (define git-third-party
   (package
@@ -153,3 +156,27 @@ with metadata in a single SQLite database. Though intended to store PDFs, ks
 makes no assumption about data format and may be used to store any type of
 document.")
     (license license:expat)))
+
+(define ytar
+  (package
+   (name "ytar")
+   (version "0")
+   (source (local-file "./packages/ytar" #:recursive? #t))
+   (build-system copy-build-system)
+   (arguments
+    (list #:phases
+          #~(modify-phases %standard-phases
+              (add-after 'unpack 'patch-file-paths
+                (lambda* (#:key inputs #:allow-other-keys)
+                  (substitute* "ytar"
+                    (("yt-dlp")
+                     (search-input-file inputs "/bin/yt-dlp"))))))
+          #:install-plan #~'(("ytar" "bin/"))))
+   (inputs (list yt-dlp))
+   (home-page
+    "https://github.com/velentr/eyrie/tree/master/eyrie/packages/ytar")
+   (synopsis "Archive youtube video playlists")
+   (description
+    "Download video playlists from youtube, keeping track of which videos are
+new based on symlinks.")
+   (license license:expat)))

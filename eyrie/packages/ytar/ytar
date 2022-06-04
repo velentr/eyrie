@@ -1,0 +1,53 @@
+#!/usr/bin/bash
+
+# SPDX-FileCopyrightText: 2022 Brian Kubisiak <brian@kubisiak.com>
+#
+# SPDX-License-Identifier: MIT
+
+prog=`basename $0`
+
+int_handler() {
+	echo "$prog: done downloading"
+}
+
+# create the new directory if it does not exist
+if [ ! -d ../new ]; then
+	echo "$prog: ../new does not exist; creating it"
+	mkdir ../new
+fi
+
+# get the base of the current directory to generate symlink targets
+dir="`basename $PWD`"
+echo "$prog: symlinking into $dir"
+
+# only argument is the URL to download
+url="$1"
+
+# files that will be used for cacheing old and new lists
+oldfiles=`mktemp`
+newfiles=`mktemp`
+
+# cache the list of old files
+ls > "$oldfiles"
+
+# download new files, until the user ctrl-C's out
+trap int_handler INT
+yt-dlp "$url"
+
+# compute which files are new
+ls | cat - "$oldfiles" | sort | uniq --unique > "$newfiles"
+
+# allow the user to edit which files get linked
+"$EDITOR" "$newfiles"
+
+# IFS here is not compatible with sh
+IFS=$'\n'
+set -f
+for i in $(cat $newfiles); do
+	# make the symlink to the current directory
+	echo "$prog: symlinking '$i'"
+	ln -s "../${dir}/$i" "../new/$i"
+done
+
+# clean up the file cache
+rm "$newfiles" "$oldfiles"
