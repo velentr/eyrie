@@ -116,6 +116,7 @@
    git
    git-lfs
    ey:git-third-party
+   gitlint
    glibc-locales
    htop
    ey:knowledge-store
