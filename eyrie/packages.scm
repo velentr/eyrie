@@ -5,6 +5,7 @@
 (define-module (eyrie packages)
   #:use-module (gnu packages crates-io)
   #:use-module (gnu packages documentation)
+  #:use-module (gnu packages erlang)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages ragel)
   #:use-module (gnu packages sqlite)
@@ -24,6 +25,7 @@
   #:export (emacs-color-theme-solarized
             emacs-github-mode
             emacs-worklog
+            erlang-cowlib
             erlang-ranch
             git-third-party
             knowledge-store
@@ -201,4 +203,24 @@ new based on symlinks.")
 to provide everything you need to accept TCP connections with a small code base
 and low latency while being easy to use directly as an application or to embed
 into your own.")
+    (license license:isc)))
+
+(define erlang-cowlib
+  (package
+    (name "erlang-cowlib")
+    (version "2.11.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (hexpm-uri "cowlib" version))
+       (sha256
+        (base32 "1ac6pj3x4vdbsa8hvmbzpdfc4k0v1p102jbd39snai8wnah9sgib"))))
+    (build-system rebar-build-system)
+    (arguments
+     '(#:tests? #f))
+    (home-page "https://ninenines.eu/docs/#cowlib")
+    (synopsis "Support library for manipulating Web protocols")
+    (description "Cowlib is a support library for manipulating Web protocols.
+Cowlib provides libraries for parsing and building messages for various Web
+protocols, including HTTP/1.1, HTTP/2 and Websocket.")
     (license license:isc)))
