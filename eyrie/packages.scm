@@ -25,6 +25,7 @@
   #:export (emacs-color-theme-solarized
             emacs-github-mode
             emacs-worklog
+            erlang-cowboy
             erlang-cowlib
             erlang-ranch
             git-third-party
@@ -223,4 +224,23 @@ into your own.")
     (description "Cowlib is a support library for manipulating Web protocols.
 Cowlib provides libraries for parsing and building messages for various Web
 protocols, including HTTP/1.1, HTTP/2 and Websocket.")
+    (license license:isc)))
+
+(define erlang-cowboy
+  (package
+    (name "erlang-cowboy")
+    (version "2.9.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (hexpm-uri "cowboy" version))
+       (sha256
+        (base32 "1phv0a1zbgk7imfgcm0dlacm7hbjcdygb0pqmx4s26jf9f9rywic"))))
+    (build-system rebar-build-system)
+    (propagated-inputs
+     (list erlang-cowlib erlang-ranch))
+    (home-page "https://ninenines.eu/docs/#cowboy")
+    (synopsis "Small, fast, modern HTTP server for Erlang/OTP")
+    (description "Cowboy is a small, fast and modern HTTP server for Erlang/OTP.
+Cowboy aims to provide a complete HTTP stack in a small code base.")
     (license license:isc)))
