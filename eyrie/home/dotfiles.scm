@@ -89,6 +89,7 @@
   (list
    bc
    clang-14  ;; for emacs-company autocompletion
+   ey:emacs-aircam-mode
    emacs-bazel
    ey:emacs-color-theme-solarized
    emacs-cmake-mode
