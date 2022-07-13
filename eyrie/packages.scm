@@ -5,6 +5,7 @@
 (define-module (eyrie packages)
   #:use-module (gnu packages crates-io)
   #:use-module (gnu packages documentation)
+  #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu packages erlang)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages ragel)
@@ -22,7 +23,8 @@
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
   #:use-module (guix utils)
-  #:export (emacs-color-theme-solarized
+  #:export (emacs-aircam-mode
+            emacs-color-theme-solarized
             emacs-github-mode
             emacs-worklog
             erlang-cowboy
@@ -85,6 +87,21 @@ on driving projects to completion.")
    (description
     "Make up for github's poor review interface by doing some interaction from
 emacs.")
+   (license license:gpl2)))
+
+(define emacs-aircam-mode
+  (package
+   (name "emacs-aircam-mode")
+   (version "0")
+   (source (local-file "./packages/aircam-mode" #:recursive? #t))
+   (build-system emacs-build-system)
+   (propagated-inputs
+    (list emacs-company emacs-flycheck))
+   (home-page
+    "https://github.com/velentr/eyrie/tree/master/eyrie/packages/aircam-mode")
+   (synopsis "")
+   (description
+    "")
    (license license:gpl2)))
 
 (define emacs-color-theme-solarized
