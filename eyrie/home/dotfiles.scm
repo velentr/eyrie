@@ -85,6 +85,7 @@
    '(("PYTHONDONTWRITEBYTECODE" . "1")       ;; don't clutter aircam with .pyc
      ("AIRCAM_ROOT" . "/home/skydio/aircam") ;; default to aircam1
      ("AWS_PROFILE" . "default")
+     ("CLOUD_CLIENT_EMAIL" . "brian.kubisiak@skydio.com")
      ("SKYCC_LOCAL_JOBS" . "10"))))          ;; more parallelism
 
 (define %core-packages
