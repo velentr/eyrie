@@ -59,6 +59,7 @@
             %devel-packages
             %skydio-env
             %skydio-packages
+            emacs-dotfiles-service-type
             git-dotfiles-service-type
             guix-channels-service-type
             i3-dotfiles-configuration
@@ -89,28 +90,6 @@
   (list
    bc
    clang-14  ;; for emacs-company autocompletion
-   ey:emacs-aircam-mode
-   emacs-bazel
-   ey:emacs-color-theme-solarized
-   emacs-cmake-mode
-   emacs-company
-   emacs-dts-mode
-   emacs-erlang
-   emacs-evil
-   emacs-flycheck
-   ey:emacs-github-mode
-   emacs-go-mode
-   emacs-julia-mode
-   emacs-lua-mode
-   emacs-lsp-mode
-   emacs-markdown-mode
-   emacs-nix-mode
-   emacs-no-x
-   emacs-org
-   emacs-rust-mode
-   emacs-systemd-mode
-   ey:emacs-worklog
-   emacs-yaml-mode
    feh
    file
    ghostscript
@@ -587,3 +566,49 @@ tztime local {
            settings)
       "\n")
      "\n")))
+
+(define-configuration emacs-dotfiles-configuration
+  (package (package emacs-no-x) "Emacs package to install")
+  (plugins (package-list
+            (list ey:emacs-aircam-mode
+                  emacs-bazel
+                  ey:emacs-color-theme-solarized
+                  emacs-cmake-mode
+                  emacs-company
+                  emacs-dts-mode
+                  emacs-erlang
+                  emacs-evil
+                  emacs-flycheck
+                  ey:emacs-github-mode
+                  emacs-go-mode
+                  emacs-julia-mode
+                  emacs-lua-mode
+                  emacs-lsp-mode
+                  emacs-markdown-mode
+                  emacs-nix-mode
+                  emacs-org
+                  emacs-rust-mode
+                  emacs-systemd-mode
+                  ey:emacs-worklog
+                  emacs-yaml-mode))
+           "Emacs plugins to install"))
+
+(define (emacs-dotfiles-services config)
+  (list (list ".emacs"
+              (local-file "emacsrc.el"))))
+
+(define (emacs-dotfiles-packages config)
+  (let ((package (emacs-dotfiles-configuration-package config))
+        (plugins (emacs-dotfiles-configuration-plugins config)))
+    (cons package plugins)))
+
+(define emacs-dotfiles-service-type
+  (service-type
+   (name 'emacs-dotfiles)
+   (extensions
+    (list (service-extension home-files-service-type
+                             emacs-dotfiles-services)
+          (service-extension home-profile-service-type
+                             emacs-dotfiles-packages)))
+   (default-value (emacs-dotfiles-configuration))
+   (description "Configure emacs and install plugins.")))
