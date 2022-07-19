@@ -7,6 +7,9 @@
   #:use-module (gnu packages documentation)
   #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu packages erlang)
+  #:use-module (gnu packages golang)
+  #:use-module (gnu packages m4)
+  #:use-module (gnu packages onc-rpc)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages ragel)
   #:use-module (gnu packages sqlite)
@@ -32,6 +35,8 @@
             erlang-ranch
             git-third-party
             knowledge-store
+            libnvidia-container
+            nvidia-modprobe
             ytar))
 
 (define git-third-party
@@ -261,3 +266,75 @@ protocols, including HTTP/1.1, HTTP/2 and Websocket.")
     (description "Cowboy is a small, fast and modern HTTP server for Erlang/OTP.
 Cowboy aims to provide a complete HTTP stack in a small code base.")
     (license license:isc)))
+
+(define nvidia-modprobe
+  (package
+    (name "nvidia-modprobe")
+    (version "495.44")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (string-append
+             "https://github.com/NVIDIA/nvidia-modprobe/archive/refs/tags/"
+             version ".tar.gz"))
+       (sha256
+        (base32 "14ny8sg1ijx116h5b2dyw7knxhvw1mnqnswgq92qjdj3ddz9qvmf"))))
+    (build-system gnu-build-system)
+    (arguments
+     (list #:tests? #f  ;; upstream doesn't have any tests
+           #:make-flags
+           #~(list (string-append "CC=" #$(cc-for-target))
+                   (string-append "PREFIX=" #$output))
+           #:phases
+           #~(modify-phases %standard-phases
+               (delete 'configure))))
+    (native-inputs (list m4))
+    (synopsis "Utilities for NVIDIA's kernel module")
+    (description "Load the NVIDIA kernel module and create NVIDIA character device
+files.")
+    (home-page "https://github.com/NVIDIA/nvidia-modprobe")
+    (license license:gpl2)))
+
+(define libnvidia-container
+  (package
+    (name "libnvidia-container")
+    (version "1.10.0")
+    (source
+     (origin
+       (method git-fetch)
+       (uri
+        (git-reference
+         (url
+          "https://gitlab.com/nvidia/container-toolkit/libnvidia-container.git")
+         (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "02w0xg44fhz7qb6v6bdwlh790vpbx84ywx1ydacp4r7scsdpc62k"))))
+    (build-system gnu-build-system)
+    (arguments
+     (list
+      #:make-flags
+      #~(list (string-append "REVISION=" #$version)
+              (string-append "CC=" #$(cc-for-target)))
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-after 'unpack 'patch-build-files
+            (lambda* (#:key inputs #:allow-other-keys)
+              (substitute* "mk/common.mk"
+                (("COMPILER := \\$\\(realpath \\$\\(shell which \\$\\(CC\\)\\)\\)")
+                 "COMPILER := gcc"))
+              (substitute* "mk/nvidia-modprobe.mk"
+                (("\\$\\(CURL\\) --progress-bar -fSL \\$\\(URL\\)")
+                 (string-append
+                  "cat " (assoc-ref inputs "nvidia-modprobe-source"))))))
+          (delete 'configure))))
+    (native-inputs (list go rpcsvc-proto))
+    (inputs
+     `(("nvidia-modprobe-source" ,(package-source nvidia-modprobe))))
+    (synopsis "NVIDIA container runtime library")
+    (description "This package provides a library and a simple CLI
+utility to automatically configure GNU/Linux containers leveraging
+NVIDIA hardware.  The implementation relies on kernel primitives and
+is designed to be agnostic of the container runtime.")
+    (home-page "https://gitlab.com/nvidia/container-toolkit/libnvidia-container")
+    (license license:gpl3)))
