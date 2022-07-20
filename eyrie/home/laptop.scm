@@ -7,11 +7,13 @@
   #:use-module (gnu home)
   #:use-module (gnu home services shells)
   #:use-module (gnu packages chromium)
+  #:use-module (gnu packages linux)
   #:use-module (gnu services)
   #:use-module (guix gexp))
 
 (home-environment
- (packages %devel-packages)
+ (packages
+  (cons acpi %core-packages))
  (services
   (append (list
            (service emacs-dotfiles-service-type)

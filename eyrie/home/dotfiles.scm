@@ -56,6 +56,7 @@
   #:use-module (ice-9 pretty-print)
   #:export (%cad-packages
             %core-env
+            %core-packages
             %devel-packages
             %skydio-env
             %skydio-packages
