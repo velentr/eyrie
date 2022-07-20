@@ -117,6 +117,7 @@
    (list rust "cargo")
    (list rust "rustfmt")
    rust-analyzer
+   setxkbmap
    shellcheck  ;; for emacs-flycheck on shell code
    sshfs
    strace
