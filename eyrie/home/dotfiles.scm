@@ -55,12 +55,14 @@
   #:use-module (guix packages)
   #:use-module (ice-9 pretty-print)
   #:export (%cad-packages
+            %core-emacs-plugins
             %core-env
             %core-packages
             %devel-packages
             %skydio-env
             %skydio-packages
             emacs-dotfiles-service-type
+            emacs-dotfiles-configuration
             git-dotfiles-service-type
             guix-channels-service-type
             i3-dotfiles-configuration
@@ -570,30 +572,32 @@ tztime local {
       "\n")
      "\n")))
 
+(define %core-emacs-plugins
+  (list ey:emacs-aircam-mode
+        emacs-bazel
+        ey:emacs-color-theme-solarized
+        emacs-cmake-mode
+        emacs-company
+        emacs-dts-mode
+        emacs-erlang
+        emacs-evil
+        emacs-flycheck
+        ey:emacs-github-mode
+        emacs-go-mode
+        emacs-julia-mode
+        emacs-lua-mode
+        emacs-lsp-mode
+        emacs-markdown-mode
+        emacs-nix-mode
+        emacs-org
+        emacs-rust-mode
+        emacs-systemd-mode
+        ey:emacs-worklog
+        emacs-yaml-mode))
+
 (define-configuration emacs-dotfiles-configuration
   (package (package emacs-no-x) "Emacs package to install")
-  (plugins (package-list
-            (list ey:emacs-aircam-mode
-                  emacs-bazel
-                  ey:emacs-color-theme-solarized
-                  emacs-cmake-mode
-                  emacs-company
-                  emacs-dts-mode
-                  emacs-erlang
-                  emacs-evil
-                  emacs-flycheck
-                  ey:emacs-github-mode
-                  emacs-go-mode
-                  emacs-julia-mode
-                  emacs-lua-mode
-                  emacs-lsp-mode
-                  emacs-markdown-mode
-                  emacs-nix-mode
-                  emacs-org
-                  emacs-rust-mode
-                  emacs-systemd-mode
-                  ey:emacs-worklog
-                  emacs-yaml-mode))
+  (plugins (package-list %core-emacs-plugins)
            "Emacs plugins to install"))
 
 (define (emacs-dotfiles-services config)

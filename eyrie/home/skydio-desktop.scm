@@ -7,6 +7,7 @@
   #:use-module (gnu home)
   #:use-module (gnu home services shells)
   #:use-module (gnu packages chromium)
+  #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu services)
   #:use-module (guix gexp))
 
@@ -14,6 +15,10 @@
   (packages %skydio-packages)
   (services
    (append (list
+            (service
+             emacs-dotfiles-service-type
+             (emacs-dotfiles-configuration
+              (plugins (cons emacs-org-jira %core-emacs-plugins))))
             (service
              home-zsh-service-type
              (home-zsh-configuration
