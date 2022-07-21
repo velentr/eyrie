@@ -75,6 +75,11 @@
   (set-fill-column 100))
 (add-hook 'bazel-mode-hook 'sane-bazel-mode)
 
+;; lsp-mode setup
+(require 'lsp-mode)
+(add-hook 'python-mode-hook #'lsp)
+(add-hook 'rust-mode-hook #'lsp)
+
 ;; emacs only defines 8 colors by default; define the other 8 using solarized
 ;; colors
 (tty-color-define "brightblack"    8 '(  0  43  54))
