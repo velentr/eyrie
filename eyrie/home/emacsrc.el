@@ -19,6 +19,10 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (setq-default indent-tabs-mode nil)
 
+;; git-rebase-mode is stupidly more complex than just editing in fundamental
+;; mode with evil
+(setq auto-mode-alist (rassq-delete-all 'git-rebase-mode auto-mode-alist))
+
 (defun sane-c-mode ()
   "Set up sane settings for editing c code."
   (c-set-style "linux")
