@@ -91,8 +91,6 @@
 (tty-color-define "brightcyan"    14 '(147 161 161))
 (tty-color-define "brightwhite"   15 '(253 246 227))
 
-
-(add-to-list 'custom-theme-load-path "~/.emacs.d/emacs-color-theme-solarized")
 (load-theme 'solarized t)
 (set-terminal-parameter nil 'background-mode 'dark)
 (enable-theme 'solarized)
