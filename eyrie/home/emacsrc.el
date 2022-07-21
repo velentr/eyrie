@@ -31,6 +31,13 @@
   (set-fill-column 80))
 (add-hook 'c-mode-hook 'sane-c-mode)
 
+(defun sane-dts-mode ()
+  "Set up sane settings for editing dts code."
+  (setq tab-width 8)
+  (setq indent-tabs-mode t)
+  (set-fill-column 80))
+(add-hook 'dts-mode-hook 'sane-dts-mode)
+
 (defun sane-sh-mode ()
   "Set up sane settings for editing sh code."
   (setq tab-width 8)
