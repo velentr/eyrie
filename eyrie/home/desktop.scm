@@ -14,6 +14,7 @@
   (packages (append %devel-packages %cad-packages))
   (services
    (append (list
+            (service emacs-dotfiles-service-type)
             (service
              home-zsh-service-type
              (home-zsh-configuration
