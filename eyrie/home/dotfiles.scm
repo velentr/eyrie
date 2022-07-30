@@ -76,7 +76,7 @@
 
 (define %core-env
     '(("EDITOR" . "emacs")
-      ("HISTFILE" . "~/.histfile")
+      ("HISTFILE" . "${HOME}/.histfile")
       ("HISTSIZE" . "10000")
       ("REPORTTIME" . "5")
       ("SAVEHIST" . "10000")))
