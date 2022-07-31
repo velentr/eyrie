@@ -64,6 +64,7 @@
             emacs-dotfiles-service-type
             emacs-dotfiles-configuration
             git-dotfiles-service-type
+            guile-dotfiles-service-type
             guix-channels-service-type
             i3-dotfiles-configuration
             i3-dotfiles-service-type
@@ -195,6 +196,25 @@
    (description
     "Create a global @file{~/.gitconfig} for the user, given the user's email
 address")))
+
+(define (guile-dotfiles-service sexprs)
+  (define (print-contents)
+    (for-each
+     (lambda (sexpr)
+       (pretty-print sexpr))
+     sexprs))
+  (let ((contents
+         (with-output-to-string print-contents)))
+    (list (list ".guile"
+                  (plain-file "guile" contents)))))
+
+(define guile-dotfiles-service-type
+  (service-type
+   (name 'guile-dotfiles)
+   (extensions
+    (list (service-extension home-files-service-type guile-dotfiles-service)))
+   (description
+    "Create a globel @file{~/.guile} for the user with the given contents")))
 
 (define (serialize-integer field-name val)
   (serialize-field field-name (number->string val)))

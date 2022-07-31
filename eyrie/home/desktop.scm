@@ -24,6 +24,10 @@
              git-dotfiles-service-type
              "brian@kubisiak.com")
             (service
+             guile-dotfiles-service-type
+             '((use-modules (ice-9 readline))
+               (activate-readline)))
+            (service
              guix-channels-service-type
              '(list
                (channel (name 'nonguix)
