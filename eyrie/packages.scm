@@ -91,6 +91,7 @@ on driving projects to completion.")
    (version "0")
    (source (local-file "./packages/github-mode" #:recursive? #t))
    (build-system emacs-build-system)
+   (inputs (list emacs-ghub))
    (home-page
     "https://github.com/velentr/eyrie/tree/master/eyrie/packages/github-mode")
    (synopsis "Interact with github in emacs")

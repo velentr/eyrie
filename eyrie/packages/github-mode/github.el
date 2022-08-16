@@ -10,6 +10,7 @@
 
 ;;; Code:
 
+(require 'ghub)
 (require 'seq)
 
 (defvar gh-owner
@@ -67,21 +68,21 @@
 
 (defun gh--parse-summary-query (query)
   "Parse the QUERY data from a graphql pr request."
-  (let ((data (gethash "edges" (gethash "search" (gethash "data" query)))))
+  (let ((data (alist-get 'edges (alist-get 'search (alist-get 'data query)))))
     (seq-map 'gh--parse-summary-queryline data)))
 
 (defun gh--parse-summary-queryline (queryline)
   "Convert QUERYLINE into a readable line for the output buffer."
-  (let* ((data (gethash "node" queryline))
-         (number (gethash "number" data))
-         (title (gethash "title" data))
-         (author (gethash "login" (gethash "author" data)))
-         (reviews (gethash "edges" (gethash "reviews" data)))
+  (let* ((data (alist-get 'node queryline))
+         (number (alist-get 'number data))
+         (title (alist-get 'title data))
+         (author (alist-get 'login (alist-get 'author data)))
+         (reviews (alist-get 'edges (alist-get 'reviews data)))
          (labels
           (seq-map
            (lambda (label)
-             (gethash "name" (gethash "node" label)))
-           (gethash "edges" (gethash "labels" data)))))
+             (alist-get 'name (alist-get 'node label)))
+           (alist-get 'edges (alist-get 'labels data)))))
     (list
      number
      title
@@ -113,15 +114,15 @@
 
 (defun gh--parse-pr-query (query)
   "Parse the QUERY result for a pr."
-  (let* ((data (gethash "pullRequest"
-                        (gethash "repository"
-                                 (gethash "data" query))))
-         (title (gethash "title" data))
-         (body (replace-regexp-in-string "\r" "" (gethash "body" data)))
-         (branch-name (gethash "baseRefName" data))
-         (commit (gethash "headRefOid" data))
-         (author (gethash "login" (gethash "author" data)))
-         (files (gethash "edges" (gethash "files" data))))
+  (let* ((data (alist-get 'pullRequest
+                          (alist-get 'repository
+                                     (alist-get 'data query))))
+         (title (alist-get 'title data))
+         (body (replace-regexp-in-string "\r" "" (alist-get 'body data)))
+         (branch-name (alist-get 'baseRefName data))
+         (commit (alist-get 'headRefOid data))
+         (author (alist-get 'login (alist-get 'author data)))
+         (files (alist-get 'edges (alist-get 'files data))))
     (list
      commit
      branch-name
@@ -129,10 +130,10 @@
      title
      body
      (seq-map (lambda (file)
-                (let ((data (gethash "node" file)))
-                  (list (gethash "path" data)
-                        (gethash "additions" data)
-                        (gethash "deletions" data))))
+                (let ((data (alist-get 'node file)))
+                  (list (alist-get 'path data)
+                        (alist-get 'additions data)
+                        (alist-get 'deletions data))))
               files))))
 
 (defun gh--filter-labels (labels)
@@ -164,37 +165,22 @@
   (seq-reduce
    (lambda (acc review)
      "Accumulate approved reviews."
-     (let* ((data (gethash "node" review))
-            (state (gethash "state" data)))
+     (let* ((data (alist-get 'node review))
+            (state (alist-get 'state data)))
        (if (equal state "APPROVED")
            (+ acc 1)
          acc)))
    reviews
    0))
 
-(defun gh--load-query (file)
-  "Load a gh query from FILE (for debugging)."
-  (let ((query-buffer (find-file-noselect file t)))
-    (with-current-buffer query-buffer
-      (unwind-protect
-          (json-parse-buffer)
-        (kill-buffer query-buffer)))))
-
-(defun gh--load (query)
-  "Load the data from github using the given graphql QUERY."
-  (with-temp-buffer
-    (call-process "gh" nil t nil "api" "graphql" "-f" (concat "query=" query))
-    (goto-char (point-min))
-    (json-parse-buffer)))
-
 (defun gh--load-summary ()
   "Query the graphql api for pr data."
-  (let ((json-data (gh--load (gh-summary-query))))
+  (let ((json-data (ghub-graphql (gh-summary-query))))
     (gh--parse-summary-query json-data)))
 
 (defun gh--load-pr (number)
   "Query the graphql api for an overview of a specific pr NUMBER."
-  (let ((json-data (gh--load (gh-pr-query number))))
+  (let ((json-data (ghub-graphql (gh-pr-query number))))
     (gh--parse-pr-query json-data)))
 
 (defun gh--format-pr-title (title author)
