@@ -7,9 +7,11 @@
   #:use-module (gnu packages admin)
   #:use-module (gnu packages certs)
   #:use-module (gnu packages shells)
+  #:use-module (gnu packages ssh)
   #:use-module (gnu packages wm)
   #:use-module (gnu services desktop)
   #:use-module (gnu services networking)
+  #:use-module (gnu services ssh)
   #:use-module (gnu services xorg)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd))
@@ -62,5 +64,10 @@
                          (service slim-service-type
                                   (slim-configuration
                                    (display ":0")))
+                         (service openssh-service-type
+                                  (openssh-configuration
+                                   (openssh openssh-sans-x)
+                                   (password-authentication? #f)
+                                   (port-number 2222)))
                          (service wpa-supplicant-service-type))
                    %base-services)))
