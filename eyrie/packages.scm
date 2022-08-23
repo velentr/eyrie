@@ -32,32 +32,42 @@
             erlang-ranch
             git-third-party
             knowledge-store
+            python-prettymaps
             ytar))
 
 (define git-third-party
   (package
-   (name "git-third-party")
-   (version "0.0.0")
-   (source
-    (origin
-     (method git-fetch)
-     (uri
-      (git-reference
-       (url "https://github.com/velentr/git-third-party")
-       (commit (string-append "v" version))))
-     (sha256
-      (base32 "1mgrs047mgl0s243a3y9xqgl75ax5b2x45zhccyi1vq0s5nxhqsl"))))
-   (build-system cargo-build-system)
-   (arguments
-    `(#:cargo-inputs
-      (("rust-clap" ,rust-clap-2))))
-   (propagated-inputs
-    `(("git" ,git)))
-   (home-page "https://github.com/velentr/git-third-party")
-   (synopsis "Manage vendored third-party code in git")
-   (description
-    "Manage third-party code that is vendored into a git monorepo.")
-   (license license:gpl3)))
+    (name "git-third-party")
+    (version "0.0.0")
+    (source
+     (origin
+       (method git-fetch)
+       (uri
+        (git-reference
+         (url "https://github.com/velentr/git-third-party")
+         (commit (string-append "v" version))))
+       (sha256
+        (base32 "1mgrs047mgl0s243a3y9xqgl75ax5b2x45zhccyi1vq0s5nxhqsl"))))
+    (build-system cargo-build-system)
+    (arguments
+     (list #:cargo-inputs
+           `(("rust-clap" ,rust-clap-2))
+           #:phases
+           #~(modify-phases %standard-phases
+               (add-after 'unpack 'patch-file-paths
+                 (lambda* (#:key inputs #:allow-other-keys)
+                   (substitute* '("src/cherrypick.rs" "src/clone.rs")
+                     (("\"git\"")
+                      (string-append
+                       "\""
+                       (search-input-file inputs "/bin/git")
+                       "\""))))))))
+    (inputs (list git))
+    (home-page "https://github.com/velentr/git-third-party")
+    (synopsis "Manage vendored third-party code in git")
+    (description
+     "Manage third-party code that is vendored into a git monorepo.")
+    (license license:gpl3)))
 
 (define emacs-worklog
   (package
