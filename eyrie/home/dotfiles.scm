@@ -605,7 +605,6 @@ tztime local {
         ey:emacs-github-mode
         emacs-go-mode
         emacs-julia-mode
-        emacs-lua-mode
         emacs-lsp-mode
         emacs-markdown-mode
         emacs-nix-mode
