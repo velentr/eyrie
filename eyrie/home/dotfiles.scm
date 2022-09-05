@@ -24,9 +24,7 @@
   #:use-module (gnu packages ghostscript)
   #:use-module (gnu packages gnupg)
   #:use-module (gnu packages guile)
-  #:use-module (gnu packages haskell)
   #:use-module (gnu packages haskell-apps)
-  #:use-module (gnu packages haskell-check)
   #:use-module (gnu packages image-viewers)
   #:use-module (gnu packages julia)
   #:use-module (gnu packages llvm)
@@ -141,9 +139,6 @@
 (define %devel-packages
   (append (list
            erlang
-           ghc
-           ghc-hunit
-           gcc  ;; required by ghc
            gdb
            julia
            lua
