@@ -70,14 +70,20 @@
  (packages (append (list nix nss-certs) %base-packages))
 
  (services (append (list (elogind-service)  ;; to create /run/user/${UID} on login
-                         (static-networking-service
-                          "enp2s0" "10.10.0.4"
-                          #:netmask "255.255.0.0"
-                          #:gateway "10.10.0.1"
-                          #:name-servers '("208.67.220.220"
-                                           "208.67.220.222"
-                                           "208.67.222.220"
-                                           "208.67.222.222"))
+                         (service static-networking-service-type
+                                  (list (static-networking
+                                         (addresses
+                                          (list (network-address
+                                                 (device "enp2s0")
+                                                 (value "10.10.0.4/16"))))
+                                         (routes
+                                          (list (network-route
+                                                 (destination "default")
+                                                 (gateway "10.10.0.1"))))
+                                         (name-servers '("208.67.220.220"
+                                                         "208.67.220.222"
+                                                         "208.67.222.220"
+                                                         "208.67.222.222")))))
                          (service nix-service-type)
                          (service ntp-service-type)
                          (service openssh-service-type
