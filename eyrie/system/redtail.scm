@@ -11,7 +11,9 @@
   #:use-module (gnu services desktop)
   #:use-module (gnu services networking)
   #:use-module (gnu services nix)
-  #:use-module (gnu services ssh))
+  #:use-module (gnu services ssh)
+  #:use-module (nongnu packages linux)
+  #:use-module (nongnu system linux-initrd))
 
 (define %encrypted-root
   (mapped-device
@@ -27,6 +29,9 @@
    (type luks-device-mapping)))
 
 (operating-system
+ (kernel linux)
+ (initrd microcode-initrd)
+ (firmware (list linux-firmware))
  (host-name "redtail")
  (timezone "US/Pacific")
  (locale "en_US.utf8")
