@@ -116,6 +116,7 @@
    psmisc
    python-lsp-server
    reuse
+   ey:revup
    setxkbmap
    shellcheck  ;; for emacs-flycheck on shell code
    sshfs

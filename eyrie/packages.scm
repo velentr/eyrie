@@ -3,11 +3,16 @@
 ;; SPDX-License-Identifier: GPL-3.0-only
 
 (define-module (eyrie packages)
+  #:use-module (gnu packages)
+  #:use-module (gnu packages base)
   #:use-module (gnu packages crates-io)
   #:use-module (gnu packages documentation)
   #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu packages erlang)
+  #:use-module (gnu packages man)
   #:use-module (gnu packages pkg-config)
+  #:use-module (gnu packages python-web)
+  #:use-module (gnu packages python-xyz)
   #:use-module (gnu packages ragel)
   #:use-module (gnu packages sqlite)
   #:use-module (gnu packages version-control)
@@ -16,6 +21,7 @@
   #:use-module (guix build-system copy)
   #:use-module (guix build-system emacs)
   #:use-module (guix build-system gnu)
+  #:use-module (guix build-system python)
   #:use-module (guix build-system rebar)
   #:use-module (guix download)
   #:use-module (guix gexp)
@@ -32,7 +38,7 @@
             erlang-ranch
             git-third-party
             knowledge-store
-            python-prettymaps
+            revup
             ytar))
 
 (define git-third-party
@@ -271,4 +277,67 @@ protocols, including HTTP/1.1, HTTP/2 and Websocket.")
     (synopsis "Small, fast, modern HTTP server for Erlang/OTP")
     (description "Cowboy is a small, fast and modern HTTP server for Erlang/OTP.
 Cowboy aims to provide a complete HTTP stack in a small code base.")
+    (license license:isc)))
+
+(define revup
+  (package
+    (name "revup")
+    (version "0.1.1")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (pypi-uri "revup" version))
+       (sha256
+        (base32 "0m63y3g52n6lkcia2iz7y1adpx1jvr2z2bi77gbyi54qpfhcrhnq"))
+       (patches (search-patches "revup-main-0.1.0.patch"))))
+    (build-system python-build-system)
+    (arguments
+     (list
+      #:tests? #f  ;; revup doesn't have any tests
+      #:phases
+      #~(modify-phases %standard-phases
+          ;; revup doesn't have a setup.py
+          (add-after 'unpack 'add-setup.py
+            (lambda _
+              (call-with-output-file "setup.py"
+                (lambda (port)
+                  (format port
+                          "from setuptools import find_packages, setup
+setup(
+    name='revup',
+    version='~a',
+    packages=find_packages(),
+    entry_points = {
+        'console_scripts': [
+            'revup = revup.__main__:_main',
+        ],
+    },
+)
+"
+                          #$version)))))
+          (add-after 'unpack 'patch-setup.cfg
+            (lambda _
+              (substitute* "setup.cfg"
+                (("asyncio") "# asyncio already in py3")
+                (("configparser") "# configparser already in py3")
+                (("dataclasses") "# dataclasses already in py3"))))
+          (add-after 'unpack 'patch-tool-inputs
+            (lambda _
+              (substitute* "revup/revup.py"
+                (("man_cmd = \\(\"man")
+                 (string-append "man_cmd = (\""
+                                (which "man"))))
+              (substitute* "revup/git.py"
+                (("\\(await sh\\.sh\\(\"/usr/bin/which\", \"git\"\\)\\)\\[1\\]\\.strip\\(\\)")
+                 (string-append "\""
+                                (which "git")
+                                "\""))))))))
+    (inputs (list git man-db))
+    (propagated-inputs (list python-aiohttp python-rich))
+    (home-page "https://github.com/Skydio/revup")
+    (synopsis "Revolutionary commit-based code review and workflow tools for
+git/github")
+    (description "Revup provides command-line tools that allow developers to
+iterate faster on parallel changes and reduce the overhead of creating and
+maintaining code reviews.")
     (license license:isc)))
