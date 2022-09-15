@@ -102,6 +102,7 @@
    gitlint
    glibc-locales
    htop
+   ey:install-topic-commit-msg-hook  ;; for use with revup
    ey:knowledge-store
    le-certs
    ledger
