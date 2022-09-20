@@ -11,6 +11,7 @@
   #:use-module (gnu packages erlang)
   #:use-module (gnu packages man)
   #:use-module (gnu packages pkg-config)
+  #:use-module (gnu packages python-build)
   #:use-module (gnu packages python-web)
   #:use-module (gnu packages python-xyz)
   #:use-module (gnu packages ragel)
@@ -301,45 +302,19 @@ Cowboy aims to provide a complete HTTP stack in a small code base.")
 (define revup
   (package
     (name "revup")
-    (version "0.1.1")
+    (version "0.1.3")
     (source
      (origin
        (method url-fetch)
        (uri (pypi-uri "revup" version))
        (sha256
-        (base32 "0m63y3g52n6lkcia2iz7y1adpx1jvr2z2bi77gbyi54qpfhcrhnq"))
-       (patches (search-patches "revup-main-0.1.0.patch"))))
+        (base32 "1c2pp205qbvhrmx9kgyq75y6gcn6hp11fs9x8aym8j60n0si7ln2"))))
     (build-system python-build-system)
     (arguments
      (list
       #:tests? #f  ;; revup doesn't have any tests
       #:phases
       #~(modify-phases %standard-phases
-          ;; revup doesn't have a setup.py
-          (add-after 'unpack 'add-setup.py
-            (lambda _
-              (call-with-output-file "setup.py"
-                (lambda (port)
-                  (format port
-                          "from setuptools import find_packages, setup
-setup(
-    name='revup',
-    version='~a',
-    packages=find_packages(),
-    entry_points = {
-        'console_scripts': [
-            'revup = revup.__main__:_main',
-        ],
-    },
-)
-"
-                          #$version)))))
-          (add-after 'unpack 'patch-setup.cfg
-            (lambda _
-              (substitute* "setup.cfg"
-                (("asyncio") "# asyncio already in py3")
-                (("configparser") "# configparser already in py3")
-                (("dataclasses") "# dataclasses already in py3"))))
           (add-after 'unpack 'patch-tool-inputs
             (lambda _
               (substitute* "revup/revup.py"
@@ -353,6 +328,7 @@ setup(
                                 "\""))))))))
     (inputs (list git man-db))
     (propagated-inputs (list python-aiohttp python-rich))
+    (native-inputs (list python-wheel))
     (home-page "https://github.com/Skydio/revup")
     (synopsis "Revolutionary commit-based code review and workflow tools for
 git/github")
