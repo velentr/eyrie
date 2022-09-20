@@ -335,4 +335,4 @@ git/github")
     (description "Revup provides command-line tools that allow developers to
 iterate faster on parallel changes and reduce the overhead of creating and
 maintaining code reviews.")
-    (license license:isc)))
+    (license license:expat)))
