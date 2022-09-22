@@ -13,6 +13,7 @@
   #:use-module (gnu services cups)
   #:use-module (gnu services desktop)
   #:use-module (gnu services networking)
+  #:use-module (gnu services nix)
   #:use-module (gnu services security-token)
   #:use-module (gnu services ssh)
   #:use-module (gnu services xorg)
@@ -58,7 +59,7 @@
                (supplementary-groups '("wheel" "audio" "video" "lp" "lpadmin")))
               %base-user-accounts))
 
- (packages (append (list le-certs nss-certs) %base-packages))
+ (packages (append (list le-certs nix nss-certs) %base-packages))
 
  (services (append (list (elogind-service)
                          (screen-locker-service i3lock)
@@ -76,6 +77,7 @@
                                                          "208.67.220.222"
                                                          "208.67.222.220"
                                                          "208.67.222.222")))))
+                         (service nix-service-type)
                          (service ntp-service-type)
                          (service openssh-service-type
                                   (openssh-configuration
