@@ -8,10 +8,12 @@
   #:use-module (gnu packages package-management)
   #:use-module (gnu packages shells)
   #:use-module (gnu packages ssh)
+  #:use-module (gnu services certbot)
   #:use-module (gnu services desktop)
   #:use-module (gnu services networking)
   #:use-module (gnu services nix)
   #:use-module (gnu services ssh)
+  #:use-module (gnu services web)
   #:use-module (nongnu packages linux)
   #:use-module (nongnu system linux-initrd))
 
@@ -84,6 +86,24 @@
                                                          "208.67.220.222"
                                                          "208.67.222.220"
                                                          "208.67.222.222")))))
+                         (service certbot-service-type
+                                  (certbot-configuration
+                                   (email "brian@kubisiak.com")
+                                   (certificates
+                                    (list (certificate-configuration
+                                           (domains '("e3r3.com")))))))
+                         (service
+                          nginx-service-type
+                          (nginx-configuration
+                           (server-blocks
+                            (list
+                             (nginx-server-configuration
+                              (listen '("443 ssl"))
+                              (server-name '("e3r3.com"))
+                              (ssl-certificate
+                               "/etc/letsencrypt/live/e3r3.com/fullchain.pem")
+                              (ssl-certificate-key
+                               "/etc/letsencrypt/live/e3r3.com/privkey.pem"))))))
                          (service nix-service-type)
                          (service ntp-service-type)
                          (service openssh-service-type
