@@ -588,7 +588,7 @@ tztime local {
 (define %core-emacs-plugins
   (list ey:emacs-aircam-mode
         emacs-bazel
-        ey:emacs-color-theme-solarized
+        emacs-color-theme-solarized
         emacs-cmake-mode
         emacs-company
         emacs-dts-mode
