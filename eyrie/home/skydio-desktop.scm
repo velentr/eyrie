@@ -28,6 +28,13 @@
              git-dotfiles-service-type
              "brian.kubisiak@skydio.com")
             (service
+             guile-dotfiles-service-type
+             '((use-modules (ice-9 readline))
+               (activate-readline)
+               (unless (getenv "INSIDE_EMACS")
+                 (use-modules (ice-9 colorized))
+                 (activate-colorized))))
+            (service
              guix-channels-service-type
              '(list
                (channel (name 'nonguix)

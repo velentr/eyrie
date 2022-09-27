@@ -24,6 +24,7 @@
   #:use-module (gnu packages ghostscript)
   #:use-module (gnu packages gnupg)
   #:use-module (gnu packages guile)
+  #:use-module (gnu packages guile-xyz)
   #:use-module (gnu packages haskell-apps)
   #:use-module (gnu packages image-viewers)
   #:use-module (gnu packages julia)
@@ -101,6 +102,9 @@
    ey:git-third-party
    gitlint
    glibc-locales
+   guile-3.0-latest
+   guile-colorized
+   guile-readline
    htop
    ey:install-topic-commit-msg-hook  ;; for use with revup
    ey:knowledge-store
