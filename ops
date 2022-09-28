@@ -1,0 +1,1 @@
+{"version":1,"ops":[{"type":1,"author":{"id":"91195409916de3ec6394aeb64ff994ab7178af56"},"timestamp":1664380493,"title":"upstream: Send a patch for revup to upstream","message":"My custom package seems to be working well. Once a new release is made\non pypi (with tests?), send a patch upstream.","files":null}]}
