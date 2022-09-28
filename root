@@ -1,0 +1,1 @@
+{"version":1,"ops":[{"type":1,"author":{"id":"91195409916de3ec6394aeb64ff994ab7178af56"},"timestamp":1664380214,"title":"service: Add home-git-service","message":"Mostly duplicating the existing git service, but make this a little\ncleaner and allow extensibility. Can then send a patch upstream.","files":null}]}
