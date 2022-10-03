@@ -15,6 +15,8 @@
   #:use-module (gnu packages python-web)
   #:use-module (gnu packages python-xyz)
   #:use-module (gnu packages ragel)
+  #:use-module (gnu packages rails)
+  #:use-module (gnu packages ruby)
   #:use-module (gnu packages sqlite)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages video)
@@ -24,6 +26,7 @@
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system python)
   #:use-module (guix build-system rebar)
+  #:use-module (guix build-system ruby)
   #:use-module (guix download)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
@@ -38,6 +41,7 @@
             erlang-ranch
             git-third-party
             install-topic-commit-msg-hook
+            kitchen
             knowledge-store
             revup
             ytar))
@@ -301,4 +305,37 @@ git/github")
     (description "Revup provides command-line tools that allow developers to
 iterate faster on parallel changes and reduce the overhead of creating and
 maintaining code reviews.")
+    (license license:expat)))
+
+(define kitchen
+  (package
+    (name "kitchen")
+    (version "0.0.0")
+    (source
+     (origin
+       (method git-fetch)
+       (uri
+        (git-reference
+         (url "https://github.com/velentr/kitchen")
+         (commit (string-append "v" version))))
+       (sha256
+        (base32 "1v3i15fgq24dnp0jrkszzvn8i8b3w2k5sxibkw1fzic0lqippp22"))))
+    (build-system ruby-build-system)
+    (arguments
+     (list #:tests? #f    ;; I haven't written any real tests yet
+           #:phases
+           #~(modify-phases %standard-phases
+               (add-after 'unpack 'patch-file-paths
+                 (lambda _
+                   (substitute* '("bin/kitchen")
+                     (("'puma'")
+                      (string-append "'" (which "puma") "'"))))))))
+    (propagated-inputs
+     (list ruby-2.7 ruby-byebug ruby-listen ruby-kramdown ruby-puma ruby-rails
+           ruby-sqlite3 ruby-tzinfo-data))
+    (synopsis "Personal recipe tracker")
+    (description "Kitchen is a personal recipe/cooking tracker that aims to be a
+self-hosted way of collecting your favorite recipes and how often you cook
+them.")
+    (home-page "https://github.com/velentr/kitchen")
     (license license:expat)))
