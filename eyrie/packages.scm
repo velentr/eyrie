@@ -272,13 +272,13 @@ Cowboy aims to provide a complete HTTP stack in a small code base.")
 (define revup
   (package
     (name "revup")
-    (version "0.1.3")
+    (version "0.1.4")
     (source
      (origin
        (method url-fetch)
        (uri (pypi-uri "revup" version))
        (sha256
-        (base32 "1c2pp205qbvhrmx9kgyq75y6gcn6hp11fs9x8aym8j60n0si7ln2"))))
+        (base32 "0imv67pgkw9yj4aggjfn7z4ai91rp1rpsv3njx3bx592l8l2li15"))))
     (build-system python-build-system)
     (arguments
      (list
@@ -292,10 +292,8 @@ Cowboy aims to provide a complete HTTP stack in a small code base.")
                  (string-append "man_cmd = (\""
                                 (which "man"))))
               (substitute* "revup/git.py"
-                (("\\(await sh\\.sh\\(\"/usr/bin/which\", \"git\"\\)\\)\\[1\\]\\.strip\\(\\)")
-                 (string-append "\""
-                                (which "git")
-                                "\""))))))))
+                (("shutil.which\\(\"git\"\\)")
+                 (string-append "\"" (which "git") "\""))))))))
     (inputs (list git man-db))
     (propagated-inputs (list python-aiohttp python-rich))
     (native-inputs (list python-wheel))
