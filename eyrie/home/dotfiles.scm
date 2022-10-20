@@ -11,6 +11,7 @@
   #:use-module (gnu packages base)
   #:use-module (gnu packages cmake)
   #:use-module (gnu packages certs)
+  #:use-module (gnu packages crypto)
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu packages engineering)
@@ -92,6 +93,7 @@
 
 (define %core-packages
   (list
+   b3sum
    bc
    clang-14  ;; for emacs-company autocompletion
    feh
