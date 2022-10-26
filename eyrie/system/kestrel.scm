@@ -11,6 +11,7 @@
   #:use-module (gnu packages wm)
   #:use-module (gnu services desktop)
   #:use-module (gnu services networking)
+  #:use-module (gnu services sound)
   #:use-module (gnu services ssh)
   #:use-module (gnu services xorg)
   #:use-module (nongnu packages linux)
@@ -59,6 +60,7 @@
 
  (services (append (list (elogind-service)  ;; to create /run/user/${UID} on login
                          (screen-locker-service i3lock)
+                         (service alsa-service-type)
 			 (service network-manager-service-type)
                          (service ntp-service-type)
                          (service slim-service-type
