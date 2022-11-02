@@ -6,11 +6,13 @@
   #:use-module (gnu)
   #:use-module (gnu packages admin)
   #:use-module (gnu packages certs)
+  #:use-module (gnu packages package-management)
   #:use-module (gnu packages shells)
   #:use-module (gnu packages ssh)
   #:use-module (gnu packages wm)
   #:use-module (gnu services desktop)
   #:use-module (gnu services networking)
+  #:use-module (gnu services nix)
   #:use-module (gnu services sound)
   #:use-module (gnu services ssh)
   #:use-module (gnu services xorg)
@@ -56,12 +58,13 @@
 	       (supplementary-groups '("audio" "netdev" "video" "wheel")))
               %base-user-accounts))
 
- (packages (append (list le-certs nss-certs wpa-supplicant) %base-packages))
+ (packages (append (list le-certs nix nss-certs wpa-supplicant) %base-packages))
 
  (services (append (list (elogind-service)  ;; to create /run/user/${UID} on login
                          (screen-locker-service i3lock)
                          (service alsa-service-type)
 			 (service network-manager-service-type)
+                         (service nix-service-type)
                          (service ntp-service-type)
                          (service slim-service-type
                                   (slim-configuration
