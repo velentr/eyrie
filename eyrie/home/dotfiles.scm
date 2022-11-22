@@ -608,6 +608,7 @@ tztime local {
         emacs-markdown-mode
         emacs-nix-mode
         emacs-org
+        emacs-org-roam
         emacs-rust-mode
         emacs-systemd-mode
         ey:emacs-worklog
