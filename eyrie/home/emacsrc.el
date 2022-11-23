@@ -195,6 +195,12 @@
       (worklog-open)))))
 
 
+;; set up org-roam for zettelkasten
+(require 'org-roam)
+(setq org-roam-directory (file-truename "~/src/slip-box"))
+(org-roam-db-autosync-mode)
+
+
 ;; set up editing aircam sources
 (require 'aircam)
 (dir-locals-set-class-variables
