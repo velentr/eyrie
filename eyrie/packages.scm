@@ -24,6 +24,7 @@
   #:use-module (guix build-system copy)
   #:use-module (guix build-system emacs)
   #:use-module (guix build-system gnu)
+  #:use-module (guix build-system pyproject)
   #:use-module (guix build-system python)
   #:use-module (guix build-system rebar)
   #:use-module (guix build-system ruby)
@@ -279,7 +280,7 @@ Cowboy aims to provide a complete HTTP stack in a small code base.")
        (uri (pypi-uri "revup" version))
        (sha256
         (base32 "0imv67pgkw9yj4aggjfn7z4ai91rp1rpsv3njx3bx592l8l2li15"))))
-    (build-system python-build-system)
+    (build-system pyproject-build-system)
     (arguments
      (list
       #:tests? #f  ;; revup doesn't have any tests
