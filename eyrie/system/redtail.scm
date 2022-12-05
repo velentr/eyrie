@@ -15,7 +15,8 @@
   #:use-module (gnu services ssh)
   #:use-module (gnu services web)
   #:use-module (nongnu packages linux)
-  #:use-module (nongnu system linux-initrd))
+  #:use-module (nongnu system linux-initrd)
+  #:use-module (eyrie services))
 
 (define %encrypted-root
   (mapped-device
@@ -92,6 +93,7 @@
                                    (certificates
                                     (list (certificate-configuration
                                            (domains '("e3r3.com")))))))
+                         (service kitchen-service-type)
                          (service
                           nginx-service-type
                           (nginx-configuration
