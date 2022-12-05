@@ -35,6 +35,7 @@
   #:use-module (gnu packages lsof)
   #:use-module (gnu packages lua)
   #:use-module (gnu packages mail)
+  #:use-module (gnu packages man)
   #:use-module (gnu packages ncdu)
   #:use-module (gnu packages password-utils)
   #:use-module (gnu packages pdf)
@@ -113,6 +114,8 @@
    le-certs
    ledger
    lsof
+   man-pages
+   man-pages-posix
    mpv
    ncdu
    neomutt
