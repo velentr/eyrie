@@ -476,7 +476,7 @@ tztime local {
            ("ping" "'ping -c 3'")))
         (skydio-aliases
          '(("ac" "'cd ~/aircam'")
-           ("awsauth" "'bazel run //auth/aws'")
+           ("awsauth" "'bazel -S run //auth/aws'")
            ("cloudstation" "'bazel run //cloud/dev_instances --'")
            ("ffp" "'bazel run //infrastructure/tools/flashpack:fetch_flashpack_ng -- --email brian.kubisiak@skydio.com'")
            ("gzl" "'bazel run //tools/gazelle'")
