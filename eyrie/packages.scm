@@ -273,13 +273,13 @@ Cowboy aims to provide a complete HTTP stack in a small code base.")
 (define revup
   (package
     (name "revup")
-    (version "0.1.4")
+    (version "0.1.5")
     (source
      (origin
        (method url-fetch)
        (uri (pypi-uri "revup" version))
        (sha256
-        (base32 "0imv67pgkw9yj4aggjfn7z4ai91rp1rpsv3njx3bx592l8l2li15"))))
+        (base32 "0779n60r0sjr7p6vw57dbdkyps1nfknwzl34b56ckialds6aja1a"))))
     (build-system pyproject-build-system)
     (arguments
      (list
