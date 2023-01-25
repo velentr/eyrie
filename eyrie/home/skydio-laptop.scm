@@ -19,6 +19,7 @@
              (home-zsh-configuration
               (environment-variables %skydio-env)
               (zshrc (zshrc-files #t))))
+            (service emacs-dotfiles-service-type)
             (service
              git-dotfiles-service-type
              "brian.kubisiak@skydio.com")
