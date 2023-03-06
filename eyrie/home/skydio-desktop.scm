@@ -50,7 +50,7 @@
               (web-browser ungoogled-chromium)
               (web-browser-name "chromium")
               (font-size 10)
-              (eth-iface "eth0")
+              (eth-iface "ens6f0")
               (status-script (local-file "run-status"))))
             (service rofi-dotfiles-service-type)
             (service
