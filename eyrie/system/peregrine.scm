@@ -61,7 +61,7 @@
 
  (packages (append (list le-certs nix nss-certs) %base-packages))
 
- (services (append (list (elogind-service)
+ (services (append (list (service elogind-service-type)
                          (screen-locker-service i3lock)
                          (service static-networking-service-type
                                   (list (static-networking
