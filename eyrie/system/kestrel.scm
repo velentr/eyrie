@@ -60,7 +60,7 @@
 
  (packages (append (list le-certs nix nss-certs wpa-supplicant) %base-packages))
 
- (services (append (list (elogind-service)  ;; to create /run/user/${UID} on login
+ (services (append (list (service elogind-service-type)  ;; to create /run/user/${UID} on login
                          (screen-locker-service i3lock)
                          (service alsa-service-type)
 			 (service network-manager-service-type)
