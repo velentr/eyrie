@@ -6,6 +6,7 @@
   #:use-module (eyrie home dotfiles)
   #:use-module (gnu home)
   #:use-module (gnu home services shells)
+  #:use-module (gnu home services ssh)
   #:use-module (gnu services)
   #:use-module (guix gexp)
   #:use-module (nongnu packages mozilla))
@@ -40,6 +41,7 @@
                           "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
                           (openpgp-fingerprint
                            "2A39 3FFF 68F4 EF7A 3D29 12AF 6F51 20A0 22FB B2D5"))))))
+            (service home-ssh-agent-service-type)
             (service
              i3-dotfiles-service-type
              (i3-dotfiles-configuration
