@@ -32,6 +32,7 @@
   #:use-module (gnu packages llvm)
   #:use-module (gnu packages license)
   #:use-module (gnu packages linux)
+  #:use-module (gnu packages lisp)
   #:use-module (gnu packages lsof)
   #:use-module (gnu packages lua)
   #:use-module (gnu packages mail)
@@ -127,6 +128,7 @@
    python-lsp-server
    reuse
    ey:revup
+   sbcl  ;; for emacs-slime
    setxkbmap
    shellcheck  ;; for emacs-flycheck on shell code
    sshfs
@@ -608,11 +610,13 @@ tztime local {
         emacs-go-mode
         emacs-julia-mode
         emacs-lsp-mode
+        emacs-macrostep  ;; TODO: emacs-slime needs macrostep installed
         emacs-markdown-mode
         emacs-nix-mode
         emacs-org
         emacs-org-roam
         emacs-rust-mode
+        emacs-slime
         emacs-systemd-mode
         ey:emacs-worklog
         emacs-yaml-mode))
