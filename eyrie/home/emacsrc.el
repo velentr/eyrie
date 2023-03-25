@@ -169,6 +169,10 @@
 ;; bindings for worklogs
 (define-key leader-map "d" #'worklog-dashboard)
 
+;; navigating windows
+(define-key leader-map "o" #'other-window)
+(define-key leader-map "e" #'switch-to-buffer)
+
 (define-key leader-map (kbd "u")
   (lambda ()
     (interactive)
