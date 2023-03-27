@@ -415,7 +415,7 @@ tztime local {
   (package (package rofi) "Rofi package to install."))
 
 (define (rofi-dotfiles-services config)
-  (list (list ".config/rofi/config.rasi"
+  (list (list "rofi/config.rasi"
               (local-file "rofi-config.rasi"))))
 
 (define (rofi-dotfiles-packages config)
@@ -428,7 +428,7 @@ tztime local {
   (service-type
    (name 'rofi-dotfiles)
    (extensions
-    (list (service-extension home-files-service-type
+    (list (service-extension home-xdg-configuration-files-service-type
                              rofi-dotfiles-services)
           (service-extension home-profile-service-type
                              rofi-dotfiles-packages)))
