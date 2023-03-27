@@ -18,7 +18,8 @@
             (service
              emacs-dotfiles-service-type
              (emacs-dotfiles-configuration
-              (plugins (cons emacs-org-jira %core-emacs-plugins))))
+              (plugins (append (list emacs-dockerfile-mode emacs-org-jira)
+                               %core-emacs-plugins))))
             (service
              home-zsh-service-type
              (home-zsh-configuration
