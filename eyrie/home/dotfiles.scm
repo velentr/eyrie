@@ -615,6 +615,7 @@ tztime local {
         emacs-nix-mode
         emacs-org
         emacs-org-roam
+        emacs-projectile
         emacs-rust-mode
         emacs-slime
         emacs-systemd-mode
