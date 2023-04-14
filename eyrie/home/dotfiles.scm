@@ -482,6 +482,7 @@ tztime local {
            ("cloudstation" "'bazel run //cloud/dev_instances --'")
            ("ffp" "'bazel run //infrastructure/tools/flashpack:fetch_flashpack_ng -- --email brian.kubisiak@skydio.com'")
            ("gzl" "'bazel run //tools/gazelle'")
+           ("acfmt" "'bazel run //tools/code_linter:code_format --'")
            ("yubact" "'ssh-add -D && ssh-add -e /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so; ssh-add -s /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so'"))))
     (string-join (map make-alias
                       (if skydio?
