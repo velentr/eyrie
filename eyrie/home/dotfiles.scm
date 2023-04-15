@@ -115,6 +115,7 @@
    le-certs
    ledger
    lsof
+   ey:magpie
    man-pages
    man-pages-posix
    mpv

@@ -11,15 +11,18 @@
   #:use-module (gnu packages erlang)
   #:use-module (gnu packages man)
   #:use-module (gnu packages pkg-config)
+  #:use-module (gnu packages python)
   #:use-module (gnu packages python-build)
   #:use-module (gnu packages python-web)
   #:use-module (gnu packages python-xyz)
   #:use-module (gnu packages ragel)
   #:use-module (gnu packages rails)
+  #:use-module (gnu packages rsync)
   #:use-module (gnu packages ruby)
   #:use-module (gnu packages sqlite)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages video)
+  #:use-module (guix build utils)
   #:use-module (guix build-system cargo)
   #:use-module (guix build-system copy)
   #:use-module (guix build-system emacs)
@@ -44,6 +47,7 @@
             install-topic-commit-msg-hook
             kitchen
             knowledge-store
+            magpie
             revup
             ytar))
 
@@ -338,3 +342,63 @@ self-hosted way of collecting your favorite recipes and how often you cook
 them.")
     (home-page "https://github.com/velentr/kitchen")
     (license license:expat)))
+
+(define magpie
+  (package
+    (name "magpie")
+    (version "0.0.0")
+    (source
+     (origin
+       (method git-fetch)
+       (uri
+        (git-reference
+         (url "https://github.com/velentr/magpie")
+         (commit "76a26a07cd3ed72b982d359285db1786f15feb5a")))
+       (sha256
+        (base32 "0000adrv0k3pg9rk8zj0f5pyf72srhkbbqpj5qjv98alspgccyvn"))))
+    (build-system copy-build-system)
+    (arguments
+     '(#:phases
+       (modify-phases %standard-phases
+         (add-after 'install 'patch-input-paths
+           (lambda* (#:key inputs outputs #:allow-other-keys)
+             (let* ((out (assoc-ref outputs "out"))
+                    (bin (string-append out "/bin"))
+                    (engines (apply
+                              append
+                              (map (lambda (engine)
+                                     (list
+                                      (string-append bin "/magpie-" engine "-init")
+                                      (string-append bin "/magpie-" engine "-sync")))
+                                   '("git" "rsync"))))
+                    (PATH
+                     (map (lambda (package)
+                            (string-append (assoc-ref inputs package) "/bin"))
+                          '("coreutils"
+                            "diffutils"
+                            "findutils"
+                            "git"
+                            "grep"
+                            "rsync"
+                            "sed"))))
+               (for-each
+                (lambda (script)
+                  (wrap-program script
+                    `("PATH" ":" prefix ,PATH)))
+                engines)
+               (wrap-program (string-append bin "/magpie")
+                 `("PATH" ":" prefix (,bin)))))))
+       #:install-plan '(("magpie" "bin/magpie")
+                        ("magpie-git-init" "bin/magpie-git-init")
+                        ("magpie-git-sync" "bin/magpie-git-sync")
+                        ("magpie-rsync-init" "bin/magpie-rsync-init")
+                        ("magpie-rsync-sync" "bin/magpie-rsync-sync"))))
+    (inputs
+     (list coreutils diffutils findutils git grep python rsync sed))
+    (synopsis "Simple scriptable backup script")
+    (description "Magpie is a simple backup script that treats data as a set of
+channels. Each channel is synchronized with a remote using an engine. Magpie is
+designed to be easily extensible to add new engines with different
+capabilities.")
+    (home-page "https://github.com/velentr/magpie")
+    (license license:gpl3)))
