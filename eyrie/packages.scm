@@ -48,6 +48,7 @@
             kitchen
             knowledge-store
             magpie
+            python-async-lru
             revup
             ytar))
 
@@ -273,6 +274,25 @@ protocols, including HTTP/1.1, HTTP/2 and Websocket.")
     (description "Cowboy is a small, fast and modern HTTP server for Erlang/OTP.
 Cowboy aims to provide a complete HTTP stack in a small code base.")
     (license license:isc)))
+
+(define python-async-lru
+  (package
+    (name "python-async-lru")
+    (version "2.0.2")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (pypi-uri "async-lru" version))
+       (sha256
+        (base32 "16l6rcx1spf9acc6czggs5slqn3bc363h0baj73jrib04i7yr1rv"))))
+    (build-system pyproject-build-system)
+    (propagated-inputs (list python-typing-extensions))
+    (home-page "https://github.com/aio-libs/async-lru")
+    (synopsis "Simple LRU cache for asyncio")
+    (description
+     "This package is 100% port of Python built-in function
+functools.lru_cache for asyncio.")
+    (license license:expat)))
 
 (define revup
   (package
