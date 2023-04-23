@@ -48,6 +48,7 @@
             kitchen
             knowledge-store
             magpie
+            magpie-plugins
             python-async-lru
             revup
             ytar))
@@ -422,3 +423,51 @@ designed to be easily extensible to add new engines with different
 capabilities.")
     (home-page "https://github.com/velentr/magpie")
     (license license:gpl3)))
+
+(define magpie-plugins
+  ;; There is not yet a stable release
+  (let ((commit "16efa237599bafbb0e71e070c648d642663345b4")
+        (revision "0"))
+    (package
+      (name "magpie-plugins")
+      (version (git-version "0" revision commit))
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://github.com/velentr/magpie-plugins")
+               (commit commit)))
+         (file-name (git-file-name name version))
+         (sha256
+          (base32 "1qdjxjp5fclcf4qzmizg1zc6wfd8vpz4y7r76lm00yw0rhgbgmw5"))))
+      (build-system cargo-build-system)
+      (arguments
+       (list #:cargo-inputs
+             `(("rust-ciborium" ,rust-ciborium-0.2)
+               ("rust-env-logger" ,rust-env-logger-0.9)
+               ("rust-failure" ,rust-failure-0.1)
+               ("rust-log" ,rust-log-0.4)
+               ("rust-serde" ,rust-serde-1)
+               ("rust-serde-bytes" ,rust-serde-bytes-0.11)
+               ("rust-xdg" ,rust-xdg-2))
+             #:install-source? #f
+             #:phases
+             #~(modify-phases %standard-phases
+                 (add-after 'unpack 'enable-unstable-features
+                   (lambda _
+                     (setenv "RUSTC_BOOTSTRAP" "1")
+                     (for-each
+                      (lambda (filename)
+                        (substitute* filename
+                          (("// SPDX-FileCopyrightText" all)
+                           (string-append
+                            "#![feature(process_exitcode_placeholder)]\n" all))))
+                      (list "src/library-init.rs"
+                            "src/library-sync.rs")))))))
+      (propagated-inputs
+       (list rsync))
+      (home-page "https://github.com/velentr/magpie-plugins")
+      (synopsis "More complex magpie engines, based on CRDT concepts")
+      (description "Additional plugins that translate filesystem layouts into
+CRDTs for sync'ing with a remote server using rsync.")
+      (license license:gpl3))))

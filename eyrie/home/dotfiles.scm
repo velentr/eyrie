@@ -117,6 +117,7 @@
    ledger
    lsof
    ey:magpie
+   ey:magpie-plugins
    man-pages
    man-pages-posix
    mpv
