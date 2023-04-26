@@ -65,6 +65,7 @@
             %skydio-packages
             emacs-dotfiles-service-type
             emacs-dotfiles-configuration
+            git-dotfiles-configuration
             git-dotfiles-service-type
             guile-dotfiles-service-type
             guix-channels-service-type
@@ -161,14 +162,32 @@
    openscad
    prusa-slicer))
 
-(define (git-config email)
+(define (serialize-integer field-name val)
+  (serialize-field field-name (number->string val)))
+
+(define (serialize-string field-name val)
+  (serialize-field field-name val))
+
+(define (package-list? val)
+  (and (list? val) (and-map package? val)))
+
+(define (serialize-package-list field-name val)
+  #f)
+
+(define-configuration git-dotfiles-configuration
+  (email (string "") "Email address to use for commit authorship.")
+  (github-user (string "") "GitHub username for the gh command-line tool."))
+
+(define (git-config config)
   (define (config-option option)
     (string-append "\t" (car option) " = " (cadr option)))
   (define (config-section section)
     (let ((header (string-append "[" (car section) "]"))
           (body (map config-option (cadr section))))
       (string-join (cons header body) "\n")))
-  (let ((config-tree
+  (let* ((email (git-dotfiles-configuration-email config))
+        (github-user (git-dotfiles-configuration-github-user config))
+        (core-config-tree
          `(("alias"      (("ac"          "log --first-parent")
                           ("locate"     "ls-files --")
                           ("ref"        "rev-parse HEAD")
@@ -185,19 +204,25 @@
            ("push"       (("default"    "simple")))
            ("rebase"     (("autosquash" "1")))
            ("user"       (("name"       "Brian Kubisiak")
-                          ("email"      ,email))))))
+                          ("email"      ,email)))))
+        (config-tree
+         (if (equal? github-user "")
+             core-config-tree
+             (cons `("github" (("user" ,github-user)))
+                   core-config-tree))))
     (string-join (map config-section config-tree) "\n")))
 
-(define (git-dotfiles-service email)
+(define (git-dotfiles-service config)
   (list (list ".gitconfig"
               (plain-file
-               "gitconfig" (git-config email)))))
+               "gitconfig" (git-config config)))))
 
 (define git-dotfiles-service-type
   (service-type
    (name 'git-dotfiles)
    (extensions
     (list (service-extension home-files-service-type git-dotfiles-service)))
+   (default-value (git-dotfiles-configuration))
    (description
     "Create a global @file{~/.gitconfig} for the user, given the user's email
 address")))
@@ -220,18 +245,6 @@ address")))
     (list (service-extension home-files-service-type guile-dotfiles-service)))
    (description
     "Create a globel @file{~/.guile} for the user with the given contents")))
-
-(define (serialize-integer field-name val)
-  (serialize-field field-name (number->string val)))
-
-(define (serialize-string field-name val)
-  (serialize-field field-name val))
-
-(define (package-list? val)
-  (and (list? val) (and-map package? val)))
-
-(define (serialize-package-list field-name val)
-  #f)
 
 (define-configuration i3-dotfiles-configuration
   (web-browser (package nyxt) "The web browser to use.")

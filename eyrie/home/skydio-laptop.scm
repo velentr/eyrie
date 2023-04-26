@@ -22,7 +22,9 @@
             (service emacs-dotfiles-service-type)
             (service
              git-dotfiles-service-type
-             "brian.kubisiak@skydio.com")
+             (git-dotfiles-configuration
+              (email "brian.kubisiak@skydio.com")
+              (github-user "brian-kubisiak-skydio")))
             (service
              i3-dotfiles-service-type
              (i3-dotfiles-configuration

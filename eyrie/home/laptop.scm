@@ -25,7 +25,8 @@
              (zshrc (zshrc-files #f))))
            (service
             git-dotfiles-service-type
-            "brian@kubisiak.com")
+            (git-dotfiles-configuration
+             (email "brian@kubisiak.com")))
            (service
             guile-dotfiles-service-type
             '((use-modules (ice-9 readline))
