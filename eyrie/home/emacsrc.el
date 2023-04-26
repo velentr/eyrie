@@ -75,10 +75,10 @@
   (set-fill-column 100))
 (add-hook 'bazel-mode-hook 'sane-bazel-mode)
 
-;; lsp-mode setup
-(require 'lsp-mode)
-(add-hook 'python-mode-hook #'lsp)
-(add-hook 'rust-mode-hook #'lsp)
+;; lsp setup
+(require 'eglot)
+(add-hook 'rust-mode-hook 'eglot-ensure)
+(add-hook 'python-mode-hook 'eglot-ensure)
 
 ;; emacs only defines 8 colors by default; define the other 8 using solarized
 ;; colors

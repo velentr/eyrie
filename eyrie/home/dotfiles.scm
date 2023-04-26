@@ -605,13 +605,13 @@ tztime local {
         emacs-cmake-mode
         emacs-company
         emacs-dts-mode
+        emacs-eglot
         emacs-erlang
         emacs-evil
         emacs-flycheck
         ey:emacs-github-mode
         emacs-go-mode
         emacs-julia-mode
-        emacs-lsp-mode
         emacs-macrostep  ;; TODO: emacs-slime needs macrostep installed
         emacs-markdown-mode
         emacs-nix-mode
