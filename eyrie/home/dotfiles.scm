@@ -55,6 +55,7 @@
   #:use-module (gnu services configuration)
   #:use-module (guix gexp)
   #:use-module (guix packages)
+  #:use-module (guix transformations)
   #:use-module (ice-9 pretty-print)
   #:export (%cad-packages
             %core-emacs-plugins
@@ -94,6 +95,10 @@
      ("CLOUD_CLIENT_EMAIL" . "brian.kubisiak@skydio.com")
      ("SKYCC_LOCAL_JOBS" . "10"))))          ;; more parallelism
 
+(define fix-rust-analyzer
+  (options->transformation
+   '((without-tests . "rust-analyzer"))))
+
 (define %core-packages
   (list
    b3sum
@@ -129,6 +134,7 @@
    picocom
    psmisc
    python-lsp-server
+   (fix-rust-analyzer rust-analyzer)
    reuse
    ey:revup
    sbcl  ;; for emacs-slime
