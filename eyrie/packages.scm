@@ -450,20 +450,7 @@ capabilities.")
                ("rust-serde" ,rust-serde-1)
                ("rust-serde-bytes" ,rust-serde-bytes-0.11)
                ("rust-xdg" ,rust-xdg-2))
-             #:install-source? #f
-             #:phases
-             #~(modify-phases %standard-phases
-                 (add-after 'unpack 'enable-unstable-features
-                   (lambda _
-                     (setenv "RUSTC_BOOTSTRAP" "1")
-                     (for-each
-                      (lambda (filename)
-                        (substitute* filename
-                          (("// SPDX-FileCopyrightText" all)
-                           (string-append
-                            "#![feature(process_exitcode_placeholder)]\n" all))))
-                      (list "src/library-init.rs"
-                            "src/library-sync.rs")))))))
+             #:install-source? #f))
       (propagated-inputs
        (list rsync))
       (home-page "https://github.com/velentr/magpie-plugins")
