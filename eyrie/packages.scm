@@ -298,13 +298,13 @@ functools.lru_cache for asyncio.")
 (define revup
   (package
     (name "revup")
-    (version "0.1.5")
+    (version "0.2.1")
     (source
      (origin
        (method url-fetch)
        (uri (pypi-uri "revup" version))
        (sha256
-        (base32 "0779n60r0sjr7p6vw57dbdkyps1nfknwzl34b56ckialds6aja1a"))))
+        (base32 "14vmjlkrq29xjiyqhc50j1w73xff01v6i953p6hliri6bvili80i"))))
     (build-system pyproject-build-system)
     (arguments
      (list
@@ -321,7 +321,7 @@ functools.lru_cache for asyncio.")
                 (("shutil.which\\(\"git\"\\)")
                  (string-append "\"" (which "git") "\""))))))))
     (inputs (list git man-db))
-    (propagated-inputs (list python-aiohttp python-rich))
+    (propagated-inputs (list python-aiohttp python-async-lru python-rich))
     (native-inputs (list python-wheel))
     (home-page "https://github.com/Skydio/revup")
     (synopsis "Revolutionary commit-based code review and workflow tools for
