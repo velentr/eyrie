@@ -11,3 +11,7 @@ setopt completealiases
 eval `dircolors -b`
 zstyle ':completion:*' list-colors '${(s.:.)LS_COLORS}'
 zstyle ':completion:*' menu select eval "$(dircolors -b)"
+
+if [ -f "${HOME}/aircam/build/python3_venv/bin/register-python-argcomplete" ]; then
+	eval "$(${HOME}/aircam/build/python3_venv/bin/register-python-argcomplete --shell zsh skyrun)"
+fi
