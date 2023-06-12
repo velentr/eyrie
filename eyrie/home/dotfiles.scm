@@ -95,10 +95,6 @@
      ("CLOUD_CLIENT_EMAIL" . "brian.kubisiak@skydio.com")
      ("SKYCC_LOCAL_JOBS" . "10"))))          ;; more parallelism
 
-(define fix-rust-analyzer
-  (options->transformation
-   '((without-tests . "rust-analyzer"))))
-
 (define %core-packages
   (list
    b3sum
@@ -134,7 +130,6 @@
    picocom
    psmisc
    python-lsp-server
-   (fix-rust-analyzer rust-analyzer)
    reuse
    ey:revup
    sbcl  ;; for emacs-slime
