@@ -6,6 +6,7 @@
   #:use-module (gnu packages)
   #:use-module (gnu packages base)
   #:use-module (gnu packages crates-io)
+  #:use-module (gnu packages databases)
   #:use-module (gnu packages documentation)
   #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu packages erlang)
@@ -37,7 +38,8 @@
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
   #:use-module (guix utils)
-  #:export (emacs-aircam-mode
+  #:export (birdr
+            emacs-aircam-mode
             emacs-github-mode
             emacs-worklog
             erlang-cowboy
@@ -458,3 +460,27 @@ capabilities.")
       (description "Additional plugins that translate filesystem layouts into
 CRDTs for sync'ing with a remote server using rsync.")
       (license license:gpl3))))
+
+(define birdr
+  (package
+    (name "birdr")
+    (version "0.0.0")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/velentr/birdr")
+             (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "12vxl8wkfxg2z3kln383xngbks5fg87vl519kcizy2398v3k23i5"))))
+    (build-system pyproject-build-system)
+    (arguments
+     (list #:tests? #false))
+    (propagated-inputs
+     (list python-click python-rich python-sqlalchemy))
+    (synopsis "Record and track bird sightings and checklists")
+    (description "Command-line tool for tracking bird sightings and checklists in a
+database.")
+    (home-page "https://github.com/velentr/birdr")
+    (license license:gpl3)))

@@ -99,6 +99,7 @@
   (list
    b3sum
    bc
+   ey:birdr
    clang-14  ;; for emacs-company autocompletion
    feh
    file
