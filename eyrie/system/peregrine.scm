@@ -62,7 +62,10 @@
  (packages (append (list le-certs nix nss-certs) %base-packages))
 
  (services (append (list (service elogind-service-type)
-                         (screen-locker-service i3lock)
+                         (service screen-locker-service-type
+                                  (screen-locker-configuration
+                                   (name "i3lock")
+                                   (program (file-append i3lock "/bin/i3lock"))))
                          (service static-networking-service-type
                                   (list (static-networking
                                          (addresses
