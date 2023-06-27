@@ -5,6 +5,9 @@
 (define-module (eyrie system keys)
   #:use-module (gnu))
 
+(define-public %kestrel-ssh-key
+  (local-file "kestrel-id-rsa.pub"))
+
 (define-public %peregrine-ssh-key
   (local-file "peregrine-id-rsa.pub"))
 
