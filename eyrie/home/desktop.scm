@@ -17,6 +17,15 @@
    (append (list
             (service emacs-dotfiles-service-type)
             (service
+             home-openssh-service-type
+             (home-openssh-configuration
+              (hosts
+               (list (openssh-host (name "e3r3.com")
+                                   (user "root"))
+                     (openssh-host (name "rsync.net")
+                                   (host-name "fm1436.rsync.net")
+                                   (user "fm1436"))))))
+            (service
              home-zsh-service-type
              (home-zsh-configuration
               (environment-variables %core-env)
