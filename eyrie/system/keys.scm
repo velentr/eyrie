@@ -5,6 +5,9 @@
 (define-module (eyrie system keys)
   #:use-module (gnu))
 
+(define-public %condor-ssh-key
+  (local-file "condor-id-ecdsa.pub"))
+
 (define-public %kestrel-ssh-key
   (local-file "kestrel-id-rsa.pub"))
 
