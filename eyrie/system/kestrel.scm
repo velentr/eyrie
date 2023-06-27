@@ -66,7 +66,7 @@
                                    (name "i3lock")
                                    (program (file-append i3lock "/bin/i3lock"))))
                          (service alsa-service-type)
-			 (service network-manager-service-type)
+                         (service network-manager-service-type)
                          (service nix-service-type)
                          (service ntp-service-type)
                          (service slim-service-type
