@@ -61,7 +61,10 @@
  (packages (append (list le-certs nix nss-certs wpa-supplicant) %base-packages))
 
  (services (append (list (service elogind-service-type)  ;; to create /run/user/${UID} on login
-                         (screen-locker-service i3lock)
+                         (service screen-locker-service-type
+                                  (screen-locker-configuration
+                                   (name "i3lock")
+                                   (program (file-append i3lock "/bin/i3lock"))))
                          (service alsa-service-type)
 			 (service network-manager-service-type)
                          (service nix-service-type)
