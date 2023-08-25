@@ -110,38 +110,6 @@
 (add-hook 'after-init-hook #'global-company-mode)
 
 
-;; Search through the currect git repo for the file matching a glob.
-(defun repo-search-ret ()
-  "Quit the *repo-search* buffer, opening the file under the cursor."
-  (interactive)
-  (let ((file (thing-at-point 'filename)))
-    (quit-window)
-    (find-file file)))
-(defvar repo-search-map
-  (let ((map (make-sparse-keymap)))
-    ;; Note that this only works in evil mode; otherwise, (kbd "RET") should be
-    ;; used.
-    (define-key map [remap evil-ret] 'repo-search-ret)
-    map)
-  "Keymap for repo-search minor mode.")
-
-(define-minor-mode repo-search-mode
-  "Minor mode for file selection during repo-search."
-  :init-value nil
-  :lighter " RepoSearch"
-  :keymap repo-search-map)
-
-(defun repo-search (glob)
-  "Search through the git repo in the cwd for a file matching GLOB."
-  (interactive "sRepo search glob: ")
-  (with-output-to-temp-buffer
-      "*repo-search*"
-    (call-process
-     "git" nil standard-output nil "--no-pager" "ls-files" "--" (concat "*" glob "*"))
-    (switch-to-buffer-other-window "*repo-search*")
-    (repo-search-mode t)))
-
-
 ;; leader commands
 (defvar leader-map (make-sparse-keymap)
   "Keymap for leader sequences.")
@@ -159,7 +127,7 @@
 (define-key leader-map "f" #'aircam-code-format)
 
 ;; search for a file in the git repo
-(define-key leader-map "s" #'repo-search)
+(define-key leader-map "s" #'project-find-file)
 
 ;; rebinding some of the github stuff to work better with evil-mode
 (define-key leader-map "g" #'gh-open-buffer)
