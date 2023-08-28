@@ -117,7 +117,7 @@
 
 ;; find tags
 (define-key leader-map "t" #'xref-find-definitions)
-(define-key leader-map "r" #'xref-pop-marker-stack)
+(define-key leader-map "y" #'xref-go-back)
 
 ;; scan through flycheck errors
 (define-key leader-map "[" (kbd "C-c ! p"))
