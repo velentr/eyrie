@@ -635,6 +635,7 @@ tztime local {
         emacs-rust-mode
         emacs-slime
         emacs-systemd-mode
+        emacs-terraform-mode
         ey:emacs-worklog
         emacs-yaml-mode))
 
