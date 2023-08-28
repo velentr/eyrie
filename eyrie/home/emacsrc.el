@@ -179,8 +179,6 @@
 (org-roam-db-autosync-mode)
 
 
-(setq jiralib-url "https://skydio.atlassian.net")
-
 ;; editing sources with unicode
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
