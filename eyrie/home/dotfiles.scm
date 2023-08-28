@@ -615,8 +615,7 @@ tztime local {
      "\n")))
 
 (define %core-emacs-plugins
-  (list ey:emacs-aircam-mode
-        emacs-bazel
+  (list emacs-bazel
         emacs-color-theme-solarized
         emacs-cmake-mode
         emacs-company

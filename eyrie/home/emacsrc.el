@@ -124,7 +124,13 @@
 (define-key leader-map "]" (kbd "C-c ! n"))
 
 ;; run code_format
-(define-key leader-map "f" #'aircam-code-format)
+(define-key leader-map "f"
+  (lambda ()
+    (interactive)
+    (save-buffer)
+    (call-process
+     "~/aircam/skyrun" nil nil nil "bin" "code_format" buffer-file-name)
+    (revert-buffer t t t)))
 
 ;; search for a file in the git repo
 (define-key leader-map "s" #'project-find-file)
@@ -172,16 +178,6 @@
 (setq org-roam-directory (file-truename "~/src/slip-box"))
 (org-roam-db-autosync-mode)
 
-
-;; set up editing aircam sources
-(require 'aircam)
-(dir-locals-set-class-variables
- 'aircam
- `((c-mode      . ((mode . c++) ; for header files
-                   (eval . (aircam-c++-mode))))
-   (c++-mode    . ((eval . (aircam-c++-mode))))
-   (python-mode . ((eval . (aircam-py-mode))))))
-(dir-locals-set-directory-class "~/aircam" 'aircam)
 
 (setq jiralib-url "https://skydio.atlassian.net")
 

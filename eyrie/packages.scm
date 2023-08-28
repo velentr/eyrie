@@ -39,7 +39,6 @@
   #:use-module (guix packages)
   #:use-module (guix utils)
   #:export (birdr
-            emacs-aircam-mode
             emacs-github-mode
             emacs-worklog
             erlang-cowboy
@@ -118,21 +117,6 @@ on driving projects to completion.")
    (description
     "Make up for github's poor review interface by doing some interaction from
 emacs.")
-   (license license:gpl2)))
-
-(define emacs-aircam-mode
-  (package
-   (name "emacs-aircam-mode")
-   (version "0")
-   (source (local-file "./packages/aircam-mode" #:recursive? #t))
-   (build-system emacs-build-system)
-   (propagated-inputs
-    (list emacs-company emacs-flycheck))
-   (home-page
-    "https://github.com/velentr/eyrie/tree/master/eyrie/packages/aircam-mode")
-   (synopsis "")
-   (description
-    "")
    (license license:gpl2)))
 
 (define knowledge-store
