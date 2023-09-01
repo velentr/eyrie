@@ -8,6 +8,7 @@
   #:use-module (gnu home services shells)
   #:use-module (gnu packages chromium)
   #:use-module (gnu packages emacs-xyz)
+  #:use-module (gnu packages protobuf)
   #:use-module (gnu services)
   #:use-module (guix gexp))
 
@@ -18,8 +19,9 @@
             (service
              emacs-dotfiles-service-type
              (emacs-dotfiles-configuration
-              (plugins (append (list emacs-dockerfile-mode)
-                               %core-emacs-plugins))))
+              (plugins (cons* emacs-dockerfile-mode
+                              emacs-protobuf-mode
+                              %core-emacs-plugins))))
             (service
              home-zsh-service-type
              (home-zsh-configuration
