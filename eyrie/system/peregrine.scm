@@ -14,6 +14,7 @@
   #:use-module (gnu services desktop)
   #:use-module (gnu services networking)
   #:use-module (gnu services nix)
+  #:use-module (gnu services samba)
   #:use-module (gnu services security-token)
   #:use-module (gnu services ssh)
   #:use-module (gnu services xorg)
@@ -27,6 +28,17 @@
    (source (uuid "65d8fcab-f426-43c4-951d-46ac46a0561e"))
    (target "root")
    (type luks-device-mapping)))
+
+(define %samba-config
+  (plain-file
+   "smb.conf"
+   "[global]
+security = user
+
+[photos]
+path = /share
+read only = no
+"))
 
 (operating-system
  (kernel linux)
@@ -88,6 +100,10 @@
                                    (password-authentication? #f)
                                    (port-number 2222)))
                          (service pcscd-service-type)
+                         (service samba-service-type
+                                  (samba-configuration
+                                   (enable-smbd? #t)
+                                   (config-file %samba-config)))
                          (service slim-service-type
                                   (slim-configuration
                                    (display ":0")))
