@@ -5,12 +5,16 @@
 (define-module (eyrie packages)
   #:use-module (gnu packages)
   #:use-module (gnu packages base)
+  #:use-module (gnu packages bash)
   #:use-module (gnu packages crates-io)
   #:use-module (gnu packages databases)
   #:use-module (gnu packages documentation)
   #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu packages erlang)
+  #:use-module (gnu packages gnupg)
+  #:use-module (gnu packages guile)
   #:use-module (gnu packages man)
+  #:use-module (gnu packages package-management)
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages python)
   #:use-module (gnu packages python-build)
@@ -28,6 +32,7 @@
   #:use-module (guix build-system copy)
   #:use-module (guix build-system emacs)
   #:use-module (guix build-system gnu)
+  #:use-module (guix build-system guile)
   #:use-module (guix build-system pyproject)
   #:use-module (guix build-system python)
   #:use-module (guix build-system rebar)
@@ -44,6 +49,7 @@
             erlang-cowboy
             erlang-cowlib
             erlang-ranch
+            g-hooks
             git-third-party
             install-topic-commit-msg-hook
             kitchen
@@ -467,4 +473,67 @@ CRDTs for sync'ing with a remote server using rsync.")
     (description "Command-line tool for tracking bird sightings and checklists in a
 database.")
     (home-page "https://github.com/velentr/birdr")
+    (license license:gpl3)))
+
+(define g-hooks
+  (package
+    (name "g-hooks")
+    (version "0.0.0")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/velentr/g-hooks")
+             (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "04wpb8n0z2k3y51wqs33w0mzqwnzzqzqkmdybxclrllvbdzlni10"))))
+    (build-system guile-build-system)
+    (arguments
+     (list #:phases
+           #~(modify-phases %standard-phases
+               (add-after 'unpack 'patch-tool-inputs
+                 (lambda _
+                   (substitute* "g-hooks/core.scm"
+                     (("define %git \"git\"")
+                      (string-append "define %git \"" (which "git") "\"")))))
+               (add-after 'install 'wrap-program
+                 (lambda* (#:key inputs #:allow-other-keys)
+                   (let* ((bin (string-append #$output "/bin"))
+                          (bytestructures
+                           (assoc-ref inputs "guile-bytestructures"))
+                          (gcrypt (assoc-ref inputs "guile-gcrypt"))
+                          (git (assoc-ref inputs "guile-git"))
+                          (guix (assoc-ref inputs "guix"))
+                          (version (target-guile-effective-version))
+                          (scm (string-append "/share/guile/site/" version))
+                          (go (string-append
+                               "/lib/guile/"
+                               version
+                               "/site-ccache")))
+                     (install-file "scripts/g-hooks" bin)
+                     (wrap-program (string-append bin "/g-hooks")
+                       '("GUILE_AUTO_COMPILE" prefix
+                         ("0"))
+                       ;; TODO: fix this nonsense
+                       `("GUILE_LOAD_PATH" prefix
+                         (,(string-append #$output scm)
+                          ,(string-append bytestructures scm)
+                          ,(string-append gcrypt scm)
+                          ,(string-append git scm)
+                          ,(string-append guix scm)))
+                       `("GUILE_LOAD_COMPILED_PATH" prefix
+                         (,(string-append #$output go)
+                          ,(string-append bytestructures go)
+                          ,(string-append gcrypt go)
+                          ,(string-append git go)
+                          ,(string-append guix go))))))))))
+    (native-inputs (list guile-3.0))
+    (inputs
+     (list bash-minimal git guile-bytestructures guile-gcrypt guile-git guix))
+    (synopsis "Manage git hooks using guix")
+    (description "g-hooks allows you to describe git hooks using guix’s
+g-expressions, then build and install them as a private profile under
+.git/g-hooks.")
+    (home-page "https://github.com/velentr/g-hooks")
     (license license:gpl3)))

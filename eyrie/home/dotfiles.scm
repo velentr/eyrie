@@ -103,6 +103,7 @@
    clang-14  ;; for emacs-company autocompletion
    feh
    file
+   ey:g-hooks
    ghostscript
    git
    git-lfs
