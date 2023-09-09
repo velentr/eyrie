@@ -68,7 +68,8 @@ read only = no
                (name "bkubisiak")
                (group "users")
                (shell (file-append zsh "/bin/zsh"))
-               (supplementary-groups '("wheel" "audio" "video" "lp" "lpadmin")))
+               (supplementary-groups
+                '("wheel" "audio" "video" "lp" "lpadmin" "dialout")))
               %base-user-accounts))
 
  (packages (append (list le-certs nix nss-certs) %base-packages))
