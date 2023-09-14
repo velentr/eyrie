@@ -134,6 +134,7 @@
    python-lsp-server
    reuse
    ey:revup
+   ripgrep
    sbcl  ;; for emacs-slime
    setxkbmap
    shellcheck  ;; for emacs-flycheck on shell code
