@@ -16,7 +16,15 @@
 (setq auto-save-default nil)
 (menu-bar-mode -1)
 (global-linum-mode t)
+
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(add-hook 'find-file-hook
+          #'(lambda ()
+             (let ((proj (project-current)))
+               (if proj
+                   (setq default-directory (project-root proj))))))
+
 (setq-default indent-tabs-mode nil)
 
 ;; git-rebase-mode is stupidly more complex than just editing in fundamental
