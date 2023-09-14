@@ -596,6 +596,7 @@ tztime local {
            ("URxvt*color14"                "S_base1")
            ("URxvt*color15"                "S_base3")
            ("URxvt*.scrollBar"             "false")
+           ("URxvt*.saveLines"             "8192")
            ("URxvt*.font"                  ,(string-append
                                              "xft:Source Code Pro:pixelsize="
                                              (number->string font-size))))))
