@@ -135,6 +135,7 @@
    reuse
    ey:revup
    ripgrep
+   rust-analyzer
    sbcl  ;; for emacs-slime
    setxkbmap
    shellcheck  ;; for emacs-flycheck on shell code
