@@ -630,15 +630,12 @@ tztime local {
         emacs-flycheck
         ey:emacs-github-mode
         emacs-go-mode
-        emacs-julia-mode
-        emacs-macrostep  ;; TODO: emacs-slime needs macrostep installed
         emacs-markdown-mode
         emacs-nix-mode
         emacs-paredit
         emacs-org
         emacs-org-roam
         emacs-rust-mode
-        emacs-slime
         emacs-systemd-mode
         emacs-terraform-mode
         ey:emacs-worklog
