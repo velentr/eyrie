@@ -634,6 +634,7 @@ tztime local {
         emacs-macrostep  ;; TODO: emacs-slime needs macrostep installed
         emacs-markdown-mode
         emacs-nix-mode
+        emacs-paredit
         emacs-org
         emacs-org-roam
         emacs-rust-mode
