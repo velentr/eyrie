@@ -32,7 +32,6 @@
   #:use-module (gnu packages llvm)
   #:use-module (gnu packages license)
   #:use-module (gnu packages linux)
-  #:use-module (gnu packages lisp)
   #:use-module (gnu packages lsof)
   #:use-module (gnu packages lua)
   #:use-module (gnu packages mail)
@@ -136,7 +135,6 @@
    ey:revup
    ripgrep
    rust-analyzer
-   sbcl  ;; for emacs-slime
    setxkbmap
    shellcheck  ;; for emacs-flycheck on shell code
    sshfs
