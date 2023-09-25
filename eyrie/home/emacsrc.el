@@ -15,7 +15,7 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (menu-bar-mode -1)
-(global-linum-mode t)
+(global-display-line-numbers-mode t)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
