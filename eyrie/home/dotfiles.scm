@@ -28,12 +28,10 @@
   #:use-module (gnu packages guile-xyz)
   #:use-module (gnu packages haskell-apps)
   #:use-module (gnu packages image-viewers)
-  #:use-module (gnu packages julia)
   #:use-module (gnu packages llvm)
   #:use-module (gnu packages license)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages lsof)
-  #:use-module (gnu packages lua)
   #:use-module (gnu packages mail)
   #:use-module (gnu packages man)
   #:use-module (gnu packages ncdu)
@@ -153,10 +151,7 @@
 
 (define %devel-packages
   (append (list
-           erlang
            gdb
-           julia
-           lua
            pinentry-tty)
           %core-packages))
 
