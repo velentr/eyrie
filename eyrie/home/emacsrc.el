@@ -206,6 +206,10 @@
             (evil-textobj-tree-sitter-get-textobj "function.outer"))
 (define-key evil-inner-text-objects-map "f"
             (evil-textobj-tree-sitter-get-textobj "function.inner"))
+(define-key evil-outer-text-objects-map "o"
+            (evil-textobj-tree-sitter-get-textobj "class.outer"))
+(define-key evil-inner-text-objects-map "o"
+            (evil-textobj-tree-sitter-get-textobj "class.inner"))
 
 ;; emacs only defines 8 colors by default; define the other 8 using solarized
 ;; colors
