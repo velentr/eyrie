@@ -196,6 +196,17 @@
 (add-hook 'rust-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'eglot-ensure)
 
+;; treesit setup
+(require 'treesit)
+
+(setq major-mode-remap-alist
+ '((python-mode . python-ts-mode)))
+
+(define-key evil-outer-text-objects-map "f"
+            (evil-textobj-tree-sitter-get-textobj "function.outer"))
+(define-key evil-inner-text-objects-map "f"
+            (evil-textobj-tree-sitter-get-textobj "function.inner"))
+
 ;; emacs only defines 8 colors by default; define the other 8 using solarized
 ;; colors
 (tty-color-define "brightblack"    8 '(  0  43  54))

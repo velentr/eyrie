@@ -41,6 +41,7 @@
   #:use-module (gnu packages rust)
   #:use-module (gnu packages rust-apps)
   #:use-module (gnu packages terminals)
+  #:use-module (gnu packages tree-sitter)
   #:use-module (gnu packages valgrind)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages video)
@@ -138,6 +139,7 @@
    sshfs
    strace
    tree
+   tree-sitter-python
    usbutils
    valgrind
    vim
@@ -620,6 +622,7 @@ tztime local {
         emacs-eglot
         emacs-erlang
         emacs-evil
+        ey:emacs-evil-textobj-tree-sitter
         emacs-flycheck
         ey:emacs-github-mode
         emacs-go-mode
