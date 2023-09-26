@@ -46,6 +46,7 @@
   #:export (birdr
             emacs-github-mode
             emacs-worklog
+            emacs-evil-textobj-tree-sitter
             erlang-cowboy
             erlang-cowlib
             erlang-ranch
@@ -124,6 +125,41 @@ on driving projects to completion.")
     "Make up for github's poor review interface by doing some interaction from
 emacs.")
    (license license:gpl2)))
+
+(define emacs-evil-textobj-tree-sitter
+  ;; From 2023-08-16
+  ;; No releases available
+  (let ((commit "19979843f5fc437917f9a4dae977f5e6d4793726")
+        (revision "0"))
+    (package
+      (name "emacs-evil-textobj-tree-sitter")
+      (version (git-version "0" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://github.com/meain/evil-textobj-tree-sitter")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32 "1mqh6zqjnbdmqblqpv1409rmx7h1wqprp1z7h68mvmyl80c8r6bd"))))
+      (build-system emacs-build-system)
+      (arguments
+       (list
+        #:phases
+        #~(modify-phases %standard-phases
+            (add-after 'install 'install-pieces
+              (lambda _
+                (let ((treesit-queries
+                       (string-append #$output "/share/emacs/site-lisp/evil-textobj-tree-sitter-"
+                                      #$version "/treesit-queries")))
+                  (mkdir-p treesit-queries)
+                  (copy-recursively "treesit-queries" treesit-queries)))))))
+      (home-page "https://github.com/meain/evil-textobj-tree-sitter")
+      (synopsis "Tree-sitter powered textobjects for evil mode in Emacs")
+      (description "This package will let you create evil textobjects using
+tree-sitter grammars. You can easily create @code{function}, @code{class},
+@code{comment} etc textobjects in multiple languages.")
+      (license license:asl2.0))))
 
 (define knowledge-store
   (package
