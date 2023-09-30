@@ -194,6 +194,7 @@
 ;; lsp setup
 (require 'eglot)
 (add-hook 'rust-mode-hook 'eglot-ensure)
+(add-hook 'rust-ts-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'eglot-ensure)
 (add-hook 'python-ts-mode-hook 'eglot-ensure)
 
@@ -201,7 +202,8 @@
 (require 'treesit)
 
 (setq major-mode-remap-alist
- '((python-mode . python-ts-mode)))
+      '((python-mode . python-ts-mode)
+        (rust-mode . rust-ts-mode)))
 
 (define-key evil-outer-text-objects-map "f"
             (evil-textobj-tree-sitter-get-textobj "function.outer"))

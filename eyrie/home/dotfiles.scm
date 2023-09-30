@@ -140,6 +140,7 @@
    strace
    tree
    tree-sitter-python
+   tree-sitter-rust
    usbutils
    valgrind
    vim
