@@ -307,12 +307,6 @@
       (worklog-open)))))
 
 
-;; set up org-roam for zettelkasten
-(require 'org-roam)
-(setq org-roam-directory (file-truename "~/src/slip-box"))
-(org-roam-db-autosync-mode)
-
-
 ;; editing sources with unicode
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)

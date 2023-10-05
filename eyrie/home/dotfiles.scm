@@ -631,7 +631,6 @@ tztime local {
         emacs-nix-mode
         emacs-paredit
         emacs-org
-        emacs-org-roam
         emacs-rust-mode
         emacs-systemd-mode
         emacs-terraform-mode
