@@ -47,6 +47,7 @@
             emacs-github-mode
             emacs-worklog
             emacs-evil-textobj-tree-sitter
+            emacs-combobulate
             erlang-cowboy
             erlang-cowlib
             erlang-ranch
@@ -160,6 +161,29 @@ emacs.")
 tree-sitter grammars. You can easily create @code{function}, @code{class},
 @code{comment} etc textobjects in multiple languages.")
       (license license:asl2.0))))
+
+(define emacs-combobulate
+  ;; From 2023-09-25
+  ;; No releases available
+  (let ((commit "c7e4670a3047c0b58dff3746577a5c8e5832cfba")
+        (revision "0"))
+    (package
+      (name "emacs-combobulate")
+      (version (git-version "0" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://github.com/mickeynp/combobulate")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32 "063w2sm0c7xhg3ml31xp870azb0sv7z689lnbnjnbl3rfdy4kg50"))))
+      (build-system emacs-build-system)
+      (home-page "https://github.com/mickeynp/combobulate")
+      (synopsis "Structured Editing and Navigation in Emacs")
+      (description "Combobulate is a package that adds structured editing and
+movement to a wide range of programming languages.")
+      (license license:gpl3))))
 
 (define knowledge-store
   (package
