@@ -196,7 +196,12 @@
 (add-hook 'rust-mode-hook 'eglot-ensure)
 (add-hook 'rust-ts-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'eglot-ensure)
-(add-hook 'python-ts-mode-hook 'eglot-ensure)
+(add-hook 'python-ts-mode-hook
+          (lambda ()
+            (combobulate-mode t)
+            (keymap-set python-ts-mode-map "C-j" 'combobulate-drag-down)
+            (keymap-set python-ts-mode-map "C-k" 'combobulate-drag-up)
+            (eglot-ensure)))
 
 ;; treesit setup
 (require 'treesit)

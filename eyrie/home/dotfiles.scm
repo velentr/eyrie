@@ -618,6 +618,7 @@ tztime local {
   (list emacs-bazel
         emacs-color-theme-solarized
         emacs-cmake-mode
+        ey:emacs-combobulate
         emacs-company
         emacs-dts-mode
         emacs-eglot
