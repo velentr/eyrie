@@ -201,6 +201,10 @@
             (combobulate-mode t)
             (keymap-set python-ts-mode-map "C-j" 'combobulate-drag-down)
             (keymap-set python-ts-mode-map "C-k" 'combobulate-drag-up)
+            (keymap-set evil-normal-state-map "H" 'combobulate-navigate-previous)
+            (keymap-set evil-normal-state-map "L" 'combobulate-navigate-next)
+            (keymap-set evil-normal-state-map "J" 'combobulate-navigate-down-list-maybe)
+            (keymap-set evil-normal-state-map "K" 'combobulate-navigate-up-list-maybe)
             (eglot-ensure)))
 
 ;; treesit setup
