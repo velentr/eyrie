@@ -5,6 +5,7 @@
 (define-module (eyrie home dotfiles)
   #:use-module ((eyrie packages) #:prefix ey:)
   #:use-module (gnu home services)
+  #:use-module (gnu home services guix)
   #:use-module (gnu packages)
   #:use-module (gnu packages admin)
   #:use-module (gnu packages algebra)
@@ -51,6 +52,7 @@
   #:use-module (gnu packages xdisorg)
   #:use-module (gnu packages xorg)
   #:use-module (gnu services configuration)
+  #:use-module (guix channels)
   #:use-module (guix gexp)
   #:use-module (guix packages)
   #:use-module (guix transformations)
@@ -60,14 +62,15 @@
             %core-env
             %core-packages
             %devel-packages
+            %nonguix-channel
             %skydio-env
             %skydio-packages
             emacs-dotfiles-service-type
             emacs-dotfiles-configuration
+            eyrie-channels-service-type
             git-dotfiles-configuration
             git-dotfiles-service-type
             guile-dotfiles-service-type
-            guix-channels-service-type
             i3-dotfiles-configuration
             i3-dotfiles-service-type
             rofi-dotfiles-service-type
@@ -385,25 +388,29 @@ tztime local {
   (package (package rxvt-unicode) "Terminal package to install.")
   (font-size (integer 14) "Size of the font to use for the terminal."))
 
-(define (guix-channels-services channel-list)
-  (define (print-contents)
-    (pretty-print `(append ,channel-list %default-channels)))
-  (let ((contents
-         (with-output-to-string print-contents)))
-    (list (list ".config/guix/channels.scm"
-                  (plain-file
-                   "guix-channels" contents)))))
+(define (eyrie-channels-service channel-list)
+  channel-list)
 
+(define %nonguix-channel
+  (channel
+   (name 'nonguix)
+   (url "https://gitlab.com/nonguix/nonguix")
+   (introduction
+    (make-channel-introduction
+     "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
+     (openpgp-fingerprint
+      "2A39 3FFF 68F4 EF7A 3D29 12AF 6F51 20A0 22FB B2D5")))))
 
-(define guix-channels-service-type
+(define eyrie-channels-service-type
   (service-type
-   (name 'guix-channels)
+   (name 'eyrie-channels)
    (extensions
-    (list (service-extension home-files-service-type
-                             guix-channels-services)))
-   (default-value '())
+    (list (service-extension home-channels-service-type
+                             eyrie-channels-service)))
+   (default-value
+     (list %nonguix-channel))
    (description
-    "Add additional guix channels via ~/.config/guix-channels.scm.")))
+    "Add additional guix channels.")))
 
 (define (urxvt-dotfiles-packages config)
   (let ((package (urxvt-dotfiles-configuration-package config)))
