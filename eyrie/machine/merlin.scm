@@ -98,4 +98,10 @@ including nonfree binary blobs.")))
                        (list (list "root"
                                    %condor-ssh-key
                                    %peregrine-ssh-key)))))
-            %base-services)))))
+            (modify-services %base-services
+              (guix-service-type config =>
+                                 (guix-configuration
+                                  (inherit config)
+                                  (authorized-keys
+                                   (cons %peregrine-signing-key
+                                         %default-authorized-guix-keys))))))))))
