@@ -215,7 +215,7 @@
     (string-join (map config-section config-tree) "\n")))
 
 (define (git-dotfiles-service config)
-  (list (list ".gitconfig"
+  (list (list "git/config"
               (plain-file
                "gitconfig" (git-config config)))))
 
@@ -223,11 +223,13 @@
   (service-type
    (name 'git-dotfiles)
    (extensions
-    (list (service-extension home-files-service-type git-dotfiles-service)))
+    (list (service-extension
+           home-xdg-configuration-files-service-type
+           git-dotfiles-service)))
    (default-value (git-dotfiles-configuration))
    (description
-    "Create a global @file{~/.gitconfig} for the user, given the user's email
-address")))
+    "Create a global @file{$XDG_CONFIG_HOME/git/config} for the user, given the
+user's email address")))
 
 (define (guile-dotfiles-service sexprs)
   (define (print-contents)
