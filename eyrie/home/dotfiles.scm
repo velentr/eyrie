@@ -466,7 +466,7 @@ tztime local {
   (plugins (package-list (list zathura-pdf-poppler)) "File plugins to install"))
 
 (define (zathura-dotfiles-services config)
-  (list (list ".config/zathura/zathurarc"
+  (list (list "zathura/zathurarc"
               (local-file "zathurarc"))))
 
 (define (zathura-dotfiles-packages config)
@@ -478,7 +478,7 @@ tztime local {
   (service-type
    (name 'zathura-dotfiles)
    (extensions
-    (list (service-extension home-files-service-type
+    (list (service-extension home-xdg-configuration-files-service-type
                              zathura-dotfiles-services)
           (service-extension home-profile-service-type
                              zathura-dotfiles-packages)))
