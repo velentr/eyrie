@@ -538,7 +538,7 @@ database.")
 (define g-hooks
   (package
     (name "g-hooks")
-    (version "0.3.0")
+    (version "0.3.1")
     (source
      (origin
        (method git-fetch)
@@ -547,7 +547,7 @@ database.")
              (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "1bg7cfdjkdg1hh4ahj7psawwxvqgfwb30ppjhdp6rqbxg555252r"))))
+        (base32 "0vcngcqz2fv2gg566qqri4nfsvwmj9hbbqgs2683mi92sscprgv6"))))
     (build-system guile-build-system)
     (arguments
      (list #:phases
