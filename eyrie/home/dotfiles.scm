@@ -506,11 +506,13 @@ tztime local {
            ("ping" "'ping -c 3'")))
         (skydio-aliases
          '(("ac" "'cd ~/aircam'")
+           ("acfmt" "'bazel run //tools/code_linter:code_format --'")
            ("awsauth" "'bazel -S run //auth/aws'")
            ("cloudstation" "'bazel run //cloud/dev_instances --'")
            ("ffp" "'bazel run //infrastructure/tools/flashpack:fetch_flashpack_ng -- --email brian.kubisiak@skydio.com'")
            ("gzl" "'bazel run //tools/gazelle'")
-           ("acfmt" "'bazel run //tools/code_linter:code_format --'")
+           ("rs-an-up" "'bazel -S run @rules_rust//tools/rust_analyzer:gen_rust_project'")
+           ("rs-cr-up" "'bazel -S run //infrastructure/rust:crates_vendor -- --repin workspace'")
            ("yubact" "'ssh-add -D && ssh-add -e /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so; ssh-add -s /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so'"))))
     (string-join (map make-alias
                       (if skydio?
