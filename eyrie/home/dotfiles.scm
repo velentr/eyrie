@@ -136,7 +136,10 @@
    reuse
    ey:revup
    ripgrep
-   rust-analyzer
+   rust
+   (list rust "cargo")
+   ;; includes rust-analyzer, rustfmt, and clippy
+   (list rust "tools")
    setxkbmap
    shellcheck  ;; for emacs-flycheck on shell code
    sshfs
