@@ -69,7 +69,16 @@ read only = no
                (group "users")
                (shell (file-append zsh "/bin/zsh"))
                (supplementary-groups
-                '("wheel" "audio" "video" "lp" "lpadmin" "dialout")))
+                '("wheel"
+                  "audio"
+                  "video"
+                  ;; printing and printer administration
+                  "lp"
+                  "lpadmin"
+                  ;; serial port access
+                  "dialout"
+                  ;; booting VMs using QEMU
+                  "kvm")))
               %base-user-accounts))
 
  (packages (append (list le-certs nix nss-certs) %base-packages))
