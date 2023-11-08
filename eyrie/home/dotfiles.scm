@@ -211,6 +211,12 @@
            ("pull"       (("ff"         "only")))
            ("push"       (("default"    "simple")))
            ("rebase"     (("autosquash" "1")))
+           ("trailer \"fix\""
+            (("command"   "git log -1 --oneline --format='commit %h (\\\"%s\\\")' $ARG")
+             ("ifExists"  "addIfDifferent")
+             ("ifMissing" "add")
+             ("key"       "\"Fixes: \"")
+             ("where"     "start")))
            ("user"       (("name"       "Brian Kubisiak")
                           ("email"      ,email)))))
         (config-tree
