@@ -47,7 +47,7 @@
              i3-dotfiles-service-type
              (i3-dotfiles-configuration
               (web-browser firefox)
-              (web-browser-name "firefox -private")
+              (web-browser-name "firefox --private-window")
               (font-size 10)
               (eth-iface "enp4s0")
               (status-script (local-file "run-status"))))
