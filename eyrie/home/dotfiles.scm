@@ -101,7 +101,7 @@
    b3sum
    bc
    ey:birdr
-   clang-14  ;; for emacs-company autocompletion
+   clang-17  ;; for emacs-company autocompletion
    feh
    file
    ey:g-hooks
