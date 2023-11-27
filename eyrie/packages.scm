@@ -53,7 +53,6 @@
             erlang-ranch
             g-hooks
             git-third-party
-            install-topic-commit-msg-hook
             kitchen
             knowledge-store
             magpie
@@ -251,24 +250,6 @@ document.")
     "Download video playlists from youtube, keeping track of which videos are
 new based on symlinks.")
    (license license:expat)))
-
-(define install-topic-commit-msg-hook
-  (package
-   (name "install-topic-commit-msg-hook")
-   (version "0")
-   (source (local-file "./packages/install-topic-commit-msg-hook"
-                       #:recursive? #t))
-   (build-system copy-build-system)
-   (arguments
-    ;; FIXME: patch
-    (list #:install-plan #~'(("install-topic-commit-msg-hook.sh" "bin/"))))
-   (inputs (list git))
-   (home-page
-    "https://github.com/velentr/eyrie/tree/master/eyrie/packages/install-topic-commit-msg-hook")
-   (synopsis "Install the Topic: commit-msg hook for revup")
-   (description "Install a commit-msg hook that generates a random Topic: string
-for use with revup. Based on gerrit's Change-Id: hook")
-   (license license:gpl3)))
 
 (define erlang-ranch
   (package
