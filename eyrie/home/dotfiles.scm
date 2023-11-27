@@ -551,6 +551,7 @@ tztime local {
            "[ -f ~/.nix-profile/etc/profile.d/nix.sh ] && . ~/.nix-profile/etc/profile.d/nix.sh")
           (plain-file "path.zsh" (zsh-path skydio?))
           (local-file "prompt.zsh")
+          (local-file "utils.zsh")
           (plain-file "window-title.zsh"
                       (sh-compound
                        '("autoload -Uz add-zsh-hook"
