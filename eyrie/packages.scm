@@ -10,7 +10,6 @@
   #:use-module (gnu packages databases)
   #:use-module (gnu packages documentation)
   #:use-module (gnu packages emacs-xyz)
-  #:use-module (gnu packages erlang)
   #:use-module (gnu packages gnupg)
   #:use-module (gnu packages guile)
   #:use-module (gnu packages man)
@@ -48,9 +47,6 @@
             emacs-worklog
             emacs-evil-textobj-tree-sitter
             emacs-combobulate
-            erlang-cowboy
-            erlang-cowlib
-            erlang-ranch
             g-hooks
             git-third-party
             kitchen
@@ -250,64 +246,6 @@ document.")
     "Download video playlists from youtube, keeping track of which videos are
 new based on symlinks.")
    (license license:expat)))
-
-(define erlang-ranch
-  (package
-    (name "erlang-ranch")
-    (version "1.8.0")
-    (source
-     (origin
-       (method url-fetch)
-       (uri (hexpm-uri "ranch" version))
-       (sha256
-        (base32 "1rfz5ld54pkd2w25jadyznia2vb7aw9bclck21fizargd39wzys9"))))
-    (build-system rebar-build-system)
-    (home-page "https://ninenines.eu/docs/#ranch")
-    (synopsis "Socket acceptor pool for TCP protocols")
-    (description "Ranch is a socket acceptor pool for TCP protocols.  Ranch aims
-to provide everything you need to accept TCP connections with a small code base
-and low latency while being easy to use directly as an application or to embed
-into your own.")
-    (license license:isc)))
-
-(define erlang-cowlib
-  (package
-    (name "erlang-cowlib")
-    (version "2.11.0")
-    (source
-     (origin
-       (method url-fetch)
-       (uri (hexpm-uri "cowlib" version))
-       (sha256
-        (base32 "1ac6pj3x4vdbsa8hvmbzpdfc4k0v1p102jbd39snai8wnah9sgib"))))
-    (build-system rebar-build-system)
-    (arguments
-     '(#:tests? #f))
-    (home-page "https://ninenines.eu/docs/#cowlib")
-    (synopsis "Support library for manipulating Web protocols")
-    (description "Cowlib is a support library for manipulating Web protocols.
-Cowlib provides libraries for parsing and building messages for various Web
-protocols, including HTTP/1.1, HTTP/2 and Websocket.")
-    (license license:isc)))
-
-(define erlang-cowboy
-  (package
-    (name "erlang-cowboy")
-    (version "2.9.0")
-    (source
-     (origin
-       (method url-fetch)
-       (uri (hexpm-uri "cowboy" version))
-       (sha256
-        (base32 "1phv0a1zbgk7imfgcm0dlacm7hbjcdygb0pqmx4s26jf9f9rywic"))))
-    (build-system rebar-build-system)
-    (propagated-inputs
-     (list erlang-cowlib erlang-ranch))
-    (home-page "https://ninenines.eu/docs/#cowboy")
-    (synopsis "Small, fast, modern HTTP server for Erlang/OTP")
-    (description "Cowboy is a small, fast and modern HTTP server for Erlang/OTP.
-Cowboy aims to provide a complete HTTP stack in a small code base.")
-    (license license:isc)))
 
 (define python-async-lru
   (package
