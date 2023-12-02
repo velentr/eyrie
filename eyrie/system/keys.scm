@@ -12,7 +12,7 @@
      (string-join
       (list type
             (apply string-append fragments)
-            (string-append "bkubisiak@" host))
+            (string-append "bkubisiak@" host "\n"))
       " "))))
 
 (define-public %condor-ssh-key
