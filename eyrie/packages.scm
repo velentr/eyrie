@@ -250,13 +250,13 @@ new based on symlinks.")
 (define python-async-lru
   (package
     (name "python-async-lru")
-    (version "2.0.2")
+    (version "2.0.4")
     (source
      (origin
        (method url-fetch)
        (uri (pypi-uri "async-lru" version))
        (sha256
-        (base32 "16l6rcx1spf9acc6czggs5slqn3bc363h0baj73jrib04i7yr1rv"))))
+        (base32 "09sn3bc3gc2flijm9k8kn4hmbnlkaddhqahb49izy188yrfrm9dq"))))
     (build-system pyproject-build-system)
     (propagated-inputs (list python-typing-extensions))
     (home-page "https://github.com/aio-libs/async-lru")
