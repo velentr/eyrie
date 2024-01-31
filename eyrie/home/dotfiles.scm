@@ -207,7 +207,7 @@
            ("push"       (("default"    "simple")))
            ("rebase"     (("autosquash" "1")))
            ("trailer \"fix\""
-            (("command"   "git log -1 --oneline --format='commit %h (\\\"%s\\\")' $ARG")
+            (("command"   "git log -1 --oneline --format='%h (\\\"%s\\\")' $ARG")
              ("ifExists"  "replace")
              ("ifMissing" "add")
              ("key"       "\"Fixes: \"")
