@@ -6,6 +6,7 @@
   #:use-module (gnu packages)
   #:use-module (gnu packages base)
   #:use-module (gnu packages bash)
+  #:use-module (gnu packages check)
   #:use-module (gnu packages crates-io)
   #:use-module (gnu packages databases)
   #:use-module (gnu packages documentation)
@@ -54,6 +55,7 @@
             magpie
             magpie-plugins
             python-async-lru
+            python-garmin-fit-sdk
             revup
             ytar))
 
@@ -516,3 +518,27 @@ g-expressions, then build and install them as a private profile under
 .git/g-hooks.")
     (home-page "https://github.com/velentr/g-hooks")
     (license license:gpl3)))
+
+(define python-garmin-fit-sdk
+  (package
+    (name "python-garmin-fit-sdk")
+    (version "21.126.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (pypi-uri "garmin-fit-sdk" version))
+       (sha256
+        (base32 "07ka0l8gi1ajcnak1xyqajkcgiv6ksf1ysf71b37mgm6qzi8if5q"))))
+    (build-system pyproject-build-system)
+    (native-inputs (list python-pytest python-pytest-mock))
+    (home-page "https://developer.garmin.com/fit/overview/")
+    (synopsis "Official Garmin FIT Python SDK")
+    (description
+     "The Flexible and Interoperable Data Transfer (FIT) protocol is designed
+specifically for the storing and sharing of data that originates from sport,
+fitness and health devices. The FIT protocol defines a set of data storage
+templates (FIT messages) that can be used to store information such as activity
+data, courses, and workouts. It is designed to be compact, interoperable and
+extensible.")
+    ;; No license is provided?
+    (license license:expat)))
