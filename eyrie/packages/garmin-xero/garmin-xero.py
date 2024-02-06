@@ -27,6 +27,20 @@ def parse_fit(inpath: pathlib.Path) -> T.List[float]:
     ]
 
 
+def create_org_table(data: T.List[float]) -> str:
+    """Create an orgmode table summarizing the given shot data."""
+    result = """| shot  | speed     |
+|-------+-----------|
+|   avg |           |
+| stdev |           |
+"""
+    result += "\n".join(
+        f"| {i + 1:>5} | {speed:>9.1f} |" for i, speed in enumerate(data)
+    )
+    result += "\n#+TBLFM: @2$2=vmean(@4$2..@>$2)::@3$2=vsdev(@4$2..@>$2)"
+    return result
+
+
 def _main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -38,9 +52,21 @@ def _main() -> None:
         type=pathlib.Path,
         help="Path to the output file to write; defaults to stdout.",
     )
+    formats = parser.add_mutually_exclusive_group()
+    formats.add_argument(
+        "--json", "-j", action="store_true", help="Write JSON-formatted data (default)"
+    )
+    formats.add_argument(
+        "--org", "-O", action="store_true", help="Write Org-formatted data"
+    )
     args = parser.parse_args()
     data = parse_fit(args.input)
-    encoded = json.dumps(data)
+
+    if args.org:
+        encoded = create_org_table(data)
+    else:
+        encoded = json.dumps(data)
+
     if args.output:
         args.output.write_text(encoded)
     else:
