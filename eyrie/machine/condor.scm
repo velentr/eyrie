@@ -13,6 +13,7 @@
   #:use-module (gnu services certbot)
   #:use-module (gnu services mail)
   #:use-module (gnu services networking)
+  #:use-module (gnu services security)
   #:use-module (gnu services ssh)
   #:use-module (gnu services version-control)
   #:use-module (gnu services web)
@@ -97,6 +98,13 @@ table inet filter {
                   (list (certificate-configuration
                          (domains '("e3r3.com"
                                     "cal.e3r3.com")))))))
+       (service fail2ban-service-type
+                (fail2ban-configuration
+                 (extra-jails
+                  (list
+                   (fail2ban-jail-configuration
+                    (name "sshd")
+                    (enabled? #t))))))
        (service gitolite-service-type
                 (gitolite-configuration
                  (admin-pubkey %kestrel-ssh-key)))
