@@ -8,6 +8,7 @@
   #:use-module (gnu machine ssh)
   #:use-module (gnu packages certs)
   #:use-module (gnu packages package-management)
+  #:use-module (gnu packages rsync)
   #:use-module (gnu packages ssh)
   #:use-module (gnu services base)
   #:use-module (gnu services certbot)
@@ -86,7 +87,7 @@ table inet filter {
                            (mount-point "/")
                            (type "ext4")))
                    %base-file-systems))
-    (packages (cons* guix nss-certs %base-packages))
+    (packages (cons* guix nss-certs rsync %base-packages))
 
     (services
      (append
