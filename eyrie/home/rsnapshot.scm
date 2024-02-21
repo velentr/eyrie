@@ -41,7 +41,7 @@
 
      "verbose\t2\n"
      "loglevel\t3\n"
-     "lockfile\t/run/user/1000/rsnapshot.pid\n"
+     "lockfile\t/run/user/" (number->string (getuid)) "/rsnapshot.pid\n"
      "backup\troot@e3r3.com:/var/lib/radicale/\te3r3/\n")))
 
 (define (home-rsnapshot-configuration-jobs config)
