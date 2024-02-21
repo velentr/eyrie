@@ -4,6 +4,7 @@
 
 (define-module (eyrie home desktop)
   #:use-module (eyrie home dotfiles)
+  #:use-module (eyrie home rsnapshot)
   #:use-module (gnu home)
   #:use-module (gnu home services shells)
   #:use-module (gnu home services ssh)
@@ -25,6 +26,7 @@
                      (openssh-host (name "rsync.net")
                                    (host-name "fm1436.rsync.net")
                                    (user "fm1436"))))))
+            (service home-rsnapshot-service-type)
             (service
              home-zsh-service-type
              (home-zsh-configuration
