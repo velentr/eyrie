@@ -18,31 +18,36 @@
 (define-configuration/no-serialization home-rsnapshot-configuration
   (rsnapshot (file-like rsnapshot) "The rsnapshot package to use.")
   (rsync (file-like rsync) "The rsync package to use.")
-  (coreutils (file-like coreutils) "The coreutils package to use.")
   (ssh (file-like openssh-sans-x) "The SSH package to use.")
   (directory (string (string-append (getenv "HOME") "/bak"))
              "Local directory to store backed-up files."))
 
 (define (rsnapshot-configuration config)
   (match-record config <home-rsnapshot-configuration>
-                (coreutils directory rsnapshot rsync ssh)
-    (mixed-text-file
-     "rsnapshot.conf"
-     "config_version\t1.2\n"
-     "snapshot_root\t" directory "\n"
-     "cmd_cp\t" coreutils "/bin/cp\n"
-     "cmd_rm\t" coreutils "/bin/rm\n"
-     "cmd_rsync\t" rsync "/bin/rsync\n"
-     "cmd_ssh\t" ssh "/bin/ssh\n"
-     "cmd_du\t" coreutils "/bin/du\n"
-     "cmd_rsnapshot_diff\t" rsnapshot "/bin/rsnapshot-diff\n"
+                (directory rsnapshot rsync ssh)
+    (let ((cmds
+           (cons*
+            "cmd_cp\t" coreutils "/bin/cp\n"
+            "cmd_rm\t" coreutils "/bin/rm\n"
+            "cmd_rsync\t" rsync "/bin/rsync\n"
+            "cmd_du\t" coreutils "/bin/du\n"
+            "cmd_rsnapshot_diff\t" rsnapshot "/bin/rsnapshot-diff\n"
+            (if ssh (list "cmd_ssh\t" ssh "/bin/ssh\n") '()))))
+      (apply
+       mixed-text-file
+       (append
+        (list
+         "rsnapshot.conf"
+         "config_version\t1.2\n"
+         "snapshot_root\t" directory "\n"
+         "verbose\t2\n"
+         "loglevel\t3\n"
+         "lockfile\t/run/user/" (number->string (getuid)) "/rsnapshot.pid\n")
+        cmds
 
-     "retain\talpha\t7\n"
-
-     "verbose\t2\n"
-     "loglevel\t3\n"
-     "lockfile\t/run/user/" (number->string (getuid)) "/rsnapshot.pid\n"
-     "backup\troot@e3r3.com:/var/lib/radicale/\te3r3/\n")))
+        (list
+         "retain\talpha\t7\n"
+         "backup\troot@e3r3.com:/var/lib/radicale/\te3r3/\n"))))))
 
 (define (home-rsnapshot-configuration-jobs config)
   (match-record config <home-rsnapshot-configuration>
