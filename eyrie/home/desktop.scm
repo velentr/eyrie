@@ -26,7 +26,10 @@
                      (openssh-host (name "rsync.net")
                                    (host-name "fm1436.rsync.net")
                                    (user "fm1436"))))))
-            (service home-rsnapshot-service-type)
+            (service
+             home-rsnapshot-service-type
+             (home-rsnapshot-configuration
+              (backups '(("root@e3r3.com:/var/lib/radicale/" "e3r3")))))
             (service
              home-zsh-service-type
              (home-zsh-configuration

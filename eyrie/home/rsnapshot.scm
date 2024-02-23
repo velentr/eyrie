@@ -20,11 +20,18 @@
   (rsync (file-like rsync) "The rsync package to use.")
   (ssh (file-like openssh-sans-x) "The SSH package to use.")
   (directory (string (string-append (getenv "HOME") "/bak"))
-             "Local directory to store backed-up files."))
+             "Local directory to store backed-up files.")
+  (backups (list '()) "List of backups to make."))
 
 (define (rsnapshot-configuration config)
+  (define (make-backup-settings backups)
+    (apply
+     append
+     (map (lambda (backup)
+            (list "backup\t" (car backup) "\t" (cadr backup) "\n"))
+          backups)))
   (match-record config <home-rsnapshot-configuration>
-                (directory rsnapshot rsync ssh)
+                (backups directory rsnapshot rsync ssh)
     (let ((cmds
            (cons*
             "cmd_cp\t" coreutils "/bin/cp\n"
@@ -32,7 +39,8 @@
             "cmd_rsync\t" rsync "/bin/rsync\n"
             "cmd_du\t" coreutils "/bin/du\n"
             "cmd_rsnapshot_diff\t" rsnapshot "/bin/rsnapshot-diff\n"
-            (if ssh (list "cmd_ssh\t" ssh "/bin/ssh\n") '()))))
+            (if ssh (list "cmd_ssh\t" ssh "/bin/ssh\n") '())))
+          (backups (make-backup-settings backups)))
       (apply
        mixed-text-file
        (append
@@ -45,9 +53,8 @@
          "lockfile\t/run/user/" (number->string (getuid)) "/rsnapshot.pid\n")
         cmds
 
-        (list
-         "retain\talpha\t7\n"
-         "backup\troot@e3r3.com:/var/lib/radicale/\te3r3/\n"))))))
+        (list "retain\talpha\t7\n")
+        backups)))))
 
 (define (home-rsnapshot-configuration-jobs config)
   (match-record config <home-rsnapshot-configuration>
