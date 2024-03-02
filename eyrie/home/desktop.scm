@@ -29,7 +29,10 @@
             (service
              home-rsnapshot-service-type
              (home-rsnapshot-configuration
-              (backups '(("root@e3r3.com:/var/lib/radicale/" "e3r3")))))
+              (backups
+               `(("root@e3r3.com:/var/lib/radicale/" "e3r3")
+                 (,(string-append (getenv "XDG_DATA_HOME") "/birdr/birds.db")
+                  "peregrine")))))
             (service
              home-zsh-service-type
              (home-zsh-configuration
