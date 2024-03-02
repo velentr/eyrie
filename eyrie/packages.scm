@@ -399,7 +399,7 @@ capabilities.")
 
 (define magpie-plugins
   ;; There is not yet a stable release
-  (let ((commit "16efa237599bafbb0e71e070c648d642663345b4")
+  (let ((commit "53a16842ac9c211102b746c2766d728a03d6291f")
         (revision "0"))
     (package
       (name "magpie-plugins")
@@ -412,7 +412,7 @@ capabilities.")
                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "1qdjxjp5fclcf4qzmizg1zc6wfd8vpz4y7r76lm00yw0rhgbgmw5"))))
+          (base32 "0njh7fr16h6l95jq2a1j8bnirxa31jkbywvhyl2my2sjfa7gj1lq"))))
       (build-system cargo-build-system)
       (arguments
        (list #:cargo-inputs
