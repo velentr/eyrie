@@ -522,13 +522,13 @@ g-expressions, then build and install them as a private profile under
 (define python-garmin-fit-sdk
   (package
     (name "python-garmin-fit-sdk")
-    (version "21.126.0")
+    (version "21.133.0")
     (source
      (origin
        (method url-fetch)
        (uri (pypi-uri "garmin-fit-sdk" version))
        (sha256
-        (base32 "07ka0l8gi1ajcnak1xyqajkcgiv6ksf1ysf71b37mgm6qzi8if5q"))))
+        (base32 "104kzaqrcfa26rvxwzh1kllh5sir78fvl3wwi5pi8ljmxi50v939"))))
     (build-system pyproject-build-system)
     (native-inputs (list python-pytest python-pytest-mock))
     (home-page "https://developer.garmin.com/fit/overview/")
