@@ -125,6 +125,7 @@
    neomutt
    nmap
    nss-certs
+   pass-age
    password-store
    picocom
    psmisc
