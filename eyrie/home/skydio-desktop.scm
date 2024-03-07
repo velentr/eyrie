@@ -5,6 +5,7 @@
 (define-module (eyrie home skydio-desktop)
   #:use-module (eyrie home dotfiles)
   #:use-module (gnu home)
+  #:use-module (gnu home services mcron)
   #:use-module (gnu home services shells)
   #:use-module (gnu packages chromium)
   #:use-module (gnu packages emacs-xyz)
@@ -22,6 +23,11 @@
               (plugins (cons* emacs-dockerfile-mode
                               emacs-protobuf-mode
                               %core-emacs-plugins))))
+            (service
+             home-mcron-service-type
+             (home-mcron-configuration
+              (jobs (list #~(job '(next-hour '(0))
+                                 "nix store optimise")))))
             (service
              home-zsh-service-type
              (home-zsh-configuration
