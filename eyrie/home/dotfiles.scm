@@ -9,6 +9,7 @@
   #:use-module (gnu packages admin)
   #:use-module (gnu packages algebra)
   #:use-module (gnu packages base)
+  #:use-module (gnu packages check)
   #:use-module (gnu packages cmake)
   #:use-module (gnu packages certs)
   #:use-module (gnu packages crypto)
@@ -96,6 +97,7 @@
 
 (define %core-packages
   (list
+   actionlint  ;; for emacs-flycheck on github workflows
    b3sum
    bc
    ey:birdr
