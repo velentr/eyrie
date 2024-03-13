@@ -9,6 +9,7 @@
   #:use-module (gnu home services shells)
   #:use-module (gnu packages chromium)
   #:use-module (gnu packages emacs-xyz)
+  #:use-module (gnu packages package-management)
   #:use-module (gnu packages protobuf)
   #:use-module (gnu services)
   #:use-module (guix gexp))
@@ -27,7 +28,9 @@
              home-mcron-service-type
              (home-mcron-configuration
               (jobs (list #~(job '(next-hour '(0))
-                                 "nix store optimise")))))
+                                 #$(file-append
+                                    nix
+                                    "/bin/nix store optimise"))))))
             (service
              home-zsh-service-type
              (home-zsh-configuration
