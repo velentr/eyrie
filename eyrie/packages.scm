@@ -271,17 +271,19 @@ functools.lru_cache for asyncio.")
 (define revup
   (package
     (name "revup")
-    (version "0.2.1")
+    (version "0.2.1+")
     (source
      (origin
-       (method url-fetch)
-       (uri (pypi-uri "revup" version))
+       (method git-fetch)
+       (uri
+        (git-reference
+         (url "https://github.com/Skydio/revup")
+         (commit "d29851a6a837dc56fe30e88434c9c194b607e96f")))
        (sha256
-        (base32 "14vmjlkrq29xjiyqhc50j1w73xff01v6i953p6hliri6bvili80i"))))
+        (base32 "0qfli0m6qlvyhjimv3jz9rivhjnlgmphrcgdf63bz2bqpx6apjm3"))))
     (build-system pyproject-build-system)
     (arguments
      (list
-      #:tests? #f  ;; revup doesn't have any tests
       #:phases
       #~(modify-phases %standard-phases
           (add-after 'unpack 'patch-tool-inputs
@@ -292,10 +294,24 @@ functools.lru_cache for asyncio.")
                                 (which "man"))))
               (substitute* "revup/git.py"
                 (("shutil.which\\(\"git\"\\)")
-                 (string-append "\"" (which "git") "\""))))))))
+                 (string-append "\"" (which "git") "\"")))))
+          (replace 'check
+                   (lambda* (#:key tests? #:allow-other-keys)
+                            (when tests?
+                              (invoke "python" "-m" "pytest")))))))
     (inputs (list git man-db))
-    (propagated-inputs (list python-aiohttp python-async-lru python-rich))
-    (native-inputs (list python-wheel))
+    (propagated-inputs
+     (list
+      python-aiohttp
+      python-aiosignal
+      python-async-lru
+      python-async-timeout
+      python-charset-normalizer
+      python-multidict
+      python-requests
+      python-rich
+      python-yarl))
+    (native-inputs (list python-mock python-pytest python-pytest-mock python-wheel))
     (home-page "https://github.com/Skydio/revup")
     (synopsis "Revolutionary commit-based code review and workflow tools for
 git/github")
