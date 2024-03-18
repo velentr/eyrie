@@ -278,9 +278,9 @@ functools.lru_cache for asyncio.")
        (uri
         (git-reference
          (url "https://github.com/Skydio/revup")
-         (commit "d29851a6a837dc56fe30e88434c9c194b607e96f")))
+         (commit "cf46831b06eef96a3f51e135f531c1556279b9f2")))
        (sha256
-        (base32 "0qfli0m6qlvyhjimv3jz9rivhjnlgmphrcgdf63bz2bqpx6apjm3"))))
+        (base32 "0dyb8mf9iy8vzgjhmmdhlzr18aflw2wbakzc9zf0k3kr9rw6pas2"))))
     (build-system pyproject-build-system)
     (arguments
      (list
