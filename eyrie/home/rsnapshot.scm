@@ -37,23 +37,29 @@ back up this level."))
     #~(job #$interval
            #$(make-rsnapshot-command name))))
 
+(define list-of-rsnapshot-backup-levels?
+  (list-of rsnapshot-backup-level?))
+
+(define-maybe file-like)
+
 (define-configuration/no-serialization home-rsnapshot-configuration
   (rsnapshot (file-like rsnapshot) "The rsnapshot package to use.")
   (rsync (file-like rsync) "The rsync package to use.")
-  (ssh (file-like openssh-sans-x) "The SSH package to use.")
+  (ssh (maybe-file-like openssh-sans-x) "The SSH package to use, or @code{#f} to
+disable SSH support.")
   (directory (string (string-append (getenv "HOME") "/bak"))
              "Local directory to store backed-up files.")
   (backups (list '()) "List of backups to make.")
-  (backup-levels (list
+  (backup-levels (list-of-rsnapshot-backup-levels
                   (list
                    (rsnapshot-backup-level
                     (name "alpha")
                     (retention 6)
-                    (interval ''(next-hour '(0))))  ; daily at midnight
+                    (interval ''(next-hour '(0)))) ; daily at midnight
                    (rsnapshot-backup-level
                     (name "beta")
                     (retention 4)
-                    (interval "15 0 * * 1"))  ; Monday 12:15 AM
+                    (interval "15 0 * * 1")) ; Monday 12:15 AM
                    (rsnapshot-backup-level
                     (name "gamma")
                     (retention 6)
