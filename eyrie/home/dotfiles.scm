@@ -640,7 +640,6 @@ tztime local {
         ey:emacs-combobulate
         emacs-company
         emacs-dts-mode
-        emacs-eglot
         emacs-erlang
         emacs-evil
         ey:emacs-evil-textobj-tree-sitter
