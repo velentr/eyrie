@@ -28,9 +28,9 @@
 (setq-default indent-tabs-mode nil)
 
 (setq auto-mode-alist
-      (cons
-       ;; g-hooks are always written in scheme
-       '("\\.g-hooks" . scheme-mode)
+      (append
+       '(("\\.g-hooks" . scheme-mode)           ; g-hooks are always written in scheme
+         ("BUILD\\.bazel" . bazel-build-mode))  ; aircam has some build files with a prefix
        ;; git-rebase-mode is stupidly more complex than just editing in
        ;; fundamental mode with evil
        (rassq-delete-all 'git-rebase-mode auto-mode-alist)))
