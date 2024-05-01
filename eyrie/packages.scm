@@ -475,7 +475,7 @@ database.")
 (define g-hooks
   (package
     (name "g-hooks")
-    (version "0.5.1")
+    (version "0.6.0")
     (source
      (origin
        (method git-fetch)
@@ -484,50 +484,25 @@ database.")
              (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "0ybnkd71hx1xwwi05y37514wxv34mv215p24y6ngdrgwbjwgiw3k"))))
-    (build-system guile-build-system)
+        (base32 "0wkw66azmbi65pzmxk147rxiq61wl0jkfq4j0br6dj674ig2praj"))))
+    (build-system gnu-build-system)
     (arguments
-     (list #:phases
-           #~(modify-phases %standard-phases
-               (add-after 'unpack 'patch-tool-inputs
-                 (lambda _
-                   (substitute* "g-hooks/core.scm"
-                     (("define %git \"git\"")
-                      (string-append "define %git \"" (which "git") "\"")))))
-               (add-after 'install 'wrap-program
-                 (lambda* (#:key inputs #:allow-other-keys)
-                   (let* ((bin (string-append #$output "/bin"))
-                          (bytestructures
-                           (assoc-ref inputs "guile-bytestructures"))
-                          (gcrypt (assoc-ref inputs "guile-gcrypt"))
-                          (git (assoc-ref inputs "guile-git"))
-                          (guix (assoc-ref inputs "guix"))
-                          (version (target-guile-effective-version))
-                          (scm (string-append "/share/guile/site/" version))
-                          (go (string-append
-                               "/lib/guile/"
-                               version
-                               "/site-ccache")))
-                     (install-file "scripts/g-hooks" bin)
-                     (wrap-program (string-append bin "/g-hooks")
-                       '("GUILE_AUTO_COMPILE" prefix
-                         ("0"))
-                       ;; TODO: fix this nonsense
-                       `("GUILE_LOAD_PATH" prefix
-                         (,(string-append #$output scm)
-                          ,(string-append bytestructures scm)
-                          ,(string-append gcrypt scm)
-                          ,(string-append git scm)
-                          ,(string-append guix scm)))
-                       `("GUILE_LOAD_COMPILED_PATH" prefix
-                         (,(string-append #$output go)
-                          ,(string-append bytestructures go)
-                          ,(string-append gcrypt go)
-                          ,(string-append git go)
-                          ,(string-append guix go))))))))))
+     (list
+      #:tests? #f
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-after 'unpack 'patch-tool-inputs
+            (lambda _
+              (substitute* "g-hooks/core.scm"
+                (("define %git \"git\"")
+                 (string-append "define %git \"" (which "git") "\"")))))
+          (replace 'configure
+            (lambda _
+              (setenv "GUILE_AUTO_COMPILE" "0")
+              (setenv "GUILE_FLAGS" "-L .")
+              (setenv "DESTDIR" #$output))))))
     (native-inputs (list guile-3.0))
-    (inputs
-     (list bash-minimal git guile-bytestructures guile-gcrypt guile-git guix))
+    (inputs (list git guix))
     (synopsis "Manage git hooks using guix")
     (description "g-hooks allows you to describe git hooks using guix’s
 g-expressions, then build and install them as a private profile under
