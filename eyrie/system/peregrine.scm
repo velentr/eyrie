@@ -81,7 +81,7 @@ read only = no
                   "kvm")))
               %base-user-accounts))
 
- (packages (append (list le-certs nix nss-certs) %base-packages))
+ (packages (append (list le-certs nix) %base-packages))
 
  (services (append (list (service elogind-service-type)
                          (service screen-locker-service-type
