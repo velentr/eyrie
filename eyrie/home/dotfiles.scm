@@ -106,16 +106,13 @@
    feh
    file
    ey:g-hooks
-   ghostscript
    git
    ey:git-third-party
-   gitlint
    glibc-locales
    guile-3.0-latest
    guile-colorized
    guile-readline
    htop
-   ey:knowledge-store
    le-certs
    ledger
    lsof
@@ -126,14 +123,12 @@
    mpv
    ncdu
    neomutt
-   nmap
    nss-certs
    pass-age
    password-store
    picocom
    psmisc
    python-lsp-server
-   reuse
    ey:revup
    ripgrep
    rust
@@ -142,12 +137,10 @@
    (list rust "tools")
    setxkbmap
    shellcheck  ;; for emacs-flycheck on shell code
-   strace
    tree
    tree-sitter-python
    tree-sitter-rust
    usbutils
-   valgrind
    vim
    xrandr
    xrdb
