@@ -58,7 +58,7 @@
 	       (supplementary-groups '("audio" "netdev" "video" "wheel")))
               %base-user-accounts))
 
- (packages (append (list le-certs nix nss-certs wpa-supplicant) %base-packages))
+ (packages (append (list le-certs nix wpa-supplicant) %base-packages))
 
  (services (append (list (service elogind-service-type)  ;; to create /run/user/${UID} on login
                          (service screen-locker-service-type
