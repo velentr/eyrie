@@ -87,7 +87,7 @@ table inet filter {
                            (mount-point "/")
                            (type "ext4")))
                    %base-file-systems))
-    (packages (cons* guix nss-certs rsync %base-packages))
+    (packages (cons* guix rsync %base-packages))
 
     (services
      (append
