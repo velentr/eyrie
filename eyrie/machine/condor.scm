@@ -6,7 +6,10 @@
   #:use-module (gnu)
   #:use-module (gnu machine)
   #:use-module (gnu machine ssh)
+  #:use-module (gnu packages admin)
   #:use-module (gnu packages certs)
+  #:use-module (gnu packages gawk)
+  #:use-module (gnu packages linux)
   #:use-module (gnu packages package-management)
   #:use-module (gnu packages rsync)
   #:use-module (gnu packages ssh)
@@ -18,6 +21,7 @@
   #:use-module (gnu services ssh)
   #:use-module (gnu services version-control)
   #:use-module (gnu services web)
+  #:use-module (gnu system locale)
   #:use-module (eyrie system keys))
 
 (define %condor-nftables-ruleset
@@ -75,7 +79,6 @@ table inet filter {
   (operating-system
     (host-name "condor")
     (timezone "US/Pacific")
-    (locale "en_US.utf8")
     (initrd-modules (append (list "virtio_scsi")
                             %base-initrd-modules))
     (bootloader (bootloader-configuration
@@ -87,7 +90,23 @@ table inet filter {
                            (mount-point "/")
                            (type "ext4")))
                    %base-file-systems))
-    (packages (cons* guix rsync %base-packages))
+    (packages (list coreutils
+                    diffutils
+                    findutils
+                    gawk
+                    grep
+                    guix
+                    inetutils
+                    kmod
+                    nss-certs
+                    psmisc
+                    rsync
+                    sed
+                    shadow
+                    tar
+                    util-linux
+                    which))
+    (setuid-programs '())
 
     (services
      (append
@@ -165,7 +184,13 @@ table inet filter {
                             (inherit config)
                             (authorized-keys
                              (cons %peregrine-signing-key
-                                   %default-authorized-guix-keys)))))))))
+                                   %default-authorized-guix-keys)))))))
+    (locale "en_US.utf8")
+    (locale-definitions (list (locale-definition
+                               (name "en_US.utf8")
+                               (source "en_US")
+                               (charset "UTF-8"))))
+    (locale-libcs (list glibc))))
 
 (list
  (machine
