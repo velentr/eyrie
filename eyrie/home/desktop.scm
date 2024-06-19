@@ -8,12 +8,15 @@
   #:use-module (gnu home)
   #:use-module (gnu home services shells)
   #:use-module (gnu home services ssh)
+  #:use-module (gnu packages engineering)
+  #:use-module (gnu packages gnupg)
   #:use-module (gnu services)
   #:use-module (guix gexp)
   #:use-module (nongnu packages mozilla))
 
 (home-environment
-  (packages (append %devel-packages %cad-packages))
+  (packages
+   (cons* emacs-scad-mode pinentry-tty %core-packages))
   (services
    (append (list
             (service emacs-dotfiles-service-type)

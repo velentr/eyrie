@@ -15,7 +15,6 @@
   #:use-module (gnu packages crypto)
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages emacs-xyz)
-  #:use-module (gnu packages engineering)
   #:use-module (gnu packages erlang)
   #:use-module (gnu packages file)
   #:use-module (gnu packages finance)
@@ -23,7 +22,6 @@
   #:use-module (gnu packages fontutils)
   #:use-module (gnu packages gdb)
   #:use-module (gnu packages ghostscript)
-  #:use-module (gnu packages gnupg)
   #:use-module (gnu packages guile)
   #:use-module (gnu packages guile-xyz)
   #:use-module (gnu packages haskell-apps)
@@ -56,8 +54,7 @@
   #:use-module (guix packages)
   #:use-module (guix transformations)
   #:use-module (ice-9 pretty-print)
-  #:export (%cad-packages
-            %core-emacs-plugins
+  #:export (%core-emacs-plugins
             %core-env
             %core-packages
             %devel-packages
@@ -157,16 +154,7 @@
   %core-packages)
 
 (define %devel-packages
-  (append (list
-           gdb
-           pinentry-tty)
-          %core-packages))
-
-(define %cad-packages
-  (list
-   emacs-scad-mode
-   openscad
-   prusa-slicer))
+  %core-packages)
 
 (define (serialize-integer field-name val)
   (serialize-field field-name (number->string val)))
