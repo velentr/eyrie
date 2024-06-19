@@ -7,12 +7,18 @@
   #:use-module (gnu packages base)
   #:use-module (gnu packages bash)
   #:use-module (gnu packages check)
+  #:use-module (gnu packages compression)
   #:use-module (gnu packages crates-io)
+  #:use-module (gnu packages curl)
   #:use-module (gnu packages databases)
+  #:use-module (gnu packages disk)
   #:use-module (gnu packages documentation)
   #:use-module (gnu packages emacs-xyz)
+  #:use-module (gnu packages glib)
+  #:use-module (gnu packages gnome)
   #:use-module (gnu packages gnupg)
   #:use-module (gnu packages guile)
+  #:use-module (gnu packages linux)
   #:use-module (gnu packages man)
   #:use-module (gnu packages package-management)
   #:use-module (gnu packages pkg-config)
@@ -25,6 +31,7 @@
   #:use-module (gnu packages rsync)
   #:use-module (gnu packages ruby)
   #:use-module (gnu packages sqlite)
+  #:use-module (gnu packages tls)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages video)
   #:use-module (guix build utils)
@@ -33,6 +40,7 @@
   #:use-module (guix build-system emacs)
   #:use-module (guix build-system gnu)
   #:use-module (guix build-system guile)
+  #:use-module (guix build-system meson)
   #:use-module (guix build-system pyproject)
   #:use-module (guix build-system python)
   #:use-module (guix build-system rebar)
@@ -56,6 +64,7 @@
             magpie-plugins
             python-async-lru
             python-garmin-fit-sdk
+            rauc
             revup
             ytar))
 
@@ -533,3 +542,60 @@ data, courses, and workouts. It is designed to be compact, interoperable and
 extensible.")
     ;; No license is provided?
     (license license:expat)))
+
+(define rauc
+  (package
+    (name "rauc")
+    (version "1.11.3")
+    (source
+     (origin
+       (method url-fetch)
+       (uri
+        (string-append "https://github.com/rauc/rauc/releases/download/v"
+                       version "/rauc-" version ".tar.xz"))
+       (sha256
+        (base32 "045w82v3jhnrq34yd52rjvn3qzs9jvx9lr20zlj3mh1r552yx0pg"))))
+    (build-system meson-build-system)
+    (arguments
+     (list
+      #:configure-flags
+      #~(let* ((out #$output)
+               (dbus-data (string-append out "/share/dbus-1"))
+               (dbusinterfaces (string-append dbus-data "/interfaces"))
+               (dbussystemservice (string-append dbus-data "/system-services")))
+          (list
+           (string-append "-Ddbusinterfacesdir=" dbusinterfaces)
+           (string-append "-Ddbussystemservicedir=" dbussystemservice)))
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-after 'unpack 'patch-tests
+            (lambda _
+              (substitute* "test/meson.build"
+                (("tests \\+= 'network'") ""))
+              (substitute* "test/common.c"
+                (("/sbin/mkfs.ext4") (which "mkfs.ext4")))
+              (substitute* "test/test-dummy-handler.conf"
+                (("/bin/echo") (which "echo")))))
+          (add-after 'install 'wrap-rauc
+            (lambda _
+              (wrap-program (string-append #$output "/bin/rauc")
+                `("PATH" ":" prefix
+                  (,(string-append #$squashfs-tools "/bin")
+                   ;; for mount and unmount
+                   ,(string-append #$util-linux "/bin")
+                   ;; for flash_erase, nandwrite, flashcp, and mkfs.ubifs
+                   ,(string-append #$mtd-utils "/sbin")
+                   ,(string-append #$tar "/bin")
+                   ,(string-append #$e2fsprogs "/sbin")
+                   ,(string-append #$dosfstools "/sbin")))))))))
+    (native-inputs
+     (list e2fsprogs `(,glib "bin") pkg-config python squashfs-tools))
+    (inputs
+     (list curl dbus glib json-glib libnl openssl))
+    (synopsis "Safe and secure software updates for embedded Linux")
+    (description "RAUC is a lightweight update client that runs on your Embedded
+Linux device and reliably controls the procedure of updating your device with a
+new firmware revision. RAUC is also the tool on your host system that lets you
+create, inspect and modify update artifacts for your device.")
+    (home-page "https://rauc.io")
+    (license license:lgpl2.1)))
