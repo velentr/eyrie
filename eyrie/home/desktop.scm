@@ -35,7 +35,8 @@
               (backups
                `(("root@e3r3.com:/var/lib/radicale/" "e3r3")
                  (,(string-append (getenv "XDG_DATA_HOME") "/birdr/birds.db")
-                  "peregrine")))))
+                  "peregrine")
+                 (,(string-append (getenv "HOME") "/.ledger") "peregrine")))))
             (service
              home-zsh-service-type
              (home-zsh-configuration
