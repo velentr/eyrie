@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: 2024 Brian Kubisiak <brian@kubisiak.com>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scripts"
+version = "0"
+authors = [
+    { name = "Brian Kubisiak", email = "brian@kubisiak.com" },
+]
+description = "Misc scripts for uncommon tasks"
+dependencies = [
+    "defusedxml == 0.6.*",
+    "pillow == 9.*",
+    "rich == 12.*",
+]
+
+[project.scripts]
+solarize = "solarize:main"
+
+[tool.black]
+line-length = 79
+
+[tool.mypy]
+disallow_untyped_defs = true

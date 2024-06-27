@@ -34,6 +34,7 @@
   #:use-module (gnu packages tls)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages video)
+  #:use-module (gnu packages xml)
   #:use-module (guix build utils)
   #:use-module (guix build-system cargo)
   #:use-module (guix build-system copy)
@@ -66,6 +67,7 @@
             python-garmin-fit-sdk
             rauc
             revup
+            scripts
             ytar))
 
 (define git-third-party
@@ -257,6 +259,22 @@ document.")
     "Download video playlists from youtube, keeping track of which videos are
 new based on symlinks.")
    (license license:expat)))
+
+(define scripts
+  (package
+    (name "scripts")
+    (version "0")
+    (source (local-file "./packages/scripts" #:recursive? #t))
+    (build-system pyproject-build-system)
+    (arguments
+     (list #:tests? #f))
+    (propagated-inputs (list python-defusedxml python-pillow python-rich))
+    (home-page "https://github.com/velentr/eyrie")
+    (synopsis "Misc scripts for uncommon tasks")
+    (description
+     "This package bundles together a bunch of scripts that I use sometimes that
+don't deserve their own packages.")
+    (license license:gpl3)))
 
 (define python-async-lru
   (package
