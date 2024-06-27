@@ -63,6 +63,7 @@
               (font-size 10)
               (eth-iface "enp4s0")
               (status-script (local-file "run-status"))))
+            (service slideshow-bg-service-type)
             (service rofi-dotfiles-service-type)
             (service
              urxvt-dotfiles-service-type
