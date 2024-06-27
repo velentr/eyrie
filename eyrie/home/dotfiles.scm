@@ -6,6 +6,7 @@
   #:use-module ((eyrie packages) #:prefix ey:)
   #:use-module (gnu home services)
   #:use-module (gnu home services guix)
+  #:use-module (gnu home services mcron)
   #:use-module (gnu packages admin)
   #:use-module (gnu packages algebra)
   #:use-module (gnu packages base)
@@ -52,6 +53,7 @@
   #:use-module (guix channels)
   #:use-module (guix gexp)
   #:use-module (guix packages)
+  #:use-module (guix records)
   #:use-module (guix transformations)
   #:use-module (ice-9 pretty-print)
   #:export (%core-emacs-plugins
@@ -70,6 +72,8 @@
             i3-dotfiles-configuration
             i3-dotfiles-service-type
             rofi-dotfiles-service-type
+            slideshow-bg-configuration
+            slideshow-bg-service-type
             urxvt-dotfiles-configuration
             urxvt-dotfiles-service-type
             zathura-dotfiles-service-type
@@ -668,3 +672,36 @@ tztime local {
                              emacs-dotfiles-packages)))
    (default-value (emacs-dotfiles-configuration))
    (description "Configure emacs and install plugins.")))
+
+(define (list-or-string? val)
+  (or (list? val)
+      (string? val)))
+
+(define-configuration/no-serialization slideshow-bg-configuration
+  (directory (string (string-append (getenv "HOME") "/solarized"))
+             "Directory containing images to select from.")
+  (interval (list-or-string ''(next-hour '(0))) ; daily at midnight
+            "GitHub username for the gh command-line tool."))
+
+(define (slideshow-bg-mcron-jobs config)
+  (match-record config <slideshow-bg-configuration>
+                (directory interval)
+    (list #~(job #$interval
+                 (string-append
+                  #$feh
+                  "/bin/feh --bg-fill $("
+                  #$findutils
+                  "/bin/find "
+                  #$directory
+                  " -type f | "
+                  #$coreutils
+                  "/bin/shuf -n 1)")))))
+
+(define slideshow-bg-service-type
+  (service-type
+   (name 'slideshow-bg)
+   (extensions
+    (list (service-extension home-mcron-service-type
+                             slideshow-bg-mcron-jobs)))
+   (default-value (slideshow-bg-configuration))
+   (description "Periodically change the desktop background.")))
