@@ -15,11 +15,13 @@ authors = [
 description = "Misc scripts for uncommon tasks"
 dependencies = [
     "defusedxml == 0.6.*",
+    "garmin-fit-sdk == 21.*",
     "pillow == 9.*",
     "rich == 12.*",
 ]
 
 [project.scripts]
+garmin-xero = "garmin_xero:main"
 solarize = "solarize:main"
 
 [tool.black]
@@ -27,3 +29,6 @@ line-length = 79
 
 [tool.mypy]
 disallow_untyped_defs = true
+
+[tool.setuptools]
+py-modules = ["garmin_xero", "solarize"]

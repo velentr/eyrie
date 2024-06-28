@@ -268,7 +268,8 @@ new based on symlinks.")
     (build-system pyproject-build-system)
     (arguments
      (list #:tests? #f))
-    (propagated-inputs (list python-defusedxml python-pillow python-rich))
+    (propagated-inputs
+     (list python-defusedxml python-garmin-fit-sdk python-pillow python-rich))
     (home-page "https://github.com/velentr/eyrie")
     (synopsis "Misc scripts for uncommon tasks")
     (description

@@ -46,7 +46,7 @@ def create_org_table(data: T.List[float]) -> str:
     return result
 
 
-def _main() -> None:
+def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "input", type=pathlib.Path, help="Path to the FIT file to parse"
@@ -79,4 +79,4 @@ def _main() -> None:
 
 
 if __name__ == "__main__":
-    _main()
+    main()
