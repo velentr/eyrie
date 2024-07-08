@@ -299,16 +299,13 @@ functools.lru_cache for asyncio.")
 (define revup
   (package
     (name "revup")
-    (version "0.2.1+")
+    (version "0.3.0")
     (source
      (origin
-       (method git-fetch)
-       (uri
-        (git-reference
-         (url "https://github.com/Skydio/revup")
-         (commit "71ca5eb4d8d47536a1c1052e171aaaee8f353632")))
+       (method url-fetch)
+       (uri (pypi-uri "revup" version))
        (sha256
-        (base32 "0h1llpa53rhljdbbf54ywg8aq99yazvynvjyc3kd6qvzy0sraw7c"))))
+        (base32 "00877a4gdq6xd85kmmhi9crxbsmkdfx3iawldvb0pq4wfmr93d1f"))))
     (build-system pyproject-build-system)
     (arguments
      (list
@@ -324,9 +321,9 @@ functools.lru_cache for asyncio.")
                 (("shutil.which\\(\"git\"\\)")
                  (string-append "\"" (which "git") "\"")))))
           (replace 'check
-                   (lambda* (#:key tests? #:allow-other-keys)
-                            (when tests?
-                              (invoke "python" "-m" "pytest")))))))
+            (lambda* (#:key tests? #:allow-other-keys)
+              (when tests?
+                (invoke "python" "-m" "pytest")))))))
     (inputs (list git man-db))
     (propagated-inputs
      (list
@@ -339,7 +336,8 @@ functools.lru_cache for asyncio.")
       python-requests
       python-rich
       python-yarl))
-    (native-inputs (list python-mock python-pytest python-pytest-mock python-wheel))
+    (native-inputs
+     (list python-mock python-pytest python-pytest-mock python-wheel))
     (home-page "https://github.com/Skydio/revup")
     (synopsis "Revolutionary commit-based code review and workflow tools for
 git/github")
