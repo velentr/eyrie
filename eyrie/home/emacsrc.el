@@ -353,4 +353,6 @@
  '(lua-indent-level 4)
  '(org-startup-folded t))
 
+(setq org-agenda-files '("~/todo"))
+
 ;;; init.el ends here
