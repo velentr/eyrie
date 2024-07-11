@@ -351,8 +351,18 @@
  '(frame-background-mode 'dark)
  '(sh-basic-offset 8)
  '(lua-indent-level 4)
- '(org-startup-folded t))
+ '(org-startup-folded t)
+ ;; C-i bound to evil-jump-forward breaks org-tab in the terminal
+ '(evil-want-C-i-jump nil))
 
 (setq org-agenda-files '("~/todo"))
+(setq org-agenda-start-with-follow-mode t)
+
+;; better keybindings in org-mode (especially the org-agenda keybindings)
+(require 'evil-org)
+(add-hook 'org-mode-hook 'evil-org-mode)
+(evil-org-set-key-theme '(navigation insert textobjects additional calendar))
+(require 'evil-org-agenda)
+(evil-org-agenda-set-keys)
 
 ;;; init.el ends here

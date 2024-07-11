@@ -634,6 +634,7 @@ tztime local {
         emacs-dts-mode
         emacs-erlang
         emacs-evil
+        emacs-evil-org
         ey:emacs-evil-textobj-tree-sitter
         emacs-flycheck
         ey:emacs-github-mode
