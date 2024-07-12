@@ -290,6 +290,9 @@
 (define-key leader-map "o" #'other-window)
 (define-key leader-map "e" #'switch-to-buffer)
 
+;; opening the todo list
+(define-key leader-map "a" #'org-agenda)
+
 (define-key leader-map (kbd "u")
   (lambda ()
     (interactive)
