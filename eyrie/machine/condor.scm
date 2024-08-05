@@ -164,8 +164,12 @@ table inet filter {
                               %peregrine-ssh-key)))))
        (service radicale-service-type
                 (radicale-configuration
-                 (config-file
-                  (local-file "condor-radicale.conf"))))
+                 (auth
+                  (radicale-auth-configuration
+                   (type 'http-x-remote-user)))
+                 (server
+                  (radicale-server-configuration
+                   (hosts '("localhost:5232"))))))
        (service static-networking-service-type
                 (list (static-networking
                        (addresses
