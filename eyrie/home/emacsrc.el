@@ -179,12 +179,6 @@
   (set-fill-column 80))
 (add-hook 'lua-mode-hook 'sane-lua-mode)
 
-(defun sane-erlang-mode ()
-  "Sane defaults for erlang."
-  (setq indent-tabs-mode nil)
-  (set-fill-column 80))
-(add-hook 'erlang-mode-hook 'sane-erlang-mode)
-
 (defun sane-bazel-mode ()
   "Sane defaults for bazel."
   (setq indent-tabs-mode nil)
@@ -244,8 +238,6 @@
 ;; make code review a little less terrible
 (require 'github)
 
-(require 'worklog)
-
 (require 'evil)
 (evil-mode 1)
 
@@ -283,9 +275,6 @@
 (define-key leader-map "r" #'gh-refresh-buffer)
 (define-key leader-map "m" #'gh-mergequeue)
 
-;; bindings for worklogs
-(define-key leader-map "d" #'worklog-dashboard)
-
 ;; navigating windows
 (define-key leader-map "o" #'other-window)
 (define-key leader-map "e" #'switch-to-buffer)
@@ -314,9 +303,7 @@
     (interactive)
     (cond
      ((eq major-mode 'github-mode)
-      (gh-select-pr))
-     ((eq major-mode 'worklog-mode)
-      (worklog-open)))))
+      (gh-select-pr)))))
 
 
 ;; editing sources with unicode

@@ -628,11 +628,9 @@ tztime local {
 (define %core-emacs-plugins
   (list emacs-bazel
         emacs-color-theme-solarized
-        emacs-cmake-mode
         ey:emacs-combobulate
         emacs-company
         emacs-dts-mode
-        emacs-erlang
         emacs-evil
         emacs-evil-org
         ey:emacs-evil-textobj-tree-sitter
@@ -646,7 +644,6 @@ tztime local {
         emacs-rust-mode
         emacs-systemd-mode
         emacs-terraform-mode
-        ey:emacs-worklog
         emacs-yaml-mode))
 
 (define-configuration emacs-dotfiles-configuration
