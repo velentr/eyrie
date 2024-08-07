@@ -34,7 +34,8 @@
                                default-directory
                                "/build/python3_venv/bin"))))
                       (setq format-all-formatters
-                            '(("Python" (ruff "format")))))))))
+                            (cons '("Python" (ruff "format"))
+                                  format-all-formatters)))))))
 
 (setq-default indent-tabs-mode nil)
 
