@@ -21,9 +21,20 @@
 
 (add-hook 'find-file-hook
           #'(lambda ()
-             (let ((proj (project-current)))
-               (if proj
-                   (setq default-directory (project-root proj))))))
+              (let ((proj (project-current)))
+                (if proj
+                    (setq default-directory (project-root proj)))
+                (if (string-match "~/aircam[0-9]*" default-directory)
+                    (progn
+                      (setq exec-path
+                            (append
+                             exec-path
+                             (list
+                              (concat
+                               default-directory
+                               "/build/python3_venv/bin"))))
+                      (setq format-all-formatters
+                            '(("Python" (ruff "format")))))))))
 
 (setq-default indent-tabs-mode nil)
 
@@ -261,15 +272,6 @@
 ;; scan through flycheck errors
 (define-key leader-map "[" (kbd "C-c ! p"))
 (define-key leader-map "]" (kbd "C-c ! n"))
-
-;; run code_format
-(define-key leader-map "f"
-  (lambda ()
-    (interactive)
-    (save-buffer)
-    (call-process
-     "~/aircam/skyrun" nil nil nil "bin" "code_format" buffer-file-name)
-    (revert-buffer t t t)))
 
 ;; search for a file in the git repo
 (define-key leader-map "s" #'project-find-file)
