@@ -244,6 +244,10 @@
 (require 'company)
 (add-hook 'after-init-hook #'global-company-mode)
 
+(require 'format-all)
+(add-hook 'prog-mode-hook #'format-all-mode)
+(add-hook 'format-all-mode-hook #'format-all-ensure-formatter)
+
 
 ;; leader commands
 (defvar leader-map (make-sparse-keymap)

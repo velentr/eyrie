@@ -635,6 +635,7 @@ tztime local {
         emacs-evil-org
         ey:emacs-evil-textobj-tree-sitter
         emacs-flycheck
+        emacs-format-all-the-code
         ey:emacs-github-mode
         emacs-go-mode
         emacs-markdown-mode
