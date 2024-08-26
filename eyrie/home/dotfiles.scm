@@ -39,6 +39,7 @@
   #:use-module (gnu packages python-xyz)
   #:use-module (gnu packages rust)
   #:use-module (gnu packages rust-apps)
+  #:use-module (gnu packages shellutils)
   #:use-module (gnu packages terminals)
   #:use-module (gnu packages tree-sitter)
   #:use-module (gnu packages valgrind)
@@ -137,6 +138,7 @@
    (list rust "tools")
    setxkbmap
    shellcheck  ;; for emacs-flycheck on shell code
+   shfmt  ;; for emacs-format-all-the-code
    tree
    tree-sitter-python
    tree-sitter-rust
