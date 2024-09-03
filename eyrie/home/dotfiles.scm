@@ -636,7 +636,6 @@ tztime local {
         emacs-markdown-mode
         emacs-nix-mode
         emacs-paredit
-        emacs-org
         emacs-rust-mode
         emacs-systemd-mode
         emacs-terraform-mode
