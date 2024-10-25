@@ -181,7 +181,7 @@
   (let* ((email (git-dotfiles-configuration-email config))
         (github-user (git-dotfiles-configuration-github-user config))
         (core-config-tree
-         `(("alias"      (("ac"          "log --first-parent")
+         `(("alias"      (("ac"         "log --first-parent")
                           ("locate"     "ls-files --")
                           ("ref"        "rev-parse HEAD")
                           ("sh"         "log -1 --pretty='format:%h (\"%s\")'")
