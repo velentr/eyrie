@@ -184,6 +184,7 @@
          `(("alias"      (("ac"          "log --first-parent")
                           ("locate"     "ls-files --")
                           ("ref"        "rev-parse HEAD")
+                          ("sh"         "log -1 --pretty='format:%h (\"%s\")'")
                           ("st"         "status --short")
                           ("today"      "diff --stat '@{00:00:00}'")
                           ("undo"       "checkout --")
