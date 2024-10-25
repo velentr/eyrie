@@ -214,7 +214,7 @@
           (gh--format-pr-title title author) " "
           (format "[%2d]" approvals) " "
           (format "[%s]" (if in-mergequeue "X" " ")) " "
-          (format "%3s" size) " "
+          (format "%3s" (if size size "*")) " "
           (gh--format-labels labels) "\n")))
 
 (defun gh--insert-pr-summary (pr)
