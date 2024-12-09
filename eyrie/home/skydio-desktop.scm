@@ -7,12 +7,12 @@
   #:use-module (gnu home)
   #:use-module (gnu home services mcron)
   #:use-module (gnu home services shells)
-  #:use-module (gnu packages chromium)
   #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu packages package-management)
   #:use-module (gnu packages protobuf)
   #:use-module (gnu services)
-  #:use-module (guix gexp))
+  #:use-module (guix gexp)
+  #:use-module (nongnu packages chrome))
 
 (home-environment
   (packages %skydio-packages)
@@ -52,8 +52,8 @@
             (service
              i3-dotfiles-service-type
              (i3-dotfiles-configuration
-              (web-browser ungoogled-chromium)
-              (web-browser-name "chromium")
+              (web-browser google-chrome-stable)
+              (web-browser-name "google-chrome")
               (font-size 10)
               (eth-iface "ens6f0")
               (status-script (local-file "run-status"))))
