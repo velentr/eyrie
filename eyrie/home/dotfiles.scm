@@ -119,6 +119,7 @@
    lsof
    ey:magpie
    ey:magpie-plugins
+   man-db
    man-pages
    man-pages-posix
    mpv
