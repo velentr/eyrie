@@ -6,9 +6,9 @@
   #:use-module (eyrie home dotfiles)
   #:use-module (gnu home)
   #:use-module (gnu home services shells)
-  #:use-module (gnu packages chromium)
   #:use-module (gnu services)
-  #:use-module (guix gexp))
+  #:use-module (guix gexp)
+  #:use-module (nongnu packages chrome))
 
 (home-environment
   (packages %skydio-packages)
@@ -25,11 +25,12 @@
              (git-dotfiles-configuration
               (email "brian.kubisiak@skydio.com")
               (github-user "brian-kubisiak-skydio")))
+            (service eyrie-channels-service-type)
             (service
              i3-dotfiles-service-type
              (i3-dotfiles-configuration
-              (web-browser ungoogled-chromium)
-              (web-browser-name "chromium")
+              (web-browser google-chrome-stable)
+              (web-browser-name "google-chrome")
               (font-size 10)
               (eth-iface "wlan0")
               (status-script (local-file "run-status"))))
