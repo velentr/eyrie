@@ -288,6 +288,7 @@ don't deserve their own packages.")
        (sha256
         (base32 "09sn3bc3gc2flijm9k8kn4hmbnlkaddhqahb49izy188yrfrm9dq"))))
     (build-system pyproject-build-system)
+    (native-inputs (list python-setuptools python-wheel))
     (propagated-inputs (list python-typing-extensions))
     (home-page "https://github.com/aio-libs/async-lru")
     (synopsis "Simple LRU cache for asyncio")
@@ -337,7 +338,12 @@ functools.lru_cache for asyncio.")
       python-rich
       python-yarl))
     (native-inputs
-     (list python-mock python-pytest python-pytest-mock python-wheel))
+     (list
+      python-mock
+      python-pytest
+      python-pytest-mock
+      python-setuptools
+      python-wheel))
     (home-page "https://github.com/Skydio/revup")
     (synopsis "Revolutionary commit-based code review and workflow tools for
 git/github")
@@ -490,6 +496,7 @@ CRDTs for sync'ing with a remote server using rsync.")
     (build-system pyproject-build-system)
     (arguments
      (list #:tests? #false))
+    (native-inputs (list python-setuptools python-wheel))
     (propagated-inputs
      (list python-click python-rich python-sqlalchemy))
     (synopsis "Record and track bird sightings and checklists")
