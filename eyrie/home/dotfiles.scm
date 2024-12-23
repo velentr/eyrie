@@ -304,6 +304,9 @@ client.focused_inactive #dc322f #002b36 #839496 #dc322f
 client.unfocused        #002b36 #002b36 #839496 #dc322f
 client.urgent           #002b36 #002b36 #839496 #dc322f
 
+exec --no-startup-id xrdb -merge ~/.Xresources
+exec --no-startup-id setxkbmap -option ctrl:nocaps
+
 bar {
     position bottom
     status_command guile -e main -s ~~/.i3/run-status
