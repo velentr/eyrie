@@ -32,7 +32,7 @@
               (web-browser google-chrome-stable)
               (web-browser-name "google-chrome")
               (font-size 10)
-              (eth-iface "wlan0")
+              (eth-iface "wlp0s20f3")
               (status-script (local-file "run-status"))))
             (service rofi-dotfiles-service-type)
             (service
