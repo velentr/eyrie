@@ -483,7 +483,7 @@ CRDTs for sync'ing with a remote server using rsync.")
 (define birdr
   (package
     (name "birdr")
-    (version "0.1.0")
+    (version "0.1.1")
     (source
      (origin
        (method git-fetch)
@@ -492,7 +492,7 @@ CRDTs for sync'ing with a remote server using rsync.")
              (commit (string-append "v" version))))
        (file-name (git-file-name name version))
        (sha256
-        (base32 "12yd371pzlf0aj417ig42my6cjrylsdk1vap9y3lm8wk3qzxyp54"))))
+        (base32 "18r3yfp2a7azhkmma4f0i1grpwzl7bj3mnbfm52j8hf09y5hsvag"))))
     (build-system pyproject-build-system)
     (arguments
      (list #:tests? #false))
