@@ -68,7 +68,10 @@
     (inherit espressobin-ultra-barebones-os)
     (packages
      (cons* rauc
-            %base-packages))
+            (append
+             %base-packages-linux
+             %base-packages-networking
+             %base-packages-utils)))
     (services
      (cons* (service dhcp-client-service-type
                      (dhcp-client-configuration
