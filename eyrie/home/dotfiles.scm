@@ -400,6 +400,16 @@ tztime local {
      (openpgp-fingerprint
       "2A39 3FFF 68F4 EF7A 3D29 12AF 6F51 20A0 22FB B2D5")))))
 
+(define %microguix-channel
+  (channel
+   (name 'microguix)
+   (url "https://github.com/velentr/microguix")
+   (introduction
+    (make-channel-introduction
+     "a1704a33161786e52ccb279e8565117f5d60bd61"
+     (openpgp-fingerprint
+      "B10E 190D D459 A6FA 6CE2  DF99 D07C FD67 16F3 7692")))))
+
 (define eyrie-channels-service-type
   (service-type
    (name 'eyrie-channels)
@@ -407,7 +417,7 @@ tztime local {
     (list (service-extension home-channels-service-type
                              eyrie-channels-service)))
    (default-value
-     (list %nonguix-channel))
+     (list %microguix-channel %nonguix-channel))
    (description
     "Add additional guix channels.")))
 
