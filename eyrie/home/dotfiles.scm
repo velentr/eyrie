@@ -34,6 +34,7 @@
   #:use-module (gnu packages mail)
   #:use-module (gnu packages man)
   #:use-module (gnu packages ncdu)
+  #:use-module (gnu packages ocaml)
   #:use-module (gnu packages password-utils)
   #:use-module (gnu packages pdf)
   #:use-module (gnu packages python-xyz)
@@ -126,6 +127,8 @@
    ncdu
    neomutt
    nss-certs
+   ocaml-lsp-server
+   ocamlformat
    pass-age
    password-store
    picocom
@@ -656,6 +659,7 @@ tztime local {
         emacs-rust-mode
         emacs-systemd-mode
         emacs-terraform-mode
+        emacs-tuareg
         emacs-yaml-mode))
 
 (define-configuration emacs-dotfiles-configuration

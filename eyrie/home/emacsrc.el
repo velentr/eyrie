@@ -42,7 +42,8 @@
 (setq auto-mode-alist
       (append
        '(("\\.g-hooks" . scheme-mode)           ; g-hooks are always written in scheme
-         ("BUILD\\.bazel" . bazel-build-mode))  ; aircam has some build files with a prefix
+         ("BUILD\\.bazel" . bazel-build-mode)   ; aircam has some build files with a prefix
+         ("\\.ml" . tuareg-mode))               ; .ml is ocaml not lisp...
        ;; git-rebase-mode is stupidly more complex than just editing in
        ;; fundamental mode with evil
        (rassq-delete-all 'git-rebase-mode auto-mode-alist)))
@@ -214,6 +215,7 @@
             (eglot-ensure)))
 (add-hook 'c++-mode-hook 'eglot-ensure)
 (add-hook 'c++-ts-mode-hook 'eglot-ensure)
+(add-hook 'tuareg-mode-hook 'eglot-ensure)
 
 ;; treesit setup
 (require 'treesit)
