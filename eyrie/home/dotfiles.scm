@@ -141,6 +141,8 @@
    shellcheck  ;; for emacs-flycheck on shell code
    shfmt  ;; for emacs-format-all-the-code
    tree
+   tree-sitter-c
+   tree-sitter-cpp
    tree-sitter-python
    tree-sitter-rust
    usbutils

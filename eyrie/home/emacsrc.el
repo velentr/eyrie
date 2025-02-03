@@ -212,12 +212,15 @@
             (keymap-set evil-normal-state-map "J" 'combobulate-navigate-down-list-maybe)
             (keymap-set evil-normal-state-map "K" 'combobulate-navigate-up-list-maybe)
             (eglot-ensure)))
+(add-hook 'c++-mode-hook 'eglot-ensure)
+(add-hook 'c++-ts-mode-hook 'eglot-ensure)
 
 ;; treesit setup
 (require 'treesit)
 
 (setq major-mode-remap-alist
-      '((python-mode . python-ts-mode)
+      '((c++-mode . c++-ts-mode)
+        (python-mode . python-ts-mode)
         (rust-mode . rust-ts-mode)))
 
 (define-key evil-outer-text-objects-map "f"
