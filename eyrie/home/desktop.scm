@@ -12,7 +12,16 @@
   #:use-module (gnu packages gnupg)
   #:use-module (gnu services)
   #:use-module (guix gexp)
+  #:use-module (guix packages)
+  #:use-module (guix utils)
   #:use-module (nongnu packages mozilla))
+
+(define firefox-XXX
+  (package
+    (inherit firefox)
+    (arguments
+     (substitute-keyword-arguments (package-arguments firefox)
+       ((#:parallel-build? _ #f) #f)))))
 
 (home-environment
   (packages
@@ -58,7 +67,7 @@
             (service
              i3-dotfiles-service-type
              (i3-dotfiles-configuration
-              (web-browser firefox)
+              (web-browser firefox-XXX)
               (web-browser-name "firefox --private-window")
               (font-size 10)
               (eth-iface "enp4s0")
