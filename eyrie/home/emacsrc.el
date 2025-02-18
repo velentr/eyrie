@@ -300,8 +300,7 @@
     (cond
      ((eq major-mode 'github-mode)
       (gh-move-up-buffer))
-     ((or (eq major-mode 'c-mode)
-          (eq major-mode 'c++-mode))
+     ((member major-mode '(c-mode c-ts-mode c++-mode c++-ts-mode))
       (cond
        ((string-suffix-p ".h" buffer-file-name)
         (find-file (concat (substring buffer-file-name nil -2) ".cc")))
