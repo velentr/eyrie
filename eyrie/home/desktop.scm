@@ -10,18 +10,11 @@
   #:use-module (gnu home services ssh)
   #:use-module (gnu packages engineering)
   #:use-module (gnu packages gnupg)
+  #:use-module (gnu packages librewolf)
   #:use-module (gnu services)
   #:use-module (guix gexp)
   #:use-module (guix packages)
-  #:use-module (guix utils)
-  #:use-module (nongnu packages mozilla))
-
-(define firefox-XXX
-  (package
-    (inherit firefox)
-    (arguments
-     (substitute-keyword-arguments (package-arguments firefox)
-       ((#:parallel-build? _ #f) #f)))))
+  #:use-module (guix utils))
 
 (home-environment
   (packages
@@ -67,8 +60,8 @@
             (service
              i3-dotfiles-service-type
              (i3-dotfiles-configuration
-              (web-browser firefox-XXX)
-              (web-browser-name "firefox --private-window")
+              (web-browser librewolf)
+              (web-browser-name "librewolf --private-window")
               (font-size 10)
               (eth-iface "enp4s0")
               (status-script (local-file "run-status"))))
