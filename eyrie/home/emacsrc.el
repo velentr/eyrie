@@ -358,6 +358,7 @@
 
 (setq org-agenda-files '("~/todo"))
 (setq org-agenda-start-with-follow-mode t)
+(setq org-hierarchical-todo-statistics nil)
 
 ;; better keybindings in org-mode (especially the org-agenda keybindings)
 (require 'evil-org)
