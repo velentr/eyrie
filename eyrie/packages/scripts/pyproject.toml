@@ -14,10 +14,10 @@ authors = [
 ]
 description = "Misc scripts for uncommon tasks"
 dependencies = [
-    "defusedxml == 0.6.*",
+    "defusedxml == 0.7.*",
     "garmin-fit-sdk == 21.*",
-    "pillow == 9.*",
-    "rich == 12.*",
+    "pillow == 11.*",
+    "rich == 13.*",
 ]
 
 [project.scripts]

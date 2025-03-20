@@ -282,6 +282,7 @@ new based on symlinks.")
     (build-system pyproject-build-system)
     (arguments
      (list #:tests? #f))
+    (native-inputs (list python-setuptools python-wheel))
     (propagated-inputs
      (list python-defusedxml python-garmin-fit-sdk python-pillow python-rich))
     (home-page "https://github.com/velentr/eyrie")
@@ -568,7 +569,8 @@ g-expressions, then build and install them as a private profile under
        (sha256
         (base32 "104kzaqrcfa26rvxwzh1kllh5sir78fvl3wwi5pi8ljmxi50v939"))))
     (build-system pyproject-build-system)
-    (native-inputs (list python-pytest python-pytest-mock))
+    (native-inputs
+     (list python-pytest python-pytest-mock python-setuptools python-wheel))
     (home-page "https://developer.garmin.com/fit/overview/")
     (synopsis "Official Garmin FIT Python SDK")
     (description
