@@ -655,6 +655,7 @@ tztime local {
         emacs-go-mode
         emacs-markdown-mode
         emacs-nix-mode
+        ey:emacs-org-lifelist
         emacs-paredit
         emacs-rust-mode
         emacs-systemd-mode

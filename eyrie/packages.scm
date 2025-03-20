@@ -55,6 +55,7 @@
   #:export (birdr
             emacs-github-mode
             emacs-worklog
+            emacs-org-lifelist
             emacs-evil-textobj-tree-sitter
             emacs-combobulate
             g-hooks
@@ -118,6 +119,19 @@
 you’ve already completed or have left to do.  This project contains emacs code
 for creating and managing worklogs to manage your projects and keep you focused
 on driving projects to completion.")
+   (license license:gpl2)))
+
+(define emacs-org-lifelist
+  (package
+   (name "emacs-org-lifelist")
+   (version "0")
+   (source (local-file "./packages/org-lifelist" #:recursive? #t))
+   (build-system emacs-build-system)
+   (home-page
+    "https://github.com/velentr/eyrie/tree/master/eyrie/packages/org-lifelist")
+   (synopsis "Track and filter lifelists with org")
+   (description
+    "Track and filter lifelists with org.")
    (license license:gpl2)))
 
 (define emacs-github-mode

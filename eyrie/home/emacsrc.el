@@ -367,4 +367,6 @@
 (require 'evil-org-agenda)
 (evil-org-agenda-set-keys)
 
+(require 'org-lifelist)
+
 ;;; init.el ends here
