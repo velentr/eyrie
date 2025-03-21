@@ -24,6 +24,7 @@ dependencies = [
 garmin-xero = "garmin_xero:main"
 solarize = "solarize:main"
 mdd-to-org = "mdd_to_org:main"
+birdr-to-org = "birdr_to_org:main"
 
 [tool.black]
 line-length = 79
@@ -32,4 +33,4 @@ line-length = 79
 disallow_untyped_defs = true
 
 [tool.setuptools]
-py-modules = ["garmin_xero", "mdd_to_org", "solarize"]
+py-modules = ["birdr_to_org", "garmin_xero", "mdd_to_org", "solarize"]
