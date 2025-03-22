@@ -34,17 +34,16 @@
 
 (defun org-lifelist--prune-list (lst)
   "Prune LST to contain leaf entries and corresponding headings."
-  (if lst
-      (let* ((this (car lst))
-             (tail (org-lifelist--prune-list (cdr lst)))
-             (next (car tail)))
+  (let ((to-check (reverse lst))
+        (so-far nil))
+    (dolist (this to-check)
+      (let ((next (car so-far)))
         (if (or (org-lifelist--entry->leaf? this)
                 (and next
                      (< (org-lifelist--entry->level this)
                         (org-lifelist--entry->level next))))
-            (cons this tail)
-          tail))
-    nil))
+            (setq so-far (cons this so-far)))))
+    so-far))
 
 (defun org-lifelist--load-from-buffer (tag)
   "Load lifelist data from a buffer filtered by TAG."
@@ -105,7 +104,11 @@
                   title
                   "\n")))
       (goto-char (point-min))
-      (org-update-statistics-cookies t)
+      ;; Note that this is orders of magnitude faster than
+      ;; (org-update-statistics-cookies t) but should be doing the same thing?
+      (org-map-entries
+       (lambda ()
+         (org-update-statistics-cookies nil)))
       (read-only-mode))
     (switch-to-buffer buf)))
 
