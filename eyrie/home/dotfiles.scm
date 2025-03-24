@@ -107,7 +107,6 @@
    clang-17  ;; for emacs-company autocompletion
    feh
    file
-   ey:g-hooks
    git
    ey:git-third-party
    glibc-locales
@@ -415,6 +414,16 @@ tztime local {
      (openpgp-fingerprint
       "B10E 190D D459 A6FA 6CE2  DF99 D07C FD67 16F3 7692")))))
 
+(define %g-hooks-channel
+  (channel
+   (name 'g-hooks)
+   (url "https://github.com/velentr/g-hooks")
+   (introduction
+    (make-channel-introduction
+     "58deb8f71f1fb53ad5303bb3f8a7888556a7e49d"
+     (openpgp-fingerprint
+      "B10E 190D D459 A6FA 6CE2  DF99 D07C FD67 16F3 7692")))))
+
 (define eyrie-channels-service-type
   (service-type
    (name 'eyrie-channels)
@@ -422,7 +431,7 @@ tztime local {
     (list (service-extension home-channels-service-type
                              eyrie-channels-service)))
    (default-value
-     (list %microguix-channel %nonguix-channel))
+     (list %g-hooks-channel %microguix-channel %nonguix-channel))
    (description
     "Add additional guix channels.")))
 

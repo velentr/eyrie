@@ -58,7 +58,6 @@
             emacs-org-lifelist
             emacs-evil-textobj-tree-sitter
             emacs-combobulate
-            g-hooks
             git-third-party
             kitchen
             knowledge-store
@@ -518,44 +517,6 @@ CRDTs for sync'ing with a remote server using rsync.")
     (description "Command-line tool for tracking bird sightings and checklists in a
 database.")
     (home-page "https://github.com/velentr/birdr")
-    (license license:gpl3)))
-
-(define g-hooks
-  (package
-    (name "g-hooks")
-    (version "0.7.1")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/velentr/g-hooks")
-             (commit (string-append "v" version))))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "1155qb9s597sbxdcj01qv49xkw5w486qb5h45b10qwy527plny46"))))
-    (build-system gnu-build-system)
-    (arguments
-     (list
-      #:tests? #f
-      #:phases
-      #~(modify-phases %standard-phases
-          (add-after 'unpack 'patch-tool-inputs
-            (lambda _
-              (substitute* "g-hooks/core.scm"
-                (("define %git \"git\"")
-                 (string-append "define %git \"" (which "git") "\"")))))
-          (replace 'configure
-            (lambda _
-              (setenv "GUILE_AUTO_COMPILE" "0")
-              (setenv "GUILE_FLAGS" "-L .")
-              (setenv "DESTDIR" #$output))))))
-    (native-inputs (list guile-3.0))
-    (inputs (list git guix))
-    (synopsis "Manage git hooks using guix")
-    (description "g-hooks allows you to describe git hooks using guix’s
-g-expressions, then build and install them as a private profile under
-.git/g-hooks.")
-    (home-page "https://github.com/velentr/g-hooks")
     (license license:gpl3)))
 
 (define python-garmin-fit-sdk
