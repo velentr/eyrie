@@ -91,7 +91,7 @@
       (read-only-mode -1)
       (erase-buffer)
       (org-mode)
-      (insert "#+title: " title "\n\n* " title " [%]\n")
+      (insert "#+title: " title "\n\n* " title " [/] [%]\n")
       (dolist (entry (cdr entries))
         (let ((level (org-lifelist--entry->level entry))
               (title (org-lifelist--entry->title entry))
