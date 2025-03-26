@@ -103,7 +103,6 @@
    actionlint  ;; for emacs-flycheck on github workflows
    b3sum
    bc
-   ey:birdr
    clang-17  ;; for emacs-company autocompletion
    feh
    file

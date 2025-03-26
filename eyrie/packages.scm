@@ -53,8 +53,7 @@
   #:use-module (guix packages)
   #:use-module ((guix search-paths) #:select ($SSL_CERT_DIR $SSL_CERT_FILE))
   #:use-module (guix utils)
-  #:export (birdr
-            emacs-github-mode
+  #:export (emacs-github-mode
             emacs-worklog
             emacs-org-lifelist
             emacs-evil-textobj-tree-sitter
@@ -496,31 +495,6 @@ capabilities.")
       (description "Additional plugins that translate filesystem layouts into
 CRDTs for sync'ing with a remote server using rsync.")
       (license license:gpl3))))
-
-(define birdr
-  (package
-    (name "birdr")
-    (version "0.1.1")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/velentr/birdr")
-             (commit (string-append "v" version))))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "18r3yfp2a7azhkmma4f0i1grpwzl7bj3mnbfm52j8hf09y5hsvag"))))
-    (build-system pyproject-build-system)
-    (arguments
-     (list #:tests? #false))
-    (native-inputs (list python-setuptools python-wheel))
-    (propagated-inputs
-     (list python-click python-rich python-sqlalchemy))
-    (synopsis "Record and track bird sightings and checklists")
-    (description "Command-line tool for tracking bird sightings and checklists in a
-database.")
-    (home-page "https://github.com/velentr/birdr")
-    (license license:gpl3)))
 
 (define python-garmin-fit-sdk
   (package
