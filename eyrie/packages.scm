@@ -51,6 +51,7 @@
   #:use-module (guix git-download)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
+  #:use-module ((guix search-paths) #:select ($SSL_CERT_DIR $SSL_CERT_FILE))
   #:use-module (guix utils)
   #:export (birdr
             emacs-github-mode
@@ -359,6 +360,8 @@ functools.lru_cache for asyncio.")
       python-setuptools
       python-wheel))
     (home-page "https://github.com/Skydio/revup")
+    (native-search-paths
+     (list $SSL_CERT_DIR $SSL_CERT_FILE))
     (synopsis "Revolutionary commit-based code review and workflow tools for
 git/github")
     (description "Revup provides command-line tools that allow developers to
