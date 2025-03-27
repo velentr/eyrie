@@ -16,6 +16,7 @@
   #:use-module (gnu packages crypto)
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages emacs-xyz)
+  #:use-module (gnu packages engineering)
   #:use-module (gnu packages erlang)
   #:use-module (gnu packages file)
   #:use-module (gnu packages finance)
@@ -23,6 +24,7 @@
   #:use-module (gnu packages fontutils)
   #:use-module (gnu packages gdb)
   #:use-module (gnu packages ghostscript)
+  #:use-module (gnu packages gnupg)
   #:use-module (gnu packages guile)
   #:use-module (gnu packages guile-xyz)
   #:use-module (gnu packages haskell-apps)
@@ -61,7 +63,7 @@
   #:export (%core-emacs-plugins
             %core-env
             %core-packages
-            %devel-packages
+            %ext-packages
             %nonguix-channel
             %skydio-env
             %skydio-packages
@@ -107,23 +109,17 @@
    feh
    file
    git
-   ey:git-third-party
    glibc-locales
    guile-3.0-latest
    guile-colorized
    guile-readline
    htop
    le-certs
-   ledger
    lsof
-   ey:magpie
-   ey:magpie-plugins
    man-db
    man-pages
    man-pages-posix
-   mpv
    ncdu
-   neomutt
    nss-certs
    ocaml-lsp-server
    ocamlformat
@@ -149,14 +145,22 @@
    usbutils
    vim
    xrandr
-   xrdb
+   xrdb))
+
+(define %ext-packages
+  (list
+   emacs-scad-mode
+   gnupg
+   ledger
+   ey:magpie
+   ey:magpie-plugins
+   mpv
+   neomutt
+   pinentry-tty
    ey:ytar
    yt-dlp))
 
 (define %skydio-packages
-  %core-packages)
-
-(define %devel-packages
   %core-packages)
 
 (define (serialize-integer field-name val)
