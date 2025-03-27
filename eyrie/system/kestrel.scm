@@ -17,7 +17,8 @@
   #:use-module (gnu services ssh)
   #:use-module (gnu services xorg)
   #:use-module (nongnu packages linux)
-  #:use-module (nongnu system linux-initrd))
+  #:use-module (nongnu system linux-initrd)
+  #:use-module (eyrie system keys))
 
 (define %encrypted-root
   (mapped-device
@@ -60,22 +61,30 @@
 
  (packages (append (list le-certs nix wpa-supplicant) %base-packages))
 
- (services (append (list (service elogind-service-type)  ;; to create /run/user/${UID} on login
-                         (service screen-locker-service-type
-                                  (screen-locker-configuration
-                                   (name "i3lock")
-                                   (program (file-append i3lock "/bin/i3lock"))))
-                         (service alsa-service-type)
-                         (service network-manager-service-type)
-                         (service nix-service-type)
-                         (service ntp-service-type)
-                         (service slim-service-type
-                                  (slim-configuration
-                                   (display ":0")))
-                         (service openssh-service-type
-                                  (openssh-configuration
-                                   (openssh openssh-sans-x)
-                                   (password-authentication? #f)
-                                   (port-number 2222)))
-                         (service wpa-supplicant-service-type))
-                   %base-services)))
+ (services
+  (cons*
+   (service elogind-service-type) ;; to create /run/user/${UID} on login
+   (service screen-locker-service-type
+            (screen-locker-configuration
+             (name "i3lock")
+             (program (file-append i3lock "/bin/i3lock"))))
+   (service alsa-service-type)
+   (service network-manager-service-type)
+   (service nix-service-type)
+   (service ntp-service-type)
+   (service slim-service-type
+            (slim-configuration
+             (display ":0")))
+   (service openssh-service-type
+            (openssh-configuration
+             (openssh openssh-sans-x)
+             (password-authentication? #f)
+             (port-number 2222)))
+   (service wpa-supplicant-service-type)
+   (modify-services %base-services
+     (guix-service-type config =>
+                        (guix-configuration
+                         (inherit config)
+                         (authorized-keys
+                          (cons %peregrine-signing-key
+                                %default-authorized-guix-keys))))))))
