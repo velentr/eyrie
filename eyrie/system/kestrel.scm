@@ -75,11 +75,6 @@
    (service slim-service-type
             (slim-configuration
              (display ":0")))
-   (service openssh-service-type
-            (openssh-configuration
-             (openssh openssh-sans-x)
-             (password-authentication? #f)
-             (port-number 2222)))
    (service wpa-supplicant-service-type)
    (modify-services %base-services
      (guix-service-type config =>
