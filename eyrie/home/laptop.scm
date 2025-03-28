@@ -7,15 +7,14 @@
   #:use-module (gnu home)
   #:use-module (gnu home services shells)
   #:use-module (gnu home services ssh)
-  #:use-module (gnu packages browser-extensions)
-  #:use-module (gnu packages chromium)
+  #:use-module (gnu packages librewolf)
   #:use-module (gnu packages linux)
   #:use-module (gnu services)
   #:use-module (guix gexp))
 
 (home-environment
  (packages
-  (cons* acpi ublock-origin/chromium %core-packages))
+  (cons acpi %core-packages))
  (services
   (append (list
            (service emacs-dotfiles-service-type)
@@ -40,8 +39,8 @@
            (service
             i3-dotfiles-service-type
             (i3-dotfiles-configuration
-             (web-browser ungoogled-chromium)
-             (web-browser-name "chromium")
+             (web-browser librewolf)
+             (web-browser-name "librewolf --private-window")
              (font-size 10)
              (eth-iface "wlp58s0")
              (status-script (local-file "run-status"))))
