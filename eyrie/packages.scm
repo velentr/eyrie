@@ -314,13 +314,13 @@ functools.lru_cache for asyncio.")
 (define revup
   (package
     (name "revup")
-    (version "0.3.0")
+    (version "0.4.0")
     (source
      (origin
        (method url-fetch)
        (uri (pypi-uri "revup" version))
        (sha256
-        (base32 "00877a4gdq6xd85kmmhi9crxbsmkdfx3iawldvb0pq4wfmr93d1f"))))
+        (base32 "1jvmhbb74bi79wj999has8ma2skg0c1ip19rard17rnfqff8q6dj"))))
     (build-system pyproject-build-system)
     (arguments
      (list
