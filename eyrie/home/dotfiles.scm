@@ -119,7 +119,7 @@
    man-db
    man-pages
    man-pages-posix
-   ncdu
+   ncdu-1
    nss-certs
    ocaml-lsp-server
    ocamlformat
