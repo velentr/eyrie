@@ -9,12 +9,16 @@
   #:use-module (gnu home services ssh)
   #:use-module (gnu packages librewolf)
   #:use-module (gnu packages linux)
+  #:use-module (gnu packages ssh)
   #:use-module (gnu services)
   #:use-module (guix gexp))
 
 (home-environment
  (packages
-  (cons acpi %core-packages))
+  (cons*
+   acpi
+   openssh-sans-x ; for ssh client
+   %core-packages))
  (services
   (append (list
            (service emacs-dotfiles-service-type)
