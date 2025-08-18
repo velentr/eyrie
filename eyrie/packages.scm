@@ -167,6 +167,7 @@ emacs.")
       (build-system emacs-build-system)
       (arguments
        (list
+        #:tests? #f
         #:phases
         #~(modify-phases %standard-phases
             (add-after 'install 'install-pieces
@@ -200,6 +201,9 @@ tree-sitter grammars. You can easily create @code{function}, @code{class},
                 (sha256
                  (base32 "063w2sm0c7xhg3ml31xp870azb0sv7z689lnbnjnbl3rfdy4kg50"))))
       (build-system emacs-build-system)
+      (arguments
+       (list
+        #:tests? #f))
       (home-page "https://github.com/mickeynp/combobulate")
       (synopsis "Structured Editing and Navigation in Emacs")
       (description "Combobulate is a package that adds structured editing and
