@@ -36,6 +36,7 @@
   #:use-module (gnu packages mail)
   #:use-module (gnu packages man)
   #:use-module (gnu packages ncdu)
+  #:use-module (gnu packages nss)
   #:use-module (gnu packages ocaml)
   #:use-module (gnu packages password-utils)
   #:use-module (gnu packages pdf)
