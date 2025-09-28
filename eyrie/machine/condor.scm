@@ -10,6 +10,7 @@
   #:use-module (gnu packages certs)
   #:use-module (gnu packages gawk)
   #:use-module (gnu packages linux)
+  #:use-module (gnu packages nss)
   #:use-module (gnu packages package-management)
   #:use-module (gnu packages rsync)
   #:use-module (gnu packages ssh)
