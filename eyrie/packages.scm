@@ -332,6 +332,7 @@ functools.lru_cache for asyncio.")
     (build-system pyproject-build-system)
     (arguments
      (list
+      #:test-backend #~'pytest
       #:phases
       #~(modify-phases %standard-phases
           (add-after 'unpack 'patch-tool-inputs
@@ -342,11 +343,7 @@ functools.lru_cache for asyncio.")
                                 (which "man"))))
               (substitute* "revup/git.py"
                 (("shutil.which\\(\"git\"\\)")
-                 (string-append "\"" (which "git") "\"")))))
-          (replace 'check
-            (lambda* (#:key tests? #:allow-other-keys)
-              (when tests?
-                (invoke "python" "-m" "pytest")))))))
+                 (string-append "\"" (which "git") "\""))))))))
     (inputs (list git man-db))
     (propagated-inputs
      (list
