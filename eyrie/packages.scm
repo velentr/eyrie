@@ -298,14 +298,18 @@ don't deserve their own packages.")
 (define python-async-lru
   (package
     (name "python-async-lru")
-    (version "2.0.4")
+    (version "2.0.5")
     (source
      (origin
-       (method url-fetch)
-       (uri (pypi-uri "async-lru" version))
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/aio-libs/async-lru")
+             (commit (string-append "v" version))))
        (sha256
-        (base32 "09sn3bc3gc2flijm9k8kn4hmbnlkaddhqahb49izy188yrfrm9dq"))))
+        (base32 "0yzhcqnalh3hbf7gs0hn00wa2vdz72rgjp66907csqj8dzlnm78l"))))
     (build-system pyproject-build-system)
+    (arguments
+     (list #:test-backend #~'unittest))
     (native-inputs (list python-setuptools python-wheel))
     (propagated-inputs (list python-typing-extensions))
     (home-page "https://github.com/aio-libs/async-lru")
