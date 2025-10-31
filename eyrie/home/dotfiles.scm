@@ -203,9 +203,10 @@
                           ("pager"      "less -F -X")))
            ("credential" (("helper"     "cache")))
            ("grep"       (("lineNumber" "true")))
-           ("pull"       (("ff"         "only")))
+           ("pull"       (("rebase"     "true")))
            ("push"       (("default"    "simple")))
-           ("rebase"     (("autosquash" "1")))
+           ("rebase"     (("autosquash" "1")
+                          ("autostash"  "1")))
            ("trailer \"fix\""
             (("command"   "git log -1 --oneline --format='%h (\\\"%s\\\")' $ARG")
              ("ifExists"  "replace")
