@@ -535,6 +535,7 @@ tztime local {
            ("awsauth" "'bazel -S run --config=noskybuild //auth/aws'")
            ("bb" "'bazel -S build --config=noskybuild'")
            ("br" "'bazel -S run --config=noskybuild'")
+           ("bt" "'bazel -S test --config=noskybuild'")
            ("ffp" "'bazel -S run --config=noskybuild //infrastructure/tools/flashpack:fetch_flashpack_ng --'")
            ("gzl" "'bazel -S run --config=noskybuild //tools/gazelle'")
            ("rs-an-up" "'bazel -S run @rules_rust//tools/rust_analyzer:gen_rust_project'")
