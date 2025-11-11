@@ -582,3 +582,29 @@ new firmware revision. RAUC is also the tool on your host system that lets you
 create, inspect and modify update artifacts for your device.")
     (home-page "https://rauc.io")
     (license license:lgpl2.1)))
+
+(define-public python-kconfiglib
+  (package
+    (name "python-kconfiglib")
+    (version "14.1.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (pypi-uri "kconfiglib" version))
+       (sha256
+        (base32 "0g690bk789hsry34y4ahvly5c8w8imca90ss4njfqf7m2qicrlmy"))))
+    (build-system pyproject-build-system)
+    (arguments
+     (list #:tests? #f))
+    (native-inputs
+     (list python-setuptools
+           python-wheel
+           `(,python "tk")))
+    (home-page "https://github.com/ulfalizer/Kconfiglib")
+    (synopsis
+     "Flexible Python library for parsing and creating Linux Kconfig files")
+    (description
+     "Kconfiglib is a Python implementation of a parser for Linux Kconfig files.
+It can be used as a Python library or as a standalone terminal or GUI menuconfig
+interface.")
+    (license license:isc)))
