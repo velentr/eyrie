@@ -7,6 +7,7 @@
   #:use-module (gnu bootloader u-boot)
   #:use-module (gnu image)
   #:use-module (gnu packages)
+  #:use-module (gnu packages base)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages ssh)
   #:use-module (gnu services)
@@ -16,6 +17,7 @@
   #:use-module (gnu system)
   #:use-module (gnu system file-systems)
   #:use-module (gnu system image)
+  #:use-module (gnu system locale)
   #:use-module (guix gexp)
   #:use-module (guix git-download)
   #:use-module (guix packages)
@@ -35,6 +37,11 @@
     (host-name "ebinx")
     (timezone "US/Pacific")
     (locale "en_US.utf8")
+    (locale-definitions (list (locale-definition
+                               (name "en_US.utf8")
+                               (source "en_US")
+                               (charset "UTF-8"))))
+    (locale-libcs (list glibc))
     (bootloader (bootloader-configuration
                  (bootloader u-boot-bootloader)
                  (targets '("/dev/mmcblk0"))))
@@ -72,6 +79,8 @@
              %base-packages-linux
              %base-packages-networking
              %base-packages-utils)))
+    (setuid-programs '())
+    (host-name "merlin")
     (services
      (cons* (service dhcp-client-service-type
                      (dhcp-client-configuration
@@ -86,9 +95,4 @@
                                    %condor-ssh-key
                                    %peregrine-ssh-key)))))
             (modify-services %base-services
-              (guix-service-type config =>
-                                 (guix-configuration
-                                  (inherit config)
-                                  (authorized-keys
-                                   (cons %peregrine-signing-key
-                                         %default-authorized-guix-keys))))))))))
+              (delete guix-service-type)))))))
