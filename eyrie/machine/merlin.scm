@@ -82,9 +82,27 @@
     (setuid-programs '())
     (host-name "merlin")
     (services
-     (cons* (service dhcp-client-service-type
-                     (dhcp-client-configuration
-                      (interfaces '("wan"))))
+     (cons* (service static-networking-service-type
+                     (list (static-networking
+                            (addresses
+                             (list
+                              ;; note that eth0 must be up before attempting to
+                              ;; bring up the lan* interfaces; use 0.0.0.0 since
+                              ;; it doesn't actually have an address
+                              (network-address
+                               (device "eth0")
+                               (value "0.0.0.0/0"))
+                              (network-address
+                               (device "lan0")
+                               (value "10.10.0.6/16"))))
+                            (routes
+                             (list (network-route
+                                    (destination "default")
+                                    (gateway "10.10.0.1"))))
+                            (name-servers '("208.67.220.220"
+                                            "208.67.220.222"
+                                            "208.67.222.220"
+                                            "208.67.222.222")))))
             (service openssh-service-type
                      (openssh-configuration
                       (openssh openssh-sans-x)
