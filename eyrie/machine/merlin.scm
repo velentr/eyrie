@@ -8,7 +8,7 @@
   #:use-module (gnu image)
   #:use-module (gnu packages)
   #:use-module (gnu packages base)
-  #:use-module (gnu packages linux)
+  #:use-module (gnu packages bootloaders)
   #:use-module (gnu packages ssh)
   #:use-module (gnu services)
   #:use-module (gnu services base)
@@ -75,6 +75,7 @@
     (inherit espressobin-ultra-barebones-os)
     (packages
      (cons* rauc
+            u-boot-tools
             (append
              %base-packages-linux
              %base-packages-networking
