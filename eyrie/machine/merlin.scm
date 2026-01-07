@@ -26,8 +26,15 @@
   (operating-system
     (kernel linux-espressobin-ultra-5.4)
     (kernel-arguments
-     (cons "console=ttyMV0,115200"
-           %default-kernel-arguments))
+     (cons*
+      ;; note that we actually want driver_mode=2, but that will still bring up
+      ;; sta since the driver always enables bit 0
+      "mwifiex.driver_mode=3"
+      ;; net.ifnames=1 will randomly rename one of uap0 and mlan0; ironically
+      ;; disabling it makes the naming more consistent.
+      "net.ifnames=0"
+      "console=ttyMV0,115200"
+      %default-kernel-arguments))
     (initrd-modules '())
     (firmware (list espressobin-ultra-linux-firmware))
     (host-name "ebinx")
