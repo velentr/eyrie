@@ -41,10 +41,14 @@
     (bootloader (bootloader-configuration
                  (bootloader u-boot-bootloader)
                  (targets '("/dev/mmcblk0"))))
-    (file-systems (cons
+    (file-systems (cons*
                    (file-system
                      (device "/dev/mmcblk0p1")
                      (mount-point "/")
+                     (type "ext4"))
+                   (file-system
+                     (device "/dev/mmcblk0p3")
+                     (mount-point "/data")
                      (type "ext4"))
                    %base-file-systems))))
 
