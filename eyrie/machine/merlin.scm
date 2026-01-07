@@ -29,6 +29,7 @@
      (cons "console=ttyMV0,115200"
            %default-kernel-arguments))
     (initrd-modules '())
+    (firmware (list espressobin-ultra-linux-firmware))
     (host-name "ebinx")
     (timezone "US/Pacific")
     (locale "en_US.utf8")
