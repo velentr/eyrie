@@ -12,6 +12,7 @@
   #:use-module (gnu packages ssh)
   #:use-module (gnu services)
   #:use-module (gnu services base)
+  #:use-module (gnu services networking)
   #:use-module (gnu services ssh)
   #:use-module (gnu system)
   #:use-module (gnu system file-systems)
@@ -92,6 +93,21 @@
     (services
      (cons* (service static-networking-service-type
                      (list (static-networking
+                            (links
+                             (list
+                              (network-link
+                               (name "br0")
+                               (type 'bridge)
+                               (arguments '()))
+                              (network-link
+                               (name "lan0")
+                               (arguments '((master . "br0"))))
+                              ;; this usually runs before uap0 comes up and this
+                              ;; step fails, but the hostapd will add the bridge
+                              ;; from the bridge=br0 config option
+                              (network-link
+                               (name "uap0")
+                               (arguments '((master . "br0"))))))
                             (addresses
                              (list
                               ;; note that eth0 must be up before attempting to
@@ -101,8 +117,11 @@
                                (device "eth0")
                                (value "0.0.0.0/0"))
                               (network-address
+                               (device "br0")
+                               (value "10.10.0.6/16"))
+                              (network-address
                                (device "lan0")
-                               (value "10.10.0.6/16"))))
+                               (value "0.0.0.0/0"))))
                             (routes
                              (list (network-route
                                     (destination "default")
@@ -120,5 +139,23 @@
                        (list (list "root"
                                    %condor-ssh-key
                                    %peregrine-ssh-key)))))
+            (service hostapd-service-type
+                     (hostapd-configuration
+                      (interface "uap0")
+                      (ssid "sky.net")
+                      (channel 165)
+                      (extra-settings "
+hw_mode=a
+bridge=br0
+ieee80211d=1
+country_code=US
+ieee80211n=1
+ieee80211ac=1
+auth_algs=1
+wpa=2
+wpa_key_mgmt=WPA-PSK
+wpa_psk_file=/data/hostapd-wpa-psk.txt
+wpa_pairwise=CCMP
+")))
             (modify-services %base-services
               (delete guix-service-type)))))))
