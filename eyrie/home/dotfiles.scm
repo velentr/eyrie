@@ -189,6 +189,7 @@
         (github-user (git-dotfiles-configuration-github-user config))
         (core-config-tree
          `(("alias"      (("ac"         "log --first-parent")
+                          ("lo"         "log --oneline")
                           ("locate"     "ls-files --")
                           ("ref"        "rev-parse HEAD")
                           ("sh"         "log -1 --pretty='format:%h (\"%s\")'")
