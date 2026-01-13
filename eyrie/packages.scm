@@ -8,7 +8,6 @@
   #:use-module (gnu packages bash)
   #:use-module (gnu packages check)
   #:use-module (gnu packages compression)
-  #:use-module (gnu packages crates-io)
   #:use-module (gnu packages curl)
   #:use-module (gnu packages databases)
   #:use-module (gnu packages disk)
@@ -62,47 +61,11 @@
             kitchen
             knowledge-store
             magpie
-            magpie-plugins
             python-async-lru
             python-garmin-fit-sdk
-            rauc
             revup
             scripts
             ytar))
-
-(define git-third-party
-  (package
-    (name "git-third-party")
-    (version "0.0.0")
-    (source
-     (origin
-       (method git-fetch)
-       (uri
-        (git-reference
-         (url "https://github.com/velentr/git-third-party")
-         (commit (string-append "v" version))))
-       (sha256
-        (base32 "1mgrs047mgl0s243a3y9xqgl75ax5b2x45zhccyi1vq0s5nxhqsl"))))
-    (build-system cargo-build-system)
-    (arguments
-     (list #:cargo-inputs
-           `(("rust-clap" ,rust-clap-2))
-           #:phases
-           #~(modify-phases %standard-phases
-               (add-after 'unpack 'patch-file-paths
-                 (lambda* (#:key inputs #:allow-other-keys)
-                   (substitute* '("src/cherrypick.rs" "src/clone.rs")
-                     (("\"git\"")
-                      (string-append
-                       "\""
-                       (search-input-file inputs "/bin/git")
-                       "\""))))))))
-    (inputs (list git))
-    (home-page "https://github.com/velentr/git-third-party")
-    (synopsis "Manage vendored third-party code in git")
-    (description
-     "Manage third-party code that is vendored into a git monorepo.")
-    (license license:gpl3)))
 
 (define emacs-worklog
   (package
@@ -465,41 +428,6 @@ designed to be easily extensible to add new engines with different
 capabilities.")
     (home-page "https://github.com/velentr/magpie")
     (license license:gpl3)))
-
-(define magpie-plugins
-  ;; There is not yet a stable release
-  (let ((commit "53a16842ac9c211102b746c2766d728a03d6291f")
-        (revision "0"))
-    (package
-      (name "magpie-plugins")
-      (version (git-version "0" revision commit))
-      (source
-       (origin
-         (method git-fetch)
-         (uri (git-reference
-               (url "https://github.com/velentr/magpie-plugins")
-               (commit commit)))
-         (file-name (git-file-name name version))
-         (sha256
-          (base32 "0njh7fr16h6l95jq2a1j8bnirxa31jkbywvhyl2my2sjfa7gj1lq"))))
-      (build-system cargo-build-system)
-      (arguments
-       (list #:cargo-inputs
-             `(("rust-ciborium" ,rust-ciborium-0.2)
-               ("rust-env-logger" ,rust-env-logger-0.9)
-               ("rust-failure" ,rust-failure-0.1)
-               ("rust-log" ,rust-log-0.4)
-               ("rust-serde" ,rust-serde-1)
-               ("rust-serde-bytes" ,rust-serde-bytes-0.11)
-               ("rust-xdg" ,rust-xdg-2))
-             #:install-source? #f))
-      (propagated-inputs
-       (list rsync))
-      (home-page "https://github.com/velentr/magpie-plugins")
-      (synopsis "More complex magpie engines, based on CRDT concepts")
-      (description "Additional plugins that translate filesystem layouts into
-CRDTs for sync'ing with a remote server using rsync.")
-      (license license:gpl3))))
 
 (define python-garmin-fit-sdk
   (package

@@ -153,8 +153,6 @@
    emacs-scad-mode
    gnupg
    ledger
-   ey:magpie
-   ey:magpie-plugins
    mpv
    neomutt
    pinentry-tty
