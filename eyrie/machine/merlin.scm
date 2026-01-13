@@ -21,6 +21,7 @@
   #:use-module (guix platforms arm)
   #:use-module (micrognu packages updates)
   #:use-module (micrognu packages vendor globalscaletechnologies)
+  #:use-module (micrognu partition)
   #:use-module (eyrie system keys))
 
 (define espressobin-ultra-barebones-os
@@ -76,9 +77,7 @@
                         #:type espressobin-ultra-image-type))
    (name 'espressobin-ultra-raw-image)))
 
-(image
- (inherit espressobin-ultra-barebones-raw-image)
- (operating-system
+(define merlin-operating-system
   (operating-system
     (inherit espressobin-ultra-barebones-os)
     (packages
@@ -158,4 +157,16 @@ wpa_psk_file=/data/hostapd-wpa-psk.txt
 wpa_pairwise=CCMP
 ")))
             (modify-services %base-services
-              (delete guix-service-type)))))))
+              (delete guix-service-type))))))
+
+(define merlin-partition
+  (rootfs-partition
+   #:partition
+   (partition
+    (inherit root-partition)
+    (uuid (operating-system-uuid merlin-operating-system))
+    (label "merlin-root"))
+   #:os merlin-operating-system
+   #:target "aarch64-linux-gnu"))
+
+merlin-partition
