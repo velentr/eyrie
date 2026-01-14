@@ -22,6 +22,7 @@
   #:use-module (micrognu packages updates)
   #:use-module (micrognu packages vendor globalscaletechnologies)
   #:use-module (micrognu partition)
+  #:use-module (micrognu services bootloader)
   #:use-module (eyrie system keys))
 
 (define espressobin-ultra-barebones-os
@@ -156,6 +157,13 @@ wpa_key_mgmt=WPA-PSK
 wpa_psk_file=/data/hostapd-wpa-psk.txt
 wpa_pairwise=CCMP
 ")))
+            (service u-boot-env-service-type
+                     (list
+                      (u-boot-env-configuration
+                       (device "/dev/mtdblock2")
+                       (size #x10000)
+                       (sector-size #x1000)
+                       (number-of-sectors 16))))
             (modify-services %base-services
               (delete guix-service-type))))))
 
