@@ -28,7 +28,15 @@
                                    (user "root"))
                      (openssh-host (name "rsync.net")
                                    (host-name "fm1436.rsync.net")
-                                   (user "fm1436"))))))
+                                   (user "fm1436"))
+                     (openssh-host (name "merlin")
+                                   (host-name "10.10.0.6")
+                                   (user "root")
+                                   (extra-content
+                                    (string-join
+                                     '("StrictHostKeyChecking=no"
+                                       "UserKnownHostsFile=/dev/null")
+                                     "\n")))))))
             (service
              home-rsnapshot-service-type
              (home-rsnapshot-configuration
