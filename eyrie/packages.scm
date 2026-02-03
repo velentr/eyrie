@@ -498,17 +498,25 @@ interface.")
       #:phases
       #~(modify-phases %standard-phases
           (add-after 'build 'install-script
-            (lambda _
+            (lambda* (#:key inputs #:allow-other-keys)
               (let* ((bin (string-append #$output "/bin"))
                      (version (target-guile-effective-version))
-                     (scm (string-append #$output "/share/guile/site/" version))
-                     (go (string-append
-                          #$output "/lib/guile/" version "/site-ccache")))
+                     (gcrypt (assoc-ref inputs "guile-gcrypt"))
+                     (deps (list #$output gcrypt))
+                     (scm (map
+                           (lambda (dep)
+                             (string-append dep "/share/guile/site/" version))
+                           deps))
+                     (go (map
+                          (lambda (dep)
+                            (string-append
+                             dep "/lib/guile/" version "/site-ccache"))
+                          deps)))
                 (install-file "scripts/covey" bin)
                 (wrap-program (string-append bin "/covey")
                   '("GUILE_AUTO_COMPILE" ":" = ("0"))
-                  `("GUILE_LOAD_PATH" ":" prefix (,scm))
-                  `("GUILE_LOAD_COMPILED_PATH" ":" prefix (,go)))))))))
+                  `("GUILE_LOAD_PATH" ":" prefix ,scm)
+                  `("GUILE_LOAD_COMPILED_PATH" ":" prefix ,go))))))))
     (native-inputs (list guile-3.0))
     (inputs (list bash guile-3.0 guile-gcrypt))
     (synopsis
