@@ -30,6 +30,7 @@
   #:use-module (gnu packages haskell-apps)
   #:use-module (gnu packages image-viewers)
   #:use-module (gnu packages llvm)
+  #:use-module (gnu packages librewolf)
   #:use-module (gnu packages license)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages lsof)
@@ -258,7 +259,7 @@ user's email address")))
     "Create a globel @file{~/.guile} for the user with the given contents")))
 
 (define-configuration i3-dotfiles-configuration
-  (web-browser (package nyxt) "The web browser to use.")
+  (web-browser (package librewolf) "The web browser to use.")
   (web-browser-name (string "") "Name of the web browser executable.")
   (font-size (integer 12) "Size of the font to use for chrome.")
   (eth-iface (string "eth1") "Ethernet interface to display the IP address.")
