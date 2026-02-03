@@ -479,3 +479,41 @@ extensible.")
 It can be used as a Python library or as a standalone terminal or GUI menuconfig
 interface.")
     (license license:isc)))
+
+(define-public covey
+  (package
+    (name "covey")
+    (version "0")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://codeberg.org/bdk/covey")
+             (commit "9067b8941b8a18d7ba03f8bbc6d72dafb2856102")))
+       (sha256
+        (base32 "0z981xxpqss6a2rzjqa8s2xgh6hb0lr8il6gjynm2iipw058lnrn"))))
+    (build-system guile-build-system)
+    (arguments
+     (list
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-after 'build 'install-script
+            (lambda _
+              (let* ((bin (string-append #$output "/bin"))
+                     (version (target-guile-effective-version))
+                     (scm (string-append #$output "/share/guile/site/" version))
+                     (go (string-append
+                          #$output "/lib/guile/" version "/site-ccache")))
+                (install-file "scripts/covey" bin)
+                (wrap-program (string-append bin "/covey")
+                  '("GUILE_AUTO_COMPILE" ":" = ("0"))
+                  `("GUILE_LOAD_PATH" ":" prefix (,scm))
+                  `("GUILE_LOAD_COMPILED_PATH" ":" prefix (,go)))))))))
+    (native-inputs (list guile-3.0))
+    (inputs (list bash guile-3.0 guile-gcrypt))
+    (synopsis
+     "Manage forests of git repositories")
+    (description
+     "Manage forests of git repositories.")
+    (home-page "https://codeberg.org/bdk/covey")
+    (license license:gpl3)))
