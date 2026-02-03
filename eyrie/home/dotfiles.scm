@@ -108,6 +108,7 @@
    b3sum
    bc
    clang-17  ;; for emacs-company autocompletion
+   ey:covey
    feh
    file
    git
