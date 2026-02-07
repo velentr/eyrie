@@ -489,9 +489,9 @@ interface.")
        (method git-fetch)
        (uri (git-reference
              (url "https://codeberg.org/bdk/covey")
-             (commit "0db4b4550579f336d6131705ef58b2b91d1666d3")))
+             (commit "092d9889c01db1937ea4e04276d6ee08452c0820")))
        (sha256
-        (base32 "1gaf1shvy080ggjwbl814ccv6s4z4b1gfr00m2gpll6w9920b98d"))))
+        (base32 "1z8m4ma3prjfh3wdl2qmnvg01fwzjvj4r0118l2a69iv35j0vvjd"))))
     (build-system guile-build-system)
     (arguments
      (list
