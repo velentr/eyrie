@@ -104,10 +104,9 @@
 
 (define %core-packages
   (list
-   actionlint  ;; for emacs-flycheck on github workflows
    b3sum
    bc
-   clang-17  ;; for emacs-company autocompletion
+   clang-21  ;; for emacs-company autocompletion
    ey:covey
    feh
    file
@@ -122,10 +121,8 @@
    man-db
    man-pages
    man-pages-posix
-   ncdu-1
+   ncdu
    nss-certs
-   ocaml-lsp-server
-   ocamlformat
    pass-age
    password-store
    picocom
@@ -155,11 +152,8 @@
    emacs-scad-mode
    gnupg
    ledger
-   mpv
    neomutt
-   pinentry-tty
-   ey:ytar
-   yt-dlp))
+   pinentry-tty))
 
 (define %skydio-packages
   %core-packages)
