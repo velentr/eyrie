@@ -431,6 +431,16 @@ tztime local {
      (openpgp-fingerprint
       "B10E 190D D459 A6FA 6CE2  DF99 D07C FD67 16F3 7692")))))
 
+(define %guix-science-channel
+  (channel
+   (name 'guix-science)
+   (url "https://codeberg.org/guix-science/guix-science.git")
+   (introduction
+    (make-channel-introduction
+     "b1fe5aaff3ab48e798a4cce02f0212bc91f423dc"
+     (openpgp-fingerprint
+      "CA4F 8CF4 37D7 478F DA05  5FD4 4213 7701 1A37 8446")))))
+
 (define eyrie-channels-service-type
   (service-type
    (name 'eyrie-channels)
@@ -438,7 +448,7 @@ tztime local {
     (list (service-extension home-channels-service-type
                              eyrie-channels-service)))
    (default-value
-     (list %g-hooks-channel %microguix-channel %nonguix-channel))
+     (list %g-hooks-channel %microguix-channel %nonguix-channel %guix-science-channel))
    (description
     "Add additional guix channels.")))
 
