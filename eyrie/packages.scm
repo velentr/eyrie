@@ -61,7 +61,6 @@
             kitchen
             knowledge-store
             magpie
-            python-async-lru
             python-garmin-fit-sdk
             revup
             scripts
@@ -257,30 +256,6 @@ new based on symlinks.")
      "This package bundles together a bunch of scripts that I use sometimes that
 don't deserve their own packages.")
     (license license:gpl3)))
-
-(define python-async-lru
-  (package
-    (name "python-async-lru")
-    (version "2.0.5")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://github.com/aio-libs/async-lru")
-             (commit (string-append "v" version))))
-       (sha256
-        (base32 "0yzhcqnalh3hbf7gs0hn00wa2vdz72rgjp66907csqj8dzlnm78l"))))
-    (build-system pyproject-build-system)
-    (arguments
-     (list #:test-backend #~'unittest))
-    (native-inputs (list python-setuptools python-wheel))
-    (propagated-inputs (list python-typing-extensions))
-    (home-page "https://github.com/aio-libs/async-lru")
-    (synopsis "Simple LRU cache for asyncio")
-    (description
-     "This package is 100% port of Python built-in function
-functools.lru_cache for asyncio.")
-    (license license:expat)))
 
 (define revup
   (package
