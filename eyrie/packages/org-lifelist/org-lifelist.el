@@ -10,6 +10,7 @@
 
 ;;; Code:
 
+(require 'csv-mode)
 (require 'org)
 
 (defun org-lifelist--entry (level title done? leaf?)
@@ -111,6 +112,49 @@
          (org-update-statistics-cookies nil)))
       (read-only-mode))
     (switch-to-buffer buf)))
+
+(defun org-lifelist--tag-entry (name tag)
+  "Mark the entry NAME with TAG."
+  (let ((header (org-find-exact-headline-in-buffer name)))
+    (if (not header)
+        nil
+      (goto-char header)
+      (org-set-tags
+       (delete-dups (append (org-get-tags) (list tag))))
+      t)))
+
+(defun org-lifelist-tag-entries-from-buffer (org-buffer tag)
+  "Tag entries in ORG-BUFFER with TAG matching the names in the current buffer."
+  (interactive
+   (let* ((buffer-name (read-buffer "Org buffer: "))
+          (title-to-tag
+           (with-current-buffer buffer-name (org-lifelist--title-to-tag)))
+          (title (completing-read "Tag to use: " title-to-tag)))
+     (list buffer-name (gethash title title-to-tag))))
+  (goto-char (point-min))
+  (while (not (eobp))
+    (let ((name (buffer-substring
+                 (line-beginning-position) (line-end-position))))
+      (if (with-current-buffer org-buffer (org-lifelist--tag-entry name tag))
+          (kill-whole-line)
+        (forward-line 1)))))
+
+(defun org-lifelist-tag-entries-from-csv (csv tag)
+  "Tag entries in the current buffer matching CSV entries with TAG."
+  (interactive
+   (let* ((csv-file-name (expand-file-name (read-file-name "CSV file: ")))
+          (title-to-tag (org-lifelist--title-to-tag))
+          (title (completing-read "Tag to use: " title-to-tag)))
+     (list csv-file-name (gethash title title-to-tag)))
+   org-mode)
+  (let ((org-buffer (current-buffer)))
+    (switch-to-buffer "*csv-copy*")
+    (insert-buffer (find-file-noselect csv))
+    (csv-mode)
+    (csv-kill-fields '(1 2 3 4 5 6 7 9 10) (point-min) (point-max))
+    (goto-char (point-min))
+    (kill-whole-line)
+    (org-lifelist-tag-entries-from-buffer org-buffer tag)))
 
 (provide 'org-lifelist)
 

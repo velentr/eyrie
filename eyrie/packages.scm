@@ -88,6 +88,7 @@ on driving projects to completion.")
    (version "0")
    (source (local-file "./packages/org-lifelist" #:recursive? #t))
    (build-system emacs-build-system)
+   (propagated-inputs (list emacs-csv-mode))
    (home-page
     "https://github.com/velentr/eyrie/tree/master/eyrie/packages/org-lifelist")
    (synopsis "Track and filter lifelists with org")
