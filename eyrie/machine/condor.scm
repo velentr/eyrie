@@ -138,7 +138,14 @@ table inet filter {
                   (list
                    (nginx-server-configuration
                     (inherit %e3r3-server-configuration)
-                    (server-name '("e3r3.com")))
+                    (server-name '("e3r3.com"))
+                    (raw-content '("sendfile on;"))
+                    (locations
+                     (list
+                      (nginx-location-configuration
+                       (uri "/album")
+                       (body
+                        '("try_files /album.html =404;"))))))
                    (nginx-server-configuration
                     (inherit %e3r3-server-configuration)
                     (server-name '("cal.e3r3.com"))
