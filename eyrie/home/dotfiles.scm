@@ -109,6 +109,7 @@
    bc
    clang-21  ;; for emacs-company autocompletion
    ey:covey
+   direnv
    feh
    file
    git

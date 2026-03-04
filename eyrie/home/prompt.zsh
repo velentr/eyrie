@@ -46,3 +46,5 @@ PROMPT='
 RPROMPT='($(dir_name)$(git_branch)%{$reset_color%})'
 
 setopt prompt_subst
+
+eval "$(direnv hook zsh)"
