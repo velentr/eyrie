@@ -41,6 +41,7 @@
   #:use-module (gnu packages ocaml)
   #:use-module (gnu packages password-utils)
   #:use-module (gnu packages pdf)
+  #:use-module (gnu packages python-check)
   #:use-module (gnu packages python-xyz)
   #:use-module (gnu packages rust)
   #:use-module (gnu packages rust-apps)
@@ -130,6 +131,7 @@
    python-lsp-server
    ey:revup
    ripgrep
+   ruff
    rust
    (list rust "cargo")
    ;; includes rust-analyzer, rustfmt, and clippy
