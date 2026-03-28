@@ -24,6 +24,7 @@ garmin-xero = "garmin_xero:main"
 solarize = "solarize:main"
 mdd-to-org = "mdd_to_org:main"
 birdr-to-org = "birdr_to_org:main"
+mkbg = "mkbg:main"
 
 [tool.black]
 line-length = 79
