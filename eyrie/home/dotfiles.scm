@@ -718,7 +718,7 @@ tztime local {
       (string? val)))
 
 (define-configuration/no-serialization slideshow-bg-configuration
-  (directory (string (string-append (getenv "HOME") "/solarized"))
+  (directory (string (string-append (getenv "HOME") "/backgrounds"))
              "Directory containing images to select from.")
   (interval (list-or-string ''(next-hour '(0))) ; daily at midnight
             "GitHub username for the gh command-line tool."))
@@ -731,7 +731,7 @@ tztime local {
                   #$feh
                   "/bin/feh --bg-fill $("
                   #$findutils
-                  "/bin/find "
+                  "/bin/find -L "
                   #$directory
                   " -type f | "
                   #$coreutils
