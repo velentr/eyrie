@@ -151,7 +151,7 @@ table inet filter {
                     (server-name '("cal.e3r3.com"))
                     (raw-content
                      '("auth_basic \"authentication required\";"
-                       "auth_basic_user_file /etc/nginx/htpasswd;"))
+                       "auth_basic_user_file /etc/auth/nginx/htpasswd;"))
                     (locations
                      (list
                       (nginx-location-configuration
