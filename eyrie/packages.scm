@@ -13,11 +13,14 @@
   #:use-module (gnu packages disk)
   #:use-module (gnu packages documentation)
   #:use-module (gnu packages emacs-xyz)
+  #:use-module (gnu packages gl)
   #:use-module (gnu packages glib)
   #:use-module (gnu packages gnome)
   #:use-module (gnu packages gnupg)
   #:use-module (gnu packages guile)
+  #:use-module (gnu packages image)
   #:use-module (gnu packages linux)
+  #:use-module (gnu packages llvm)
   #:use-module (gnu packages man)
   #:use-module (gnu packages package-management)
   #:use-module (gnu packages pkg-config)
@@ -34,6 +37,8 @@
   #:use-module (gnu packages tls)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages video)
+  #:use-module (gnu packages vim)
+  #:use-module (gnu packages vulkan)
   #:use-module (gnu packages xml)
   #:use-module (guix build utils)
   #:use-module (guix build-system cargo)
@@ -501,4 +506,47 @@ interface.")
     (description
      "Manage forests of git repositories.")
     (home-page "https://codeberg.org/bdk/covey")
+    (license license:gpl3)))
+
+(define-public vkdt
+  (package
+    (name "vkdt")
+    (version "1.0.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri
+        (string-append
+         "https://github.com/hanatos/vkdt/releases/download/"
+         version "/" name "-" version ".tar.xz"))
+       (sha256
+        (base32 "14fj8dg4hk6q17css5z51yxy65q2ybcj6nj0pnv8f9lfali7kcm0"))))
+    (build-system gnu-build-system)
+    (arguments
+     (list
+      #:tests? #f
+      #:make-flags
+      #~(list (string-append "DESTDIR=" #$output)
+              "prefix="
+              ;; mcraw attempts to download via git, avoid this by
+              ;; disabling for now
+              "VKDT_USE_MCRAW=false")
+      #:phases
+      #~(modify-phases
+            %standard-phases
+          (delete 'configure))))
+    (native-inputs
+     (list clang-22 glslang pkg-config xxd))
+    (inputs
+     (list
+      alsa-lib
+      ffmpeg
+      glfw
+      libjpeg-turbo
+      vulkan-headers
+      vulkan-loader))
+    (home-page "https://jo.dreggn.org/vkdt/")
+    (synopsis "raw photography workflow that sucks less")
+    (description
+     "raw photography workflow that sucks less")
     (license license:gpl3)))
