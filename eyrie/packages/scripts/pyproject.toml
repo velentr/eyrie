@@ -15,7 +15,8 @@ authors = [
 description = "Misc scripts for uncommon tasks"
 dependencies = [
     "garmin-fit-sdk == 21.*",
-    "pillow == 11.*",
+    "pillow == 12.*",
+    "py3exiv2 == 0.12.*",
     "rich == 14.*",
 ]
 
@@ -33,4 +34,4 @@ line-length = 79
 disallow_untyped_defs = true
 
 [tool.setuptools]
-py-modules = ["birdr_to_org", "garmin_xero", "mdd_to_org", "solarize"]
+py-modules = ["birdr_to_org", "garmin_xero", "mdd_to_org", "mkbg", "solarize"]

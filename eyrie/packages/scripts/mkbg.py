@@ -11,19 +11,20 @@ import itertools
 import pathlib
 import typing as T
 
-from PIL import Image
+import pyexiv2
+
+META_RATING = "Exif.Image.Rating"
 
 
 def get_exif_rating(image: pathlib.Path) -> int:
     """Get the photo rating from the EXIF metadata."""
-    with Image.open(image) as im:
-        return int(
-            im.getxmp()
-            .get("xmpmeta", {})
-            .get("RDF", {})
-            .get("Description", {})
-            .get("Rating", "0")
-        )
+    metadata = pyexiv2.ImageMetadata(str(image))
+    metadata.read()
+
+    if META_RATING in metadata.exif_keys:
+        return metadata[META_RATING].value
+    else:
+        return 0
 
 
 def highly_rated_images(

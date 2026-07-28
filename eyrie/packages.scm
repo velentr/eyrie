@@ -23,6 +23,7 @@
   #:use-module (gnu packages pkg-config)
   #:use-module (gnu packages python)
   #:use-module (gnu packages python-build)
+  #:use-module (gnu packages python-graphics)
   #:use-module (gnu packages python-web)
   #:use-module (gnu packages python-xyz)
   #:use-module (gnu packages ragel)
@@ -250,7 +251,7 @@ new based on symlinks.")
      (list #:tests? #f))
     (native-inputs (list python-setuptools python-wheel))
     (propagated-inputs
-     (list python-defusedxml python-garmin-fit-sdk python-pillow python-rich))
+     (list python-defusedxml python-garmin-fit-sdk python-pillow python-py3exiv2 python-rich))
     (home-page "https://github.com/velentr/eyrie")
     (synopsis "Misc scripts for uncommon tasks")
     (description
