@@ -17,7 +17,7 @@ dependencies = [
     "garmin-fit-sdk == 21.*",
     "pillow == 12.*",
     "py3exiv2 == 0.12.*",
-    "rich == 14.*",
+    "rich == 15.*",
 ]
 
 [project.scripts]
