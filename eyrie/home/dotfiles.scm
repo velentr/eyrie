@@ -677,6 +677,7 @@ tztime local {
         emacs-flycheck
         emacs-format-all-the-code
         ey:emacs-github-mode
+        emacs-glsl-mode
         emacs-go-mode
         emacs-markdown-mode
         emacs-nix-mode
